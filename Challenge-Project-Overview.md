@@ -52,10 +52,35 @@ KPMG is a global leader in audit, tax, and advisory services, providing insights
 ## 🎯 The Challenge
 
 ### Project Summary
-In this project, you will use publicly available AI research data (e.g., arXiv papers and metadata) and retrieval-augmented generation (RAG) techniques with large language models to build an agent that retrieves relevant research, summarizes key findings, and translates them into business-relevant insights. This will help our organization address the challenge of efficiently monitoring and operationalizing the rapidly growing volume of AI research. Abhinav Raghunathan will serve as the KPMG business owner / Challenge Advisor for the project, responsible for guiding business relevance, success criteria, and stakeholder feedback.
+In this project, you will use publicly available AI research data (e.g., arXiv papers and metadata) and retrieval-augmented generation (RAG) techniques with large language models to build an agent that retrieves relevant research, summarizes key findings, and translates them into business-relevant insights. This will help our organization address the challenge of efficiently monitoring and operationalizing the rapidly growing volume of AI research. Abhinav Raghunathan will serve as the KPMG business owner for the project, responsible for guiding business relevance, success criteria, and stakeholder feedback.
 
 ### Success Criteria
-Success will be measured based on: Retrieval relevance: Ability to return appropriate research papers for a given query; Summary quality: Accuracy and clarity of synthesized research insights; Business usefulness: Extent to which outputs translate technical content into actionable business implications; Human evaluation: Validation by KPMG stakeholders reviewing relevance and accuracy of outputs; Human-in-the-loop checkpoint: KPMG stakeholders will review retrieved sources, summaries, and business implications before outputs are used for internal decision-making, thought leadership, or client-facing discussions. A successful outcome will be: A working prototype that enables natural-language querying of AI research and produces summarized, business-relevant outputs with citations; Documented evaluation approach and results; Demonstrated applicability for internal enablement and client conversations; A final solution package that includes prototype documentation, evaluation results, scope limitations, and a final presentation suitable for stakeholder review.
+
+_Success will be measured based on:_
+- Retrieval relevance: Ability to return appropriate research papers for a given query
+- Summary quality: Accuracy and clarity of synthesized research insights
+- Business usefulness: Extent to which outputs translate technical content into actionable business implications
+- Human evaluation: Validation by KPMG stakeholders reviewing relevance and accuracy of outputs
+
+_Human-in-the-loop checkpoint:_ 
+- KPMG stakeholders will review retrieved sources, summaries, and business implications before outputs are used for internal decision-making, thought leadership, or client-facing discussions.
+
+_A successful outcome will be:_
+- A working prototype that enables natural-language querying of AI research and produces summarized, business-relevant outputs with citations
+- Documented evaluation approach and results
+- Demonstrated applicability for internal enablement and client conversations
+- A final solution package that includes prototype documentation, evaluation results, scope limitations, and a final presentation suitable for stakeholder review.
+
+### Stretch Goals
+
+Potential stretch goals may include:   
+- Add draft newsletter or report-generation capability for human review (e.g., research briefs or POV drafts, not publication-ready outputs)
+- Introduce multi-source synthesis across research repositories
+- Implement relevance ranking or personalization based on user intent
+- Develop a simple front-end interface for stakeholder interaction
+- Incorporate evaluation benchmarking dataset for improved retrieval accuracy
+
+Stretch goals to be maintained within prototype scope; exclude production deployment, foundation-model fine-tuning, autonomous multi-agent orchestration, and use of PII, regulated, internal, or client data.
 
 ### Project Milestones
 
@@ -77,11 +102,9 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 **Name and Source:** Publicly available AI research data from arXiv   
 **Format:** Categorical and Text, primarily in PDF format  
 **Size:** under 1gb  
-**Location:** [Link to dataset or instructions for accessing it]
+**Location:** [TBD]
 
 ### Key Details
-- Publicly available AI research data (e.g., arXiv papers and metadata).
-- The data is Categorical and Text, primarily in PDF format. Partial documentation exists, and it will require some cleaning/preprocessing.
 - [Any known limitations or preprocessing needed]
 - [Link to data dictionary or documentation, if available]
 
