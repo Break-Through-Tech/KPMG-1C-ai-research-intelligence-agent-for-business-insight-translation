@@ -91,18 +91,10 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 **ML Problem Type:** NLP / Retrieval-augmented Generation
 
 **Recommended Libraries:**
-- Retrieval-augmented generation (RAG) techniques
-- large language models (LLMs)
-- Natural Language Processing (NLP)
-- Generative Models
-- Transfer Learning / Pre-trained Models
+- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
 
 **Evaluation Metrics:**
-- Retrieval relevance
-- Summary quality
-- Business usefulness
-- Human evaluation
-- Business impact assessment
+- [e.g., Accuracy, Precision/Recall, RMSE, BLEU score]
 
 ---
 
