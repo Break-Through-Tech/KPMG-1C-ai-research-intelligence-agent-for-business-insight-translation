@@ -86,12 +86,11 @@ Stretch goals to be maintained within prototype scope; exclude production deploy
 
 Use these milestones to guide your work. Your team will create a **GitHub Projects board** to track tasks within each milestone.
 
-| Month     | Milestone                  | Key Activities                                                              |
-|-----------|----------------------------|---------------------------------------------------------------------------|
-| **September** | Data Exploration         | Explore dataset, define evaluation framework, benchmark queries, develop baseline retrieval pipeline (RAG setup) |
-| **October**   | Implement Retrieval + Summarization | Implement retrieval + summarization pipeline, develop prompt engineering approach for business translation, begin evaluation (relevance and accuracy testing) |
-| **November**  | Model Refinement         | Refine model outputs and improve ranking/relevance, build user interface, document solution and prepare final presentation |
-| **December**  | Final Deliverables       | A working prototype, documented evaluation, demonstrated applicability, and final solution package |
+| Month | Milestone | Key Activities |
+|---|---|---|
+| September | [Title] | • Data exploration and preprocessing<br>• Define evaluation framework and benchmark queries<br>• Develop baseline retrieval pipeline (RAG setup) |
+| October | [Title] | • Implement retrieval + summarization pipeline<br>• Develop prompt engineering approach for business translation<br>• Begin evaluation (relevance and accuracy testing) |
+| November | [Title] | • Refine model outputs and improve ranking/relevance<br>• Build lightweight user interface or interaction layer<br>• Document solution and prepare final presentation |
 
 > **Note for the team:** Please create a GitHub Projects board in this repository to break these milestones into weekly tasks. Go to the **Projects** tab → **New project** → Choose **Board** → Add columns for each month.
 
