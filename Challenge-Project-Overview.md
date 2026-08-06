@@ -74,13 +74,14 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 
 ## 📊 Dataset
 
-**Name and Source:** Publicly available AI research data from arXiv
+**Name and Source:** Publicly available AI research data from arXiv   
 **Format:** Categorical and Text, primarily in PDF format  
 **Size:** under 1gb  
 **Location:** [Link to dataset or instructions for accessing it]
 
 ### Key Details
-- Publicly available AI research data (e.g., arXiv papers and metadata). The data is Categorical and Text, primarily in PDF format. Partial documentation exists, and it will require some cleaning/preprocessing.
+- Publicly available AI research data (e.g., arXiv papers and metadata).
+- The data is Categorical and Text, primarily in PDF format. Partial documentation exists, and it will require some cleaning/preprocessing.
 - [Any known limitations or preprocessing needed]
 - [Link to data dictionary or documentation, if available]
 
