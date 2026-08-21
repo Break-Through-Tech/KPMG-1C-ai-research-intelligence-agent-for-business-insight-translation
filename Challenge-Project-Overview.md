@@ -38,7 +38,7 @@ The project presents a viable opportunity for students to engage with the comple
 # AI Research Intelligence Agent for Business Insight Translation
 
 **Company / Org:** KPMG  
-**Challenge Advisor:** Allison Tatterson, [Email address] 
+**Challenge Advisor:** Allison Tatterson, atatterson@KPMG.com
 
 **AI Coach:** Alexandra Ladyzhensky, alexandra.ladyzhensky@breakthroughtech.org
 
@@ -91,11 +91,26 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 
 | Month | Milestone | Key Activities |
 |---|---|---|
-| September | [Title] | • Data exploration and preprocessing<br>• Define evaluation framework and benchmark queries<br>• Develop baseline retrieval pipeline (RAG setup) |
-| October | [Title] | • Implement retrieval + summarization pipeline<br>• Develop prompt engineering approach for business translation<br>• Begin evaluation (relevance and accuracy testing) |
-| November | [Title] | • Refine model outputs and improve ranking/relevance<br>• Build lightweight user interface or interaction layer<br>• Document solution and prepare final presentation |
+| September | Foundation & Baseline RAG Development | • Data exploration and preprocessing<br>• Define evaluation framework and benchmark queries<br>• Develop baseline retrieval pipeline (RAG setup) |
+| October | Pipeline Development & Evaluation | • Implement retrieval + summarization pipeline<br>• Develop prompt engineering approach for business translation<br>• Begin evaluation (relevance and accuracy testing) |
+| November | Solution Refinement, User Experience & Final Delivery | • Refine model outputs and improve ranking/relevance<br>• Build lightweight user interface or interaction layer<br>• Document solution and prepare final presentation |
 
 > **Note for the team:** Please create a GitHub Projects board in this repository to break these milestones into weekly tasks. Go to the **Projects** tab → **New project** → Choose **Board** → Add columns for each month.
+
+| Month	| Week | Weekly Tasks |
+|---|---|---|
+| September	| Week 1	| Project kickoff, review challenge requirements, identify data sources, set up development environment and repository structure |
+| September	| Week 2	| Conduct exploratory data analysis (EDA), assess data quality, identify gaps and preprocessing needs |
+| September |	Week 3	| Clean and preprocess data, create data ingestion pipeline, document data preparation approach
+| September	| Week 4	| Define evaluation framework, establish benchmark questions/queries, build and test baseline RAG retrieval pipeline
+| October	| Week 5	| Implement retrieval pipeline improvements and integrate summarization capabilities
+| October	| Week 6	| Develop and test end-to-end retrieval + summarization workflow, evaluate initial outputs
+| October	| Week 7	| Design and implement prompt engineering strategy for translating technical outputs into business-friendly insights
+| October	| Week 8	| Conduct evaluation testing for relevance, accuracy, and completeness; document findings and improvement opportunities
+| November	| Week 9	| Refine prompts, retrieval ranking, and relevance mechanisms based on evaluation results
+| November	| Week 10	| Improve model outputs, optimize user experience, and begin development of lightweight user interface or interaction layer
+| November	| Week 11	| Finalize UI/interaction layer, perform user testing, complete technical and business documentation
+| November	| Week 12	| Prepare final presentation, create demo materials, conduct final testing, and package solution for submission
 
 ---
 
@@ -104,17 +119,20 @@ Use these milestones to guide your work. Your team will create a **GitHub Projec
 **Name and Source:** Publicly available AI research data from arXiv   
 **Format:** Categorical and Text, primarily in PDF format  
 **Size:** under 1gb  
-**Location:** [TBD]
+**Location:** arXiv Artificial Intelligence Research: https://arxiv.org/list/cs.AI/recent
 
 ### Key Details
-- [Any known limitations or preprocessing needed]
-- [Link to data dictionary or documentation, if available]
+arXiv (pronounced "archive") is a free online platform and open-access archive. Researchers use it to share early versions of scientific papers—called preprints—before formal peer review. It covers physics, mathematics, computer science, statistics, quantitative biology, quantitative finance, and economics.
 
 ---
 
 ## 🛠️ Suggested Approach
 
 **ML Problem Type:** NLP / Retrieval-augmented Generation
+
+**Note to BTT AI Coaches and Fellows:** We propose the following approaches, but work with your AI coaches to determine the best approach for your team:
+1. Use the provided link to the arXiv website with the repository of AI research papers and determine a way to build an agent that navigates to the site, evaluates all the links, downloads the files to analyze the content, and then generate the insights, etc.
+2. Download our sample subset of the research papers to ground your RAG solution and then build an agent that analyzes the content and generates cited insights.
 
 **Recommended Libraries:**
 - [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
@@ -152,10 +170,10 @@ The following resources will help your team understand the problem space and pot
 **Official check-ins:** During our biweekly 45-minute AI Studio Lab Section meeting block (2nd and 4th week of every month)
 
  **Other ways to reach out to me with questions:** 
-* [e.g., Your team's channel within Break Through Tech’s Discord space]
-* [e.g., Email; please copy your teammates and AI Studio Coach]
-* [e.g., Request a team check-in on Zoom]
-* [Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.]
+* **Preferred** Email atatterson@kpmg.com; please copy your teammates and AI Studio Coach.
+* Note that I am **not** on the team's channel within Break Through Tech Discord space. 
+* Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.
+* Optional: Request a team check-in on Zoom if things go off the rails. 
 
 > 💡 **Challenge Advisor: Please update the above based on your availability and preference. If you are not able to answer questions or meet with fellows outside of the biweekly Lab Section check-ins, simply write in "N/A (only available during the official check-in times)"**
 
@@ -172,6 +190,7 @@ The following resources will help your team understand the problem space and pot
 3. **Read the GitHub Projects documentation** [here](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects)
 
 I’m excited to work with you!
+
 
 ---
 
