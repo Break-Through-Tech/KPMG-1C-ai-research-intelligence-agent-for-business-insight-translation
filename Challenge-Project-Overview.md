@@ -1,8 +1,8 @@
 # AI Research Intelligence Agent for Business Insight Translation
 
 **Company / Org:** KPMG  
-**Challenge Advisor:** Allison Tatterson, atatterson@KPMG.com
-**AI Coach:** Rashidah Carr, rashidah.carr@breakthroughtech.org
+**Challenge Advisor:** Allison Tatterson, atatterson@KPMG.com   
+**AI Coach:** Rashidah Carr, rashidah.carr@breakthroughtech.org   
 **Program:** Break Through Tech AI Studio - Fall 2026
 
 ---
