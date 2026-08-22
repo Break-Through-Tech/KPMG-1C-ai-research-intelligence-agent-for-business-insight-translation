@@ -108,17 +108,17 @@ arXiv (pronounced "archive") is a free online platform and open-access archive. 
 The following resources will help your team understand the problem space and potential technical approaches for this project:
 
 **Background Reading:**
-- https://www.ibm.com/think/topics/retrieval-augmented-generation
-- https://arxiv.org/abs/2005.11401
-- https://superlinked.com/blog/evaluating-retrieval-augmented-generation-ragas
+- [IBM: What is Retrieval-Augmented Generation?](https://www.ibm.com/think/topics/retrieval-augmented-generation)
+- [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401)
+- [RAGAS: RAG Evaluation Metrics Guide](https://superlinked.com/blog/evaluating-retrieval-augmented-generation-ragas)
 
 **Technical Tutorials:**
-- https://docs.langchain.com/oss/python/deepagents/rag
-- https://www.deeplearning.ai/courses/building-evaluating-advanced-rag
+- [LangChain's official RAG tutorial](https://docs.langchain.com/oss/python/deepagents/rag)
+- [Building and Evaluating Advanced RAG](https://www.deeplearning.ai/courses/building-evaluating-advanced-rag)
 
 **Code Examples:**
-- https://github.com/NirDiamant/rag_techniques
-- https://github.com/mattbierbaum/arxiv-public-datasets
+- [RAG_Techniques](https://github.com/NirDiamant/rag_techniques)
+- [arxiv-public-datasets](https://github.com/mattbierbaum/arxiv-public-datasets)
 
 *Feel free to explore beyond these, and share anything interesting you find with me!*
 
