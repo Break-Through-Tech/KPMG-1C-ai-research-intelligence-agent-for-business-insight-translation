@@ -137,7 +137,7 @@ The following resources will help your team understand the problem space and pot
 * Optional: Request a team check-in on Zoom if things go off the rails. 
 
 
-**Recommended free coding / collaboration tools**
+**Recommended Tools:**
 * Coding: Google Colab
 * Collaboration: GitHub, Notion
 * Virtual Meetings: Zoom, Google Meet
