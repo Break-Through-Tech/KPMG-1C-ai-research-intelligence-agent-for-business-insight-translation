@@ -136,7 +136,6 @@ The following resources will help your team understand the problem space and pot
 * Note: I will aim to respond within 48 hours. Please reach out to your AI Studio Coach with urgent questions.
 * Optional: Request a team check-in on Zoom if things go off the rails. 
 
-> 💡 **Challenge Advisor: Please update the above based on your availability and preference. If you are not able to answer questions or meet with fellows outside of the biweekly Lab Section check-ins, simply write in "N/A (only available during the official check-in times)"**
 
 **Recommended free coding / collaboration tools**
 * […]
