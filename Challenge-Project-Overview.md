@@ -95,22 +95,20 @@ arXiv (pronounced "archive") is a free online platform and open-access archive. 
 
 | Category | Python Options |
 |---|---|
-| PDF Parsing | `pypdf` or `unstructured` |
+| PDF Parsing | `pypdf` (or `unstructured` for more robust parsing) |
 | Embeddings | `sentence-transformers` (compare multiple models) |
-| Vector Store | `FAISS` or `ChromaDB` |
+| Vector Store | `ChromaDB` (simpler API) or `FAISS` (more control over indexing)  |
 | Pipeline / Orchestration | `LangChain` or `LlamaIndex` |
-| Retrieval Enhancement | Cross-encoder reranker (`sentence-transformers`) |
-| LLM / Generation | Free-tier LLM API (function-calling support if pursuing the live-agent stretch goal) |
-| Evaluation Framework | `RAGAS` |
+| Retrieval Enhancement *(optional)*| Cross-encoder reranker (`sentence-transformers`) |
+| LLM / Generation | Free-tier LLM API (Google Gemini API, Hugging Face Inference API) |
+| Evaluation Framework *(optional)* | `RAGAS` |
 | Environment | Google Colab |
 
 **Evaluation Metrics:**
-- Retrieval: Recall@k
-- Retrieval: Mean Reciprocal Rank (MRR)
-- Generation: RAGAS Faithfulness Score
-- Generation: RAGAS Answer Relevancy Score
-- Business Usefulness (human rubric, paired with metrics above)
-
+- Retrieval Relevance — manual check (yes/no per benchmark query), or Recall@k / Mean Reciprocal Rank (MRR) for a quantitative measure
+- Summary Accuracy & Clarity — team rubric (1–5), or RAGAS Faithfulness / Answer Relevancy scores for automated scoring
+- Business Usefulness — team rubric (1–5), paired with whichever metrics above you use
+  
 ---
 
 ## 📚 Resources to Get Started
