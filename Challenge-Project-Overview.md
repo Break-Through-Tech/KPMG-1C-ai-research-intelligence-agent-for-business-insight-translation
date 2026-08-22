@@ -2,7 +2,7 @@
 
 **Company / Org:** KPMG  
 **Challenge Advisor:** Allison Tatterson, atatterson@KPMG.com   
-**AI Coach:** Rashidah Carr, rashidah.carr@breakthroughtech.org   
+**AI Studio Coach:** Rashidah Carr, rashidah.carr@breakthroughtech.org   
 **Program:** Break Through Tech AI Studio - Fall 2026
 
 ---
