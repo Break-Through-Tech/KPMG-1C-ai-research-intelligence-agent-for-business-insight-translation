@@ -138,8 +138,9 @@ The following resources will help your team understand the problem space and pot
 
 
 **Recommended free coding / collaboration tools**
-* […]
-* […]
+* Coding: Google Colab
+* Collaboration: GitHub, Notion
+* Virtual Meetings: Zoom, Google Meet
 
 ---
 
