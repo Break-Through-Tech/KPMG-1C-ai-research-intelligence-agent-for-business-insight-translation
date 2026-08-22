@@ -89,17 +89,27 @@ arXiv (pronounced "archive") is a free online platform and open-access archive. 
 
 ## 🛠️ Suggested Approach
 
-**ML Problem Type:** NLP / Retrieval-augmented Generation
+**ML Problem Type:** NLP / Retrieval-Augmented Generation (RAG) — research paper Q&A and business-insight summarization
 
-**Note to BTT AI Coaches and Fellows:** We propose the following approaches, but work with your AI coaches to determine the best approach for your team:
-1. Use the provided link to the arXiv website with the repository of AI research papers and determine a way to build an agent that navigates to the site, evaluates all the links, downloads the files to analyze the content, and then generate the insights, etc.
-2. Download our sample subset of the research papers to ground your RAG solution and then build an agent that analyzes the content and generates cited insights.
+**Recommended Tools & Libraries:**
 
-**Recommended Libraries:**
-- [e.g., pandas, scikit-learn, TensorFlow, Hugging Face]
+| Category | Python Options |
+|---|---|
+| PDF Parsing | `pypdf` or `unstructured` |
+| Embeddings | `sentence-transformers` (compare multiple models) |
+| Vector Store | `FAISS` or `ChromaDB` |
+| Pipeline / Orchestration | `LangChain` or `LlamaIndex` |
+| Retrieval Enhancement | Cross-encoder reranker (`sentence-transformers`) |
+| LLM / Generation | Free-tier LLM API (function-calling support if pursuing the live-agent stretch goal) |
+| Evaluation Framework | `RAGAS` |
+| Environment | Google Colab |
 
 **Evaluation Metrics:**
-- [e.g., Accuracy, Precision/Recall, RMSE, BLEU score]
+- Retrieval: Recall@k
+- Retrieval: Mean Reciprocal Rank (MRR)
+- Generation: RAGAS Faithfulness Score
+- Generation: RAGAS Answer Relevancy Score
+- Business Usefulness (human rubric, paired with metrics above)
 
 ---
 
