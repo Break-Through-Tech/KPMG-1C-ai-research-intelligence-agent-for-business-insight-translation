@@ -114,7 +114,7 @@ The following resources will help your team understand the problem space and pot
 
 **Technical Tutorials:**
 - https://docs.langchain.com/oss/python/deepagents/rag
-- [e.g., Link to documentation for a key library or tool]
+- https://www.deeplearning.ai/courses/building-evaluating-advanced-rag
 
 **Code Examples:**
 - https://github.com/NirDiamant/rag_techniques
