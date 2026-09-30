@@ -15,7 +15,7 @@ Explore publicly available AI research, assess data quality, and identify gaps a
 | `alex-eda-visualizations` — `940d488` | Alex Nguyen: `b97d84b`, `f8f075e`; Adarsh Alex: `940d488` | Initial EDA, revised collection pipeline, descriptive visualizations, and dataset findings. |
 | `Braa-EDA` — `44e8cfb` | braa-oudeh: `0849a6d`, `44e8cfb` | Inherits the prior EDA; adds text cleaning, heading detection, structured section dictionaries, and formatting. |
 | `EDA-Feature-Engineering` — `1992fab` | Alex Nguyen: `1992fab` | Inherits the EDA and section parser; adds the initial LangChain/chunking/embedding/Chroma retrieval workflow. |
-| `eda-coverage-visualizations` — based on `1992fab` | Current contribution | Adds a separate bias-diagnostic notebook under `workbook/`, this summary, and a limitations document. |
+| `eda-coverage-visualizations` — based on `1992fab` | Current contribution | Adds bias visualizations and automated screening notebooks under `notebooks/`, this summary, and a limitations document. |
 
 ### Collection and descriptive EDA
 
@@ -33,7 +33,7 @@ The feature-engineering branch prepares LangChain documents with paper/section m
 
 ## New visualization notebook
 
-Open [workbook/eda_bias_visualizations.ipynb](../workbook/eda_bias_visualizations.ipynb).
+Open [notebooks/eda_bias_visualizations.ipynb](../notebooks/eda_bias_visualizations.ipynb).
 
 It reads saved outputs from the existing [EDA workbook](../notebooks/eda_workbook.ipynb), without executing its download or cleanup cells. Four charts address:
 
@@ -46,7 +46,20 @@ The clean checkout has no raw metadata catalog or paper-level EDA CSV. The new n
 
 ## Remaining EDA work
 
-Reconcile one fixed catalog with the PDFs, complete business-relevance labels, inspect extraction fidelity, and measure coverage using consistent denominators. Follow up with actual chunk/exposure measurements before concluding that document length biases retrieval. See [EDA_LIMITATIONS.md](EDA_LIMITATIONS.md) for the evidence, limits, and preprocessing needs.
+Restore one fixed catalog and matching PDFs, run the automated screening below, and report unresolved cases and assessment coverage. Follow up with actual chunk/exposure measurements before concluding that document length biases retrieval. See [EDA_LIMITATIONS.md](EDA_LIMITATIONS.md) for evidence and limits.
+
+## Automated relevance and extraction screening
+
+[eda_automated_screening.ipynb](../notebooks/eda_automated_screening.ipynb) provides the team's automated alternative to paper-by-paper manual labeling, in one additional file:
+
+- Checks missing PDFs, page-level text quantity, replacement characters, broken-word/spacing patterns, repeated lines, abstract-token coverage, and parser warnings/errors.
+- Optionally compares a second parser on flagged PDFs when `pdfplumber` is installed. OCR is a recommended follow-up for suitable scanned pages, not implemented here.
+- Uses an optional local Ollama model to classify title/abstract relevance, propose business areas, and provide an exact supporting quote. Validates response fields and checks quotes against the abstract; invalid outputs stay uncertain.
+- Displays detailed results and two charts: model-assessed relevance and extraction-check status by collection area. Unassessed papers are shown explicitly.
+
+No raw corpus is available in this checkout, so the workflow has been added but has not produced corpus-level assessment findings. It needs `notebooks/arxiv_data/metadata/papers.jsonl` and matching PDFs. Enable `RUN_MODEL` and set an already available Ollama model to run relevance screening; calls are disabled by default and limited to ten uncached papers per execution. Nothing is downloaded or deleted, and no output folders are created. The in-memory model cache lasts only for the current kernel session; save notebook outputs to retain results.
+
+Automated labels and flags are preliminary assessments, not verified truth. Classification accuracy and extraction sensitivity are unknown without independent validation. The workflow does not automatically exclude papers or claim unbiased retrieval.
 
 ## Source history
 

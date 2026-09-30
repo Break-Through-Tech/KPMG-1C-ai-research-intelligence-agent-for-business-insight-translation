@@ -6,16 +6,10 @@ The current analysis supports identifying corpus-quality and coverage risks. It 
 
 | Limitation | Evidence in the current repository | Implication and next step |
 | --- | --- | --- |
-| Mixed saved execution states | Catalog output reports 97 papers; extraction summary reports 95; the written findings and relevance table refer to 85; download inventory shows 16. | Do not treat these as one sequential funnel or calculate dropout rates. Reconcile paper IDs and versions from one fixed run. |
-| Raw corpus is not available in this checkout | No `arxiv_data` catalog or paper-level EDA CSV accompanies the checkout; notebook tables are truncated. | New charts use saved aggregates. Restore the corpus before measuring full-dataset missingness, dates, exclusions, or detailed distributions. The five example PDFs under `data/` are not the full EDA corpus. |
 | Quotas and keyword selection | Seven areas target ten papers each; general targets thirty. Searches match abstract phrases and prioritize newest submissions. | Counts reflect a designed sample, not the AI research population. Review coverage against stakeholder questions and test broader terms or date strata. |
 | Overlapping area assignments | One paper can belong to several collection areas. | Use assignment shares for area proportions, unique-paper denominators for paper-level results; explicitly state which is used. |
 | Category-name collisions | Both `cs.LG` and `stat.ML` map to “Machine Learning” before category counts are displayed. | A paper can contribute twice to that display label. Audit raw codes and deduplicate per paper before interpreting field shares. |
-| No completed business-relevance labels | The notebook initializes empty relevance/review-note fields. | Do not report relevance rates. Review abstracts/full text with a shared rubric and double-review a subset. Domain difference alone does not establish irrelevance. |
-| Extraction exceptions do not capture all quality issues | Saved output includes skipped-content and malformed-string warnings despite a zero-exception count. | Record warnings and compare extracted text to source pages, including tables, equations, figures, and reading order. |
-| Heuristic low-text screening | A page is flagged if stripped extracted text is shorter than 100 characters. | This can flag valid figure/title pages and miss corrupted but long text. Use it for manual triage, not automatic deletion. |
-| Section parsing is heuristic | Some sample papers place thousands of words under Front Matter; an example retrieval returns REFERENCES. | Validate headings and boilerplate; consider tagging/filtering reference sections and preserving raw text/page spans for traceability. |
-| Small retrieval demonstration | Five selected sample papers and two example queries. | Cannot support cross-domain retrieval-performance or fairness claims. Use a separate, balanced benchmark and paper-level relevance judgments. |
+| No completed business-relevance assessment | The original notebook initializes empty relevance/review-note fields. The new screening notebook has not been run on the full corpus. | Report model-assessed labels only after running the classifier; show uncertainty and unassessed counts. Domain difference alone does not establish irrelevance. |
 
 ## Potential biases requiring further measurement
 
@@ -30,7 +24,7 @@ These are corpus and evidence-coverage risks. The repository does not contain ve
 
 ## Constraints of the new visualizations
 
-The [bias visualization notebook](../workbook/eda_bias_visualizations.ipynb) reads recorded outputs from the original workbook. It shows source-cell references and the source-file fingerprint. Individual saved cells may describe different datasets, so comparisons are diagnostic rather than a validated snapshot analysis.
+The [bias visualization notebook](../notebooks/eda_bias_visualizations.ipynb) reads recorded outputs from the original workbook. It shows source-cell references and the source-file fingerprint. Individual saved cells may describe different datasets, so comparisons are diagnostic rather than a validated snapshot analysis.
 
 - Topic percentages use overlapping assignment counts and have rounding error.
 - Category counts include only the displayed top ten and may conflate code labels.
@@ -38,13 +32,20 @@ The [bias visualization notebook](../workbook/eda_bias_visualizations.ipynb) rea
 - The corpus-size chart is a comparison of inconsistent recorded observations, not an acquisition funnel.
 - No synthetic relevance labels, publication dates, or missingness rates are supplied.
 
-## Preprocessing actions justified by the EDA
+## Limits of automated screening
 
-1. Freeze a manifest of paper IDs, versions, query settings, and collection timestamps; reconcile PDFs against it.
-2. Keep an exclusion log with a reason for every missing or unusable document.
-3. Complete relevance labels using agreed business questions; retain uncertain cases for review.
-4. Inspect extraction warnings and representative pages; try OCR only where appropriate, while preserving originals.
-5. Preserve source URLs, versions, and page spans; validate section boundaries and distinguish references from body evidence.
-6. Measure chunk counts by paper and area; evaluate diversity and filtering changes on benchmark queries before imposing caps.
+The team prefers automated relevance and extraction screening rather than manual paper-by-paper review. [eda_automated_screening.ipynb](../notebooks/eda_automated_screening.ipynb) implements that workflow without automatically excluding papers.
 
-User story: As a KPMG research analyst, I want to see the corpus's coverage and quality gaps so that I can judge which questions are supported and where additional evidence or preprocessing is needed. Acceptance requires traceable counts, documented exclusions, reviewed relevance, and explicit unresolved limitations.
+| Automated check | What it supports | What it cannot establish |
+| --- | --- | --- |
+| LLM title/abstract relevance classification | Consistent rubric, business mapping, rationale, and exact evidence quote | Actual business usefulness, full-text evidence quality, calibrated confidence, or classification accuracy |
+| Quote validation and structured-response checks | Rejects absent quotes and malformed labels | A real quote can still be misinterpreted; valid formatting does not establish correctness |
+| Low-text, encoding, whitespace, repeated-line checks | Flags likely extraction issues using explicit thresholds | Thresholds are provisional; figure-heavy pages and legitimate formatting can trigger false positives |
+| Abstract-token coverage | Detects possible missing abstract content | Ignores order and structure; cannot verify tables, equations, or complete extraction |
+| Optional second-parser token agreement | Flags differences on suspect PDFs | Two parsers can agree while sharing errors; higher overlap is not a gold-standard fidelity score |
+
+The relevance model is optional and uses a locally available Ollama model; no model is installed by the notebook. The model name, prompt fingerprint, source PDF fingerprints, thresholds, and results are displayed. The cache is only in memory, so save notebook outputs before closing the kernel. Temperature zero does not guarantee reproducibility across model/runtime versions.
+
+The default ten-call pilot follows catalog order and is not representative of the whole corpus. Increase the limit or continue runs for broader assessment. Missing abstracts, invalid model responses, missing PDFs, unavailable libraries, and extraction failures remain visible as uncertain, unresolved, or unassessed statuses. Model calls are off by default. No corpus-level results are claimed until the real metadata and PDFs are restored and assessed.
+
+Charts count papers once within each original collection area; multi-area papers appear in multiple bars. Do not sum these counts as unique papers. Automated screening cannot establish the rate of missed or incorrectly flagged issues without independent validation; that limitation remains even if the team elects not to perform manual review. No automatic deletion, OCR processing, or measurement of actual retrieval exposure is included.
