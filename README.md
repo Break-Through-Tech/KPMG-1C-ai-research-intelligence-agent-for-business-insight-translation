@@ -12,6 +12,7 @@
 | Name | GitHub Handle | Contribution |
 | --- | --- | --- |
 | Kathleen Higgins | @kathigg | RAG evaluation and KPI |
+| QiQi Li          | @qiqi0211| EDA, RAG evaluation, and prompt engineering | 
 
 
 ---
