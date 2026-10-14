@@ -35,8 +35,21 @@ returned chunks; it does not validate generated citations.
 ## Review generated answers
 
 The answer prompt and Ollama `llama3.2` call live in
-`notebooks/eda_workbook.ipynb`. Answer quality requires a fresh run on the
-same corpus. For each answer, inspect the source passages and record:
+`notebooks/eda_workbook.ipynb`. `run_answers.py` uses that prompt and model
+with the newer `ResearchRetriever` passage and paper-citation formatting.
+Start a local Ollama server and pull the model, then run:
+
+```bash
+ollama serve  # separate terminal
+ollama pull llama3.2
+python evaluation/run_answers.py
+python evaluation/check_answers.py
+```
+
+The answer runner resumes completed queries in `evaluation/results/answers.json`.
+`check_answers.py` verifies citation numbers, literal quotes against the
+retrieved passages, and the notebook prompt's abstention phrase. It cannot
+verify claim support. For each answer, inspect the source passages and record:
 
 | Dimension | Pass condition |
 | --- | --- |
@@ -50,4 +63,7 @@ Report claim accuracy as `supported material claims / all material claims`,
 completeness as `answered required facts / all required facts`, and the number
 of answers with a valid citation and direct quote. Do not treat a citation or
 quote by itself as proof of accuracy. The retrieval report does not supply
-these answer metrics.
+these answer metrics. The first completed [manual review](results/answer_review.md)
+uses a full/partial/fail rubric for each answer and records the observed
+generation failures. `notebooks/evaluation.ipynb` provides a notebook view of
+both runs and the source passages.

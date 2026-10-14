@@ -40,9 +40,23 @@ has no calibrated rejection rule by default.
    regardless of the parser's later heading guesses.
 4. Calibrate an abstention rule on more labeled negatives; the current score
    alone has not been shown to separate answerable from unanswerable queries.
-5. Run the notebook generator on these same passages and manually score claim
-   support, required-fact coverage, citations, and direct quotes. Retrieval
-   metrics alone cannot establish answer accuracy or completeness.
+5. Add source page or chunk IDs to generated citations and require a verbatim
+   evidence quote for each cited paper. The current notebook prompt requests
+   numbered citations but not the direct quote required by issue #5.
+6. Validate generated numbers and claims against the cited passage before
+   showing an answer. Add a consistency check so an answer cannot both supply
+   a result and claim that no result exists.
+
+## Fresh answer findings
+
+The [per-query manual review](answer_review.md) of 25 fresh `llama3.2`
+answers found 10 full, 4 partial, and 9 failed responses among 23 answerable
+questions. Both unanswerable questions were declined. Only 14/23 answerable
+responses contained a citation, and none contained a verified direct quote.
+The numeric error on q15 occurred even though the correct values were in a
+retrieved passage; q08 contradicted itself. These are generation failures in
+addition to the passage-selection misses above.
 
 These labels are from five related papers and were created for this project.
-They do not establish performance on the larger intended corpus or on BEIR.
+The answer review was performed by one person. Neither result establishes
+performance on the larger intended corpus or on BEIR.
