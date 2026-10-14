@@ -32,6 +32,29 @@ whether its answer was factual. The two unanswerable questions are counted
 separately. `citation_metadata_complete` checks paper IDs and source URLs on
 returned chunks; it does not validate generated citations.
 
+## BEIR SciFact relevance test
+
+```bash
+python evaluation/run_beir_scifact.py
+```
+
+This downloads the [official BEIR SciFact dataset](https://github.com/beir-cellar/beir)
+and verifies its published MD5 checksum. It samples **20 claims** from the
+official 300-query test split (seed 42), includes every judged relevant article
+for those claims, and adds fixed random distractors for a **500-article**
+corpus. Each article's title and abstract form its indexed text. Duplicate
+titles receive an ID suffix in metadata so the repo's title-keyed ingestion
+can keep both articles.
+
+The report in `evaluation/results/beir_scifact_20q_500d.json` gives document-level
+hit@1/5/10, recall@5/10, MRR@10, and nDCG@10 against BEIR's test qrels.
+Results at five papers are obtained from the first five **distinct** article
+IDs returned by the retriever. SciFact consists of scientific claims and
+article abstracts, with many biomedical topics. This is a small diagnostic
+subset; because the search corpus is reduced, its scores are **not comparable
+to published full-corpus BEIR scores**. It tests retrieval relevance, not
+answer accuracy or business usefulness.
+
 ## Review generated answers
 
 The answer prompt and Ollama `llama3.2` call live in
