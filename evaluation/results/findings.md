@@ -2,103 +2,104 @@
 
 ## 1. arXiv paper test
 
-This dataset comes from the five arXiv research-paper PDFs committed in [`data/`](../../data/), with 25 manually written and labeled questions about those papers.
+This dataset comes from the five arXiv research-paper PDFs committed in [`data/`](../../data/); it's got 25 manually written and labeled questions about those papers.
 
-Twenty questions target one paper, three require two papers, and two cannot be
-answered from the collection. The run used the parser and prompt in
-`eda_workbook.ipynb`, `all-mpnet-base-v2` embeddings, cosine Chroma, and
-`ResearchRetriever`. The default retrieval setting returned up to five chunks
-from 30 candidates, capped at two chunks per paper.
+Twenty questions ask about one paper, three need two papers, and two can't be
+answered from these papers at all. I used the parser and prompt in
+`eda_workbook.ipynb`, plus `all-mpnet-base-v2`, Chroma, and
+`ResearchRetriever`. For each question, the retriever picked up to five short
+pieces of paper text ("chunks") from 30 candidates, with no more than two
+chunks per paper.
 
-### Retrieval relevance and evidence
+### Did it find the right papers and passages?
 
 | Measure | Result |
 | --- | ---: |
-| Answerable questions with every labeled relevant paper retrieved | 23/23 (100%) |
-| Macro paper recall@5 | 1.000 |
-| Paper MRR@5 | 0.978 |
-| Labeled fact snippets found literally in retrieved chunks | 7/28 (25.0%) |
-| Unanswerable questions that still returned chunks | 2/2 |
-| Returned chunks with paper ID and source URL | 100% |
+| Questions where it found every relevant paper | 23/23 (100%) |
+| Average share of relevant papers found (recall@5) | 1.000 |
+| How high the first relevant paper ranked (MRR@5) | 0.978 |
+| Exact fact snippets found in the chosen chunks | 7/28 (25.0%) |
+| Unanswerable questions that still got chunks | 2/2 |
+| Chunks with a paper ID and source link | 100% |
 
-The [per-query retrieval results](retrieval.json) show strong paper matching,
-but the selected passages sometimes lacked the requested detail. For q13, the
-system found the travel-behavior paper yet did not pass the **92 commuters**
-and **454 observations** to the answer model. The 7/28 fact-snippet measure is
-a strict text match after removing PDF punctuation and whitespace. It can
-undercount usable evidence when a passage states a fact differently: q10's
-retrieved passage contained the **0.974** result even though the longer labeled
-phrase did not match literally. This metric is a passage-selection diagnostic,
-not an answer-accuracy score.
+The [question-by-question results](retrieval.json) show that it found the right
+papers every time, but it didn't always find the part of the paper needed to
+answer. For q13, it found the travel-behavior paper but didn't send the model
+the passage with **92 commuters** and **454 observations**.
 
-As a sensitivity check, raising the per-paper cap from two to five increased
-literal fact coverage to **9/28 (32.1%)**, while macro paper recall fell to
-**0.957** because one paper could occupy more of the five output slots. See
-the [alternate retrieval run](retrieval_per_paper5.json). The PDF parser also
-mislabels some text after references as author-name sections, allowing
-bibliography-like chunks into results.
+The **7/28** number is a strict wording check: we looked for 28 short fact
+snippets in the chosen chunks, ignoring PDF punctuation and spacing. A passage
+can still contain the answer in different words and count as a miss. For
+example, q10's chunk included **0.974**, but it didn't contain the full labeled
+phrase. So 7/28 tells us about exact snippet matches, **not** how often the
+model answered correctly.
 
-### Generated-answer accuracy and completeness
+We also tried allowing five chunks per paper instead of two. That raised the
+exact snippet matches to **9/28 (32.1%)**, but paper recall fell to **0.957**:
+one paper could take more of the five available slots, leaving less room for a
+second relevant paper. The [alternate run](retrieval_per_paper5.json) has the
+details. We also saw chunks from reference lists in some results because the
+PDF parser mistook author names for section headings.
 
-The same 25 questions were answered with the notebook's `llama3.2` prompt and
-model, using the newer retriever's passages and paper citation numbers. One
-reviewer checked the [fresh answers](answers.json) against the retrieved
-passages and labeled facts. “Full” means the answer correctly covers every
-requested part; “partial” means it contains correct relevant material but
-omits a part; “fail” means it is wrong, contradictory, or declines an
-answerable question. Generation used temperature 0 and seed 42.
+### Were the answers right and complete?
+
+We gave the same 25 questions and retrieved chunks to the notebook's
+`llama3.2` model. One reviewer checked the [fresh answers](answers.json)
+against the passages and the expected facts. **Full** means the answer got
+every requested part right. **Partial** means it said something relevant and
+correct but missed a part. **Fail** means it was wrong, contradicted itself,
+or declined a question that the papers could answer. We used temperature 0
+and seed 42.
 
 | Measure | Result |
 | --- | ---: |
 | Full answers among 23 answerable questions | 10/23 |
 | Partial answers | 4/23 |
 | Failed answers | 9/23 |
-| Appropriate abstentions on unanswerable questions | 2/2 |
-| Answerable responses containing a citation | 14/23 |
-| Responses with an out-of-range citation number | 0/25 |
-| Answerable responses with a verified direct quote | 0/23 |
+| Unanswerable questions the model correctly declined | 2/2 |
+| Answerable responses with a citation | 14/23 |
+| Responses that cited a nonexistent source number | 0/25 |
+| Answerable responses with a checked direct quote | 0/23 |
 
 Full: q01, q03–q07, q09, q10, q19, q20. Partial: q14, q17, q18, q23.
 Fail: q02, q08, q11–q13, q15, q16, q21, q22. q24 and q25 appropriately
 abstained.
 
-The [per-question manual review](answer_review.md) and [mechanical citation
-checks](answer_checks.json) provide the detailed judgments. q02, q11, and q13
-missed facts that were absent from their retrieved context. q15 gave random
-forest's accuracy as **71.5%** although its cited passage reports **69.6%**
-for random forest and **71.5%** for the best vision-based setup. q08 gave the
-correct numeric comparison and then claimed the papers did not address the
-same question. Thus passage selection and answer generation both contributed
-to failures. A citation number being in range does not mean its claim is
-supported. The notebook prompt does not request the direct non-paraphrased
-quote specified in issue #5.
+The [manual review](answer_review.md) and [citation checks](answer_checks.json)
+show what happened on each question. For q02, q11, and q13, the model didn't
+get the passage it needed. On q15, it **did** get the right passage but mixed
+up two numbers: random forest scored **69.6%**, while the best vision-based
+setup scored **71.5%**. On q08, it gave the right comparison and then said the
+papers didn't answer the question. So we have both retrieval and answer-writing
+problems. A citation number can be valid even when the claim next to it is
+wrong. The current notebook prompt also doesn't ask for the direct quote
+required by issue #5.
 
-### Improvement opportunities and limits
+### What we'd improve next
 
-1. Retrieve and rerank passages for the specific number or method detail in
-   the question; preserve source diversity for cross-paper questions.
-2. Exclude text after each PDF's references more reliably, and calibrate a
-   rejection rule with more negative questions.
-3. Require a verbatim supporting quote and a source page or chunk ID with
-   each citation; verify generated numbers against the cited passage.
-4. Add a consistency check for answers that both state a result and claim no
-   result exists.
+1. Pick passages that contain the specific number or method the question asks
+   for, while leaving room for both papers on two-paper questions.
+2. Keep reference-list text out of the index, and test when the system should
+   say it doesn't have an answer.
+3. Require a direct quote and a page or chunk ID with each citation, then
+   check the numbers in an answer against its cited passage.
+4. Catch answers that give a result and then say no result exists.
 
-These project-specific labels cover only five related papers. The answer
-review involved one reviewer. Neither result estimates performance on the
-larger intended research corpus.
+This test covers only five related papers, and one person reviewed the
+answers. It doesn't tell us how the system will do on the larger planned
+research collection.
 
 ## 2. BEIR SciFact subset
 
 This dataset comes from [BEIR's official SciFact archive](https://github.com/beir-cellar/beir), using 20 claims from its test split and a 500-article subset of its scientific-paper corpus.
 
-The 20 test claims were sampled with seed 42 from 300 labeled test claims. The
-500 indexed articles include all **19 distinct judged relevant articles** for
-those claims plus fixed random distractors from the full 5,183-article corpus.
-Their titles and abstracts produced **710 chunks** with the repo's MPNet,
-Chroma, and `ResearchRetriever` pipeline. The downloaded archive matched
-BEIR's published MD5 checksum. SciFact labels article relevance, so this run
-tests retrieval only; it does not score generated answers.
+We picked 20 claims from SciFact's 300 test claims using seed 42. We searched
+500 articles: all **19 distinct articles marked relevant** to those claims,
+plus randomly picked distractors from the full 5,183-article collection. Their
+titles and abstracts became **710 chunks** in the same MPNet, Chroma, and
+`ResearchRetriever` pipeline. The download passed BEIR's checksum check.
+SciFact tells us which articles are relevant, so this run checks retrieval,
+not the model's written answers.
 
 | Measure | Result |
 | --- | ---: |
@@ -110,10 +111,11 @@ tests retrieval only; it does not score generated answers.
 | MRR@10 | 0.950 |
 | nDCG@10 | 0.963 |
 
-In the [per-query SciFact results](beir_scifact_20q_500d.json), queries 577
-and 212 ranked their relevant article second; the other 18 ranked it first.
-This is a deliberately small search set. Including the relevant articles and
-removing most distractors makes it easier than full-corpus BEIR, so these
-scores are **not comparable with published full-corpus BEIR scores**. SciFact
-also contains many biomedical claims rather than the project's business
-research questions.
+MRR and nDCG give more credit when the right article appears nearer the top.
+
+In the [SciFact results for each claim](beir_scifact_20q_500d.json), the right
+article came second for claims 577 and 212 and first for the other 18. This
+was intentionally a small test. Searching 500 articles is easier than
+searching all 5,183, so **don't compare these scores with published results
+from the full BEIR corpus**. Many SciFact claims are also biomedical, unlike
+the business research questions this project is meant to handle.
