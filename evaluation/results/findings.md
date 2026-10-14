@@ -57,6 +57,30 @@ The numeric error on q15 occurred even though the correct values were in a
 retrieved passage; q08 contradicted itself. These are generation failures in
 addition to the passage-selection misses above.
 
-These labels are from five related papers and were created for this project.
-The answer review was performed by one person. Neither result establishes
-performance on the larger intended corpus or on BEIR.
+The project-specific labels are from five related papers, and the answer
+review was performed by one person. Those results do not establish performance
+on the larger intended corpus or on BEIR.
+
+## Small BEIR SciFact diagnostic
+
+The separate [SciFact result](beir_scifact_20q_500d.json) uses 20 claims
+selected with seed 42 from BEIR's official test split. The search corpus has
+500 article titles and abstracts: all 19 distinct judged relevant articles for
+those claims plus fixed random distractors. The index holds 710 chunks. The
+archive passed BEIR's published MD5 check. SciFact provides article relevance
+labels, so this run evaluates retrieval only.
+
+| Measure | Result |
+| --- | ---: |
+| Relevant article ranked first (hit@1) | 18/20 (90%) |
+| Relevant article in the first five distinct articles (hit@5) | 20/20 (100%) |
+| Mean recall@5 | 1.00 |
+| MRR@10 | 0.95 |
+| nDCG@10 | 0.963 |
+
+Queries 577 and 212 placed their relevant article second; the other 18 placed
+it first. This is a deliberately small, easier subset of a 5,183-article
+corpus. These numbers must not be compared with published full-corpus BEIR
+scores or taken as evidence of generated-answer accuracy. The test does show
+that the retriever can find labeled scientific articles beyond the five PDFs
+used in our project-specific questions.
