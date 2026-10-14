@@ -15,11 +15,14 @@ Usage from `notebooks/` after the parsing cell (`parsed_pdfs_dict`, `unique_pape
     vector_store = build_vector_store(parsed_pdfs_dict, unique_papers, embeddings)
 """
 
+import re
+
 from langchain_core.documents import Document
 
 DEFAULT_PERSIST_DIRECTORY = "arxiv_data/chroma_db"
 DEFAULT_COLLECTION_NAME = "research_mpnet_cosine_v2"
 EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
+EXCLUDED_SECTIONS = {"references", "bibliography", "acknowledgments", "acknowledgements"}
 
 
 def join_list(values) -> str:
@@ -47,6 +50,9 @@ def build_documents(parsed_pdfs: dict, papers: list[dict]) -> list[Document]:
 
         headings = [heading for heading in sections if heading != "all"]
         for section_order, heading in enumerate(headings):
+            normalized = re.sub(r"^(?:\d+(?:\.\d+)*|[A-H](?:\.\d+)*)\.?\s+", "", heading)
+            if normalized.lower().rstrip(".:") in EXCLUDED_SECTIONS:
+                continue
             text = sections[heading].strip()
             if not text:
                 continue
@@ -83,6 +89,8 @@ def chunk_documents(documents, chunk_size=350, chunk_overlap=50, length_function
         length_function=length_function or mpnet_token_counter(),
     )
     chunks = [chunk for chunk in splitter.split_documents(documents) if chunk.page_content.strip()]
+    for chunk, chunk_id in zip(chunks, chunk_ids(chunks)):
+        chunk.metadata["chunk_id"] = chunk_id
 
     missing = {doc.metadata["paper_id"] for doc in documents} - {c.metadata["paper_id"] for c in chunks}
     if missing:

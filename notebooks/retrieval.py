@@ -103,6 +103,7 @@ class RetrievedChunk:
     title: str
     section: str
     source_url: str
+    chunk_id: str = ""
     authors: list = field(default_factory=list)
     published: str = ""
     categories: list = field(default_factory=list)
@@ -118,6 +119,7 @@ class ResearchRetriever:
         max_chunks_per_paper: int = 2,
         min_score: float | None = None,
         drop_bibliography: bool = True,
+        rerank_model: str | None = None,
     ):
         self.vector_store = vector_store
         self.paper_metadata = paper_metadata or {}
@@ -125,6 +127,24 @@ class ResearchRetriever:
         self.max_chunks_per_paper = max_chunks_per_paper
         self.min_score = min_score
         self.drop_bibliography = drop_bibliography
+        self.rerank_model = rerank_model
+        self._reranker = None
+
+    def _rerank(self, query, candidates):
+        """Score only the small candidate pool with a query/passage cross-encoder."""
+        if not self.rerank_model or not candidates:
+            return candidates
+        if self._reranker is None:
+            from sentence_transformers import CrossEncoder
+            self._reranker = CrossEncoder(self.rerank_model)
+        scores = self._reranker.predict(
+            [(query, doc.page_content) for doc, _ in candidates],
+            batch_size=16, show_progress_bar=False,
+        )
+        return sorted(
+            [(doc, float(score)) for (doc, _), score in zip(candidates, scores)],
+            key=lambda pair: pair[1], reverse=True,
+        )
 
     @classmethod
     def from_persisted(
@@ -153,6 +173,7 @@ class ResearchRetriever:
         fetch_k: int = 30,
         paper_ids: list[str] | None = None,
         collection_area: str | None = None,
+        min_papers: int = 1,
     ) -> list[RetrievedChunk]:
         """
         Return up to `k` chunks for `query`, best first.
@@ -172,9 +193,7 @@ class ResearchRetriever:
             query, k=max(fetch_k, k), filter=where
         )
 
-        results = []
-        chunks_per_paper = {}
-
+        eligible = []
         for doc, score in candidates:
             meta = doc.metadata
             paper_id = meta.get("paper_id", "")
@@ -189,10 +208,37 @@ class ResearchRetriever:
             areas = split_list(meta.get("collection_areas")) or paper.get("collection_areas", [])
             if collection_area and collection_area not in areas:
                 continue
-            if chunks_per_paper.get(paper_id, 0) >= self.max_chunks_per_paper:
-                continue
+            eligible.append((doc, score))
 
-            chunks_per_paper[paper_id] = chunks_per_paper.get(paper_id, 0) + 1
+        ranked = self._rerank(query, eligible)
+        selected = []
+        counts = {}
+        # Reserve one slot per likely paper on cross-paper questions. The
+        # remaining slots still go to the highest-ranked passages overall.
+        if min_papers > 1:
+            for doc, score in ranked:
+                paper_id = doc.metadata.get("paper_id", "")
+                if paper_id not in counts:
+                    selected.append((doc, score))
+                    counts[paper_id] = 1
+                    if len(counts) >= min(min_papers, k):
+                        break
+        for doc, score in ranked:
+            if any(doc is chosen for chosen, _ in selected):
+                continue
+            paper_id = doc.metadata.get("paper_id", "")
+            if counts.get(paper_id, 0) >= self.max_chunks_per_paper:
+                continue
+            selected.append((doc, score))
+            counts[paper_id] = counts.get(paper_id, 0) + 1
+            if len(selected) >= k:
+                break
+        results = []
+        for doc, score in selected[:k]:
+            meta = doc.metadata
+            paper_id = meta.get("paper_id", "")
+            paper = self.paper_metadata.get(paper_id, {})
+            areas = split_list(meta.get("collection_areas")) or paper.get("collection_areas", [])
             results.append(RetrievedChunk(
                 rank=len(results) + 1,
                 score=float(score),
@@ -201,41 +247,38 @@ class ResearchRetriever:
                 title=meta.get("title", paper.get("title", "")),
                 section=meta.get("section", ""),
                 source_url=meta.get("source_url", paper.get("source_url", "")),
+                chunk_id=meta.get("chunk_id", "") or doc.id or "",
                 authors=split_list(meta.get("authors")) or paper.get("authors", []),
                 published=(meta.get("published") or paper.get("published") or "")[:10],
                 categories=split_list(meta.get("categories")) or paper.get("categories", []),
                 collection_areas=areas,
             ))
-            if len(results) == k:
-                break
-
         return results
 
     @staticmethod
     def citation_numbers(results: list[RetrievedChunk]) -> dict:
-        """Map paper id -> citation number, in order of first appearance."""
-        numbers = {}
-        for chunk in results:
-            numbers.setdefault(chunk.paper_id, len(numbers) + 1)
-        return numbers
+        """Map passage rank -> citation number."""
+        return {chunk.rank: chunk.rank for chunk in results}
 
     def format_context(self, results: list[RetrievedChunk]) -> str:
-        """Numbered context block for the summarizer prompt. Chunks from the same
-        paper share a citation number so the LLM cites papers, not chunks."""
-        numbers = self.citation_numbers(results)
+        """Numbered passages with a stable chunk ID for traceable citations."""
         blocks = [
-            f"[{numbers[chunk.paper_id]}] {chunk.title} — {chunk.section}\n{chunk.text}"
+            f"[{chunk.rank}] {chunk.title} — {chunk.section} "
+            f"(chunk {chunk.chunk_id})\n{chunk.text}"
             for chunk in results
         ]
         return "\n\n".join(blocks)
 
     def format_sources(self, results: list[RetrievedChunk]) -> str:
-        """Source list matching the citation numbers in `format_context`."""
-        numbers = self.citation_numbers(results)
+        """Source list matching each passage number in `format_context`."""
         lines = []
-        for paper_id, number in numbers.items():
-            chunk = next(c for c in results if c.paper_id == paper_id)
+        for chunk in results:
             authors = ", ".join(chunk.authors[:3]) + (" et al." if len(chunk.authors) > 3 else "")
             details = ", ".join(part for part in (authors, chunk.published) if part)
-            lines.append(f"[{number}] {chunk.title}" + (f" ({details})" if details else "") + f" — {chunk.source_url}")
+            lines.append(f"[{chunk.rank}] {chunk.title}" + (f" ({details})" if details else "") + f" — {chunk.source_url} — chunk {chunk.chunk_id}")
         return "\n".join(lines)
+
+
+def needs_multiple_papers(query: str) -> bool:
+    """A small, query-only signal for questions explicitly asking across papers."""
+    return bool(re.search(r"\b(which|both|across|compare)\b.*\b(papers|studies)\b", query, re.I))

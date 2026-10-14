@@ -100,16 +100,29 @@ def test_context_and_sources_share_citation_numbers(retriever):
     context = retriever.format_context(results)
     sources = retriever.format_sources(results).splitlines()
     numbers = retriever.citation_numbers(results)
-    assert sorted(numbers.values()) == list(range(1, len({r.paper_id for r in results}) + 1))
-    for paper_id, number in numbers.items():
-        assert f"[{number}] Paper {paper_id}" in context
-        assert sources[number - 1].startswith(f"[{number}] Paper {paper_id}")
+    assert sorted(numbers.values()) == list(range(1, len(results) + 1))
+    for result in results:
+        assert f"[{result.rank}] Paper {result.paper_id}" in context
+        assert f"chunk {result.chunk_id}" in context
+        assert sources[result.rank - 1].startswith(f"[{result.rank}] Paper {result.paper_id}")
     assert "Ann, Bo, Cy et al." in retriever.format_sources(retriever.retrieve("agent audit", paper_ids=["p1"]))
 
 
 def test_empty_query_rejected(retriever):
     with pytest.raises(ValueError):
         retriever.retrieve("   ")
+
+
+def test_reranking_and_paper_diversity(retriever):
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [10 if "routing" in text else 1 for _, text in pairs]
+
+    retriever.rerank_model = "fake"
+    retriever._reranker = Reranker()
+    results = retriever.retrieve("agent audit", k=3, min_papers=2)
+    assert results[0].paper_id == "p2"
+    assert {result.paper_id for result in results} == {"p1", "p2"}
 
 
 BIBLIOGRAPHY = (

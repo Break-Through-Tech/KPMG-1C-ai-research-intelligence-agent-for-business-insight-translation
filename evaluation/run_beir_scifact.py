@@ -5,6 +5,7 @@ including all relevant ones. This is a diagnostic subset, not a standard
 full-corpus BEIR score. SciFact qrels assess document relevance only.
 """
 
+import argparse
 import csv
 import hashlib
 import json
@@ -120,7 +121,7 @@ def score_query(ranked_ids, relevance):
     }
 
 
-def main():
+def main(args):
     from langchain_huggingface import HuggingFaceEmbeddings
 
     dataset = dataset_paths()
@@ -137,10 +138,11 @@ def main():
         persist_directory=CACHE / "scifact_20q_500d_mpnet_cosine",
         collection_name="beir_scifact_20q_500d_mpnet_cosine",
     )
-    retriever = ResearchRetriever(store, max_chunks_per_paper=2)
+    retriever = ResearchRetriever(store, max_chunks_per_paper=args.per_paper,
+                                  rerank_model=args.rerank_model)
     rows = []
     for index, query_id in enumerate(selected_ids, start=1):
-        chunks = retriever.retrieve(queries[query_id], k=10, fetch_k=30)
+        chunks = retriever.retrieve(queries[query_id], k=10, fetch_k=args.fetch_k)
         ranked_ids = list(dict.fromkeys(chunk.paper_id for chunk in chunks))
         metrics = score_query(ranked_ids, qrels[query_id])
         rows.append({"query_id": query_id, "query": queries[query_id],
@@ -163,14 +165,23 @@ def main():
         "corpus_method": "all judged relevant articles for selected claims plus random.Random(43) distractors to 500 total",
         "model": "sentence-transformers/all-mpnet-base-v2",
         "index": "title plus abstract, chunked at 350 MPNet tokens with 50-token overlap; cosine Chroma",
-        "retriever": "ResearchRetriever, k=10, fetch_k=30, max_chunks_per_paper=2; paper IDs deduplicated",
+        "retriever": (f"ResearchRetriever, k=10, fetch_k={args.fetch_k}, "
+                      f"max_chunks_per_paper={args.per_paper}; paper IDs deduplicated"),
+        "rerank_model": args.rerank_model,
         "summary": summary, "queries": rows,
     }
-    output = ROOT / "evaluation/results/beir_scifact_20q_500d.json"
+    output = args.output
+    output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text(json.dumps(result, indent=2) + "\n")
     print(json.dumps(summary, indent=2))
     print(f"Saved {output}")
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path,
+                        default=ROOT / "evaluation/results/beir_scifact_20q_500d.json")
+    parser.add_argument("--rerank-model", default=None)
+    parser.add_argument("--fetch-k", type=int, default=30)
+    parser.add_argument("--per-paper", type=int, default=2)
+    main(parser.parse_args())
