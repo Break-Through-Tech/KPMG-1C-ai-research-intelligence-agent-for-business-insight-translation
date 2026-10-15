@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
 from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
-from answer_validation import answer_issues, repair_prompt  # noqa: E402
+from answer_validation import answer_issues, attach_evidence  # noqa: E402
 
 
 def notebook_prompt():
@@ -81,18 +81,11 @@ def main(args):
         start = time.monotonic()
         response = ask_ollama(prompt, args.model, args.host)
         draft = response["response"].strip()
-        issues = answer_issues(draft, chunks)
-        if issues:
-            repaired = ask_ollama(repair_prompt(prompt, draft, issues), args.model, args.host)
-            answer = repaired["response"].strip()
-        else:
-            repaired = None
-            answer = draft
+        answer = attach_evidence(draft, chunks, item["query"])
         completed[item["id"]] = {
             "id": item["id"], "query": item["query"],
             "answer": answer,
-            "draft": draft if repaired else None,
-            "draft_issues": issues,
+            "draft": draft,
             "remaining_issues": answer_issues(answer, chunks),
             "source_list": retriever.format_sources(chunks),
             "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
@@ -100,8 +93,7 @@ def main(args):
                           "text": chunk.text} for chunk in chunks],
             "seconds": round(time.monotonic() - start, 1),
             "prompt_tokens": response.get("prompt_eval_count"),
-            "answer_tokens": response.get("eval_count") + (repaired.get("eval_count", 0) if repaired else 0)
-            if response.get("eval_count") is not None else None,
+            "answer_tokens": response.get("eval_count"),
         }
         save_answers(args.output, args.model, model_digest, template, args.retrieval, completed)
         print(f"{item['id']}: {completed[item['id']]['seconds']}s, "

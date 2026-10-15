@@ -10,10 +10,71 @@ ABSTENTION = "The provided papers do not address this question."
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
 NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
+WORDS = re.compile(r"[a-z0-9]+")
+STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what",
+             "which", "how", "does", "into", "their", "them", "they", "was", "were",
+             "are", "have", "has", "paper", "papers", "using", "about"}
 
 
 def compact(text):
     return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def _best_quote(text, focus):
+    """Pick a literal, question-related word span; return its original PDF text."""
+    matches = list(re.finditer(r"\S+", text))
+    if len(matches) < 5:
+        return text.strip()
+    wanted = {word for word in WORDS.findall(focus.lower())
+              if word not in STOPWORDS and len(word) > 2}
+    best = (-1, "")
+    for start in range(0, len(matches), 5):
+        end = min(start + 24, len(matches))
+        if end - start < 5:
+            continue
+        quote = text[matches[start].start():matches[end - 1].end()]
+        words = WORDS.findall(quote.lower())
+        overlap = len(set(words) & wanted)
+        numbers = sum(word.isdigit() and len(word) > 1 and word in wanted for word in words)
+        artifacts = sum(len(word) > 22 for word in words)
+        math_symbols = len(re.findall(r"[𝑎-𝑧𝛼-𝜔]", quote))
+        score = overlap + 2 * numbers - 2 * artifacts - math_symbols
+        if score > best[0]:
+            best = (score, quote)
+    return best[1]
+
+
+def attach_evidence(answer, chunks, question=""):
+    """Attach one exact quote per cited paper, tied to its passage number.
+
+    A literal quote is evidence a reviewer can inspect, not proof that the
+    model's interpretation is correct.
+    """
+    body = re.split(r"\n\s*Evidence\s*:", answer, maxsplit=1, flags=re.I)[0].strip()
+    if ABSTENTION in body:
+        return body
+    cited = [int(number) for number in CITATION.findall(body)
+             if 1 <= int(number) <= len(chunks)]
+    papers = list(dict.fromkeys(chunks[number - 1].paper_id for number in cited))
+    if not papers:
+        return body
+    evidence = []
+    for paper_id in papers:
+        clean_body = re.sub(r"(?m)^\s*\d+\.\s*", "", body)
+        answer_numbers = [number for number in NUMBER.findall(clean_body)
+                          if len(compact(number)) > 1]
+        focus = question + " " + " ".join(answer_numbers)
+        wanted = set(WORDS.findall(focus.lower())) - STOPWORDS
+        candidates = [(number, _best_quote(chunk.text, focus))
+                      for number, chunk in enumerate(chunks, 1)
+                      if chunk.paper_id == paper_id]
+        number, quote = max(candidates, key=lambda pair: (
+            len(set(WORDS.findall(pair[1].lower())) & wanted)
+            - 2 * len(re.findall(r"[𝑎-𝑧𝛼-𝜔]", pair[1])),
+            -abs(pair[0] - min(cited)),
+        ))
+        evidence.append(f'- "{quote}" [{number}]')
+    return body + "\n\nEvidence:\n" + "\n".join(evidence)
 
 
 def answer_issues(answer, chunks):
@@ -57,8 +118,3 @@ def answer_issues(answer, chunks):
     return issues
 
 
-def repair_prompt(original_prompt, answer, issues):
-    return (f"{original_prompt}\n\nYour draft answer was:\n{answer}\n\n"
-            f"Fix these source checks: {'; '.join(issues)}. "
-            "Return the entire corrected answer, including Evidence quotes. "
-            "If the passages do not support an answer, use the required abstention sentence.")

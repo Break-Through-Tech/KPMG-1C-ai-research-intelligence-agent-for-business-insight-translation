@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "notebooks"))
-from answer_validation import answer_issues  # noqa: E402
+from answer_validation import answer_issues, attach_evidence  # noqa: E402
 
 
 CHUNKS = [SimpleNamespace(
@@ -29,3 +29,9 @@ def test_wrong_quote_source_and_number_are_flagged():
 
 def test_abstention_cannot_also_cite_answer():
     assert answer_issues("The provided papers do not address this question. [1]", CHUNKS)
+
+
+def test_attached_quote_is_literal_and_passage_specific():
+    answer = attach_evidence("The survey counted 92 commuters [1].", CHUNKS, "How many commuters?")
+    assert "Evidence:" in answer
+    assert answer_issues(answer, CHUNKS) == []
