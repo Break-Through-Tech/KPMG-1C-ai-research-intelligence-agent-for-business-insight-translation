@@ -11,7 +11,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
-from retrieval import ResearchRetriever  # noqa: E402
+from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
+from answer_validation import answer_issues, repair_prompt  # noqa: E402
 
 
 def notebook_prompt():
@@ -35,7 +36,7 @@ def notebook_prompt():
 def ask_ollama(prompt, model, host):
     payload = json.dumps({"model": model, "prompt": prompt, "stream": False,
                           "options": {"temperature": 0, "seed": 42, "num_ctx": 8192,
-                                      "num_predict": 350}}).encode()
+                                      "num_predict": 550}}).encode()
     request = urllib.request.Request(
         f"{host.rstrip('/')}/api/generate", payload,
         headers={"Content-Type": "application/json"}, method="POST")
@@ -47,7 +48,7 @@ def main(args):
     from langchain_huggingface import HuggingFaceEmbeddings
 
     benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text())
-    retrieval = json.loads((ROOT / "evaluation/results/retrieval.json").read_text())
+    retrieval = json.loads(args.retrieval.read_text())
     embeddings = HuggingFaceEmbeddings(
         model_name=retrieval["model"], encode_kwargs={"normalize_embeddings": True})
     retriever = ResearchRetriever.from_persisted(
@@ -55,6 +56,7 @@ def main(args):
         persist_directory=ROOT / ".evaluation_cache" / retrieval["corpus_fingerprint"],
         collection_name="evaluation_mpnet_cosine",
         max_chunks_per_paper=retrieval["max_chunks_per_paper"],
+        rerank_model=retrieval.get("rerank_model"),
     )
     template = notebook_prompt()
     with urllib.request.urlopen(f"{args.host.rstrip('/')}/api/tags", timeout=30) as response:
@@ -70,37 +72,50 @@ def main(args):
             break
         if item["id"] in completed:
             continue
-        chunks = retriever.retrieve(item["query"], k=retrieval["k_chunks"],
-                                    fetch_k=retrieval["fetch_k"])
-        # The notebook numbers chunks; the newer retriever numbers papers.
-        # Use the newer source mapping so citations trace to a paper.
+        chunks = retriever.retrieve(
+            item["query"], k=retrieval["k_chunks"], fetch_k=retrieval["fetch_k"],
+            min_papers=2 if needs_multiple_papers(item["query"]) else 1,
+        )
         context = retriever.format_context(chunks)
         prompt = template.format(context=context, question=item["query"])
         start = time.monotonic()
         response = ask_ollama(prompt, args.model, args.host)
+        draft = response["response"].strip()
+        issues = answer_issues(draft, chunks)
+        if issues:
+            repaired = ask_ollama(repair_prompt(prompt, draft, issues), args.model, args.host)
+            answer = repaired["response"].strip()
+        else:
+            repaired = None
+            answer = draft
         completed[item["id"]] = {
             "id": item["id"], "query": item["query"],
-            "answer": response["response"].strip(),
+            "answer": answer,
+            "draft": draft if repaired else None,
+            "draft_issues": issues,
+            "remaining_issues": answer_issues(answer, chunks),
             "source_list": retriever.format_sources(chunks),
             "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
+                          "chunk_id": chunk.chunk_id,
                           "text": chunk.text} for chunk in chunks],
             "seconds": round(time.monotonic() - start, 1),
             "prompt_tokens": response.get("prompt_eval_count"),
-            "answer_tokens": response.get("eval_count"),
+            "answer_tokens": response.get("eval_count") + (repaired.get("eval_count", 0) if repaired else 0)
+            if response.get("eval_count") is not None else None,
         }
-        save_answers(args.output, args.model, model_digest, template, completed)
+        save_answers(args.output, args.model, model_digest, template, args.retrieval, completed)
         print(f"{item['id']}: {completed[item['id']]['seconds']}s, "
               f"{completed[item['id']]['answer_tokens']} output tokens", flush=True)
-    save_answers(args.output, args.model, model_digest, template, completed)
+    save_answers(args.output, args.model, model_digest, template, args.retrieval, completed)
     print(f"Saved {len(completed)} answers to {args.output}")
 
 
-def save_answers(path, model, model_digest, prompt, completed):
+def save_answers(path, model, model_digest, prompt, retrieval_path, completed):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
         "model": model, "model_digest": model_digest,
         "notebook_prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-        "retrieval_result": "evaluation/results/retrieval.json",
+        "retrieval_result": str(retrieval_path.resolve().relative_to(ROOT)),
         "answers": list(completed.values()),
     }, indent=2) + "\n")
 
@@ -111,6 +126,8 @@ if __name__ == "__main__":
     parser.add_argument("--host", default="http://127.0.0.1:11434")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "evaluation/results/answers.json")
+    parser.add_argument("--retrieval", type=Path,
+                        default=ROOT / "evaluation/results/retrieval.json")
     parser.add_argument("--limit", type=int, default=0,
                         help="Run only the first N questions (0 = all)")
     main(parser.parse_args())
