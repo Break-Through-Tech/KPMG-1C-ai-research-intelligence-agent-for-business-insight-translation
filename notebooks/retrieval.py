@@ -121,6 +121,7 @@ class ResearchRetriever:
         drop_bibliography: bool = True,
         rerank_model: str | None = None,
         max_rerank_gap: float | None = None,
+        rank_fusion: bool = False,
     ):
         self.vector_store = vector_store
         self.paper_metadata = paper_metadata or {}
@@ -130,6 +131,7 @@ class ResearchRetriever:
         self.drop_bibliography = drop_bibliography
         self.rerank_model = rerank_model
         self.max_rerank_gap = max_rerank_gap
+        self.rank_fusion = rank_fusion
         self._reranker = None
 
     def _rerank(self, query, candidates):
@@ -143,10 +145,21 @@ class ResearchRetriever:
             [(query, doc.page_content) for doc, _ in candidates],
             batch_size=16, show_progress_bar=False,
         )
-        return sorted(
-            [(doc, float(score)) for (doc, _), score in zip(candidates, scores)],
-            key=lambda pair: pair[1], reverse=True,
-        )
+        ranked = sorted(enumerate(float(score) for score in scores),
+                        key=lambda pair: pair[1], reverse=True)
+        if self.max_rerank_gap is not None:
+            best = ranked[0][1]
+            ranked = [(index, score) for index, score in ranked
+                      if score >= best - self.max_rerank_gap]
+        if self.rank_fusion:
+            # Both stages get a vote. A passage that only one method ranks
+            # highly should not automatically take the first context slot.
+            cross_rank = {index: rank for rank, (index, _) in enumerate(ranked, 1)}
+            fused = [(candidates[index][0],
+                      1 / (10 + index + 1) + 1 / (10 + cross_rank[index]))
+                     for index, _ in ranked]
+            return sorted(fused, key=lambda pair: pair[1], reverse=True)
+        return [(candidates[index][0], score) for index, score in ranked]
 
     @classmethod
     def from_persisted(
@@ -213,9 +226,6 @@ class ResearchRetriever:
             eligible.append((doc, score))
 
         ranked = self._rerank(query, eligible)
-        if self.rerank_model and self.max_rerank_gap is not None and ranked:
-            minimum = ranked[0][1] - self.max_rerank_gap
-            ranked = [(doc, score) for doc, score in ranked if score >= minimum]
         selected = []
         counts = {}
         # Reserve one slot per likely paper on cross-paper questions. The

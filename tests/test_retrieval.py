@@ -136,6 +136,19 @@ def test_rerank_gap_drops_extreme_outlier(retriever):
     assert {result.paper_id for result in retriever.retrieve("routing", k=3)} == {"p2"}
 
 
+def test_rank_fusion_balances_vector_and_reranker_order(retriever):
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [10 if "routing" in text else 1 for _, text in pairs]
+
+    retriever.rerank_model = "fake"
+    retriever._reranker = Reranker()
+    retriever.rank_fusion = True
+    results = retriever.retrieve("agent audit", k=3, min_papers=2)
+    assert results[0].paper_id == "p1"
+    assert {result.paper_id for result in results} == {"p1", "p2"}
+
+
 BIBLIOGRAPHY = (
     "A. Jalali, M. T. Alam, and L. Nguyen. 2024. Decision checkpoints for process automation. "
     "In Proceedings of the International Conference on Business Process Management, pp. 112-128. "
