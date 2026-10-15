@@ -61,7 +61,7 @@ def load_corpus(benchmark, parser):
 
 
 def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
-        max_rerank_gap=None, rank_fusion=False):
+        max_rerank_gap=None, rank_fusion=False, order_by_vector=False):
     from langchain_huggingface import HuggingFaceEmbeddings
 
     benchmark = json.loads(benchmark_path.read_text())
@@ -83,7 +83,8 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
     retriever = ResearchRetriever(store, max_chunks_per_paper=per_paper,
                                   rerank_model=rerank_model,
                                   max_rerank_gap=max_rerank_gap,
-                                  rank_fusion=rank_fusion)
+                                  rank_fusion=rank_fusion,
+                                  order_by_vector=order_by_vector)
     rows = []
     for item in benchmark["queries"]:
         chunks = retriever.retrieve(item["query"], k=k, fetch_k=fetch_k,
@@ -126,6 +127,7 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
               "rerank_model": rerank_model,
               "max_rerank_gap": max_rerank_gap,
               "rank_fusion": rank_fusion,
+              "order_by_vector": order_by_vector,
               "summary": summary, "queries": rows}
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2) + "\n")
@@ -143,7 +145,8 @@ if __name__ == "__main__":
     argparser.add_argument("--rerank-model", default=None)
     argparser.add_argument("--max-rerank-gap", type=float, default=None)
     argparser.add_argument("--rank-fusion", action="store_true")
+    argparser.add_argument("--order-by-vector", action="store_true")
     args = argparser.parse_args()
     run(args.benchmark.resolve(), args.output.resolve(), args.k, args.fetch_k,
         args.per_paper, args.rerank_model, args.max_rerank_gap,
-        args.rank_fusion)
+        args.rank_fusion, args.order_by_vector)

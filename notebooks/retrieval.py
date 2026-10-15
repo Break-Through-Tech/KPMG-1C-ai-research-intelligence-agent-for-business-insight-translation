@@ -122,6 +122,7 @@ class ResearchRetriever:
         rerank_model: str | None = None,
         max_rerank_gap: float | None = None,
         rank_fusion: bool = False,
+        order_by_vector: bool = False,
     ):
         self.vector_store = vector_store
         self.paper_metadata = paper_metadata or {}
@@ -132,6 +133,7 @@ class ResearchRetriever:
         self.rerank_model = rerank_model
         self.max_rerank_gap = max_rerank_gap
         self.rank_fusion = rank_fusion
+        self.order_by_vector = order_by_vector
         self._reranker = None
 
     def _rerank(self, query, candidates):
@@ -248,6 +250,9 @@ class ResearchRetriever:
             counts[paper_id] = counts.get(paper_id, 0) + 1
             if len(selected) >= k:
                 break
+        if self.order_by_vector and self.rerank_model:
+            dense_rank = {id(doc): rank for rank, (doc, _) in enumerate(eligible)}
+            selected.sort(key=lambda pair: dense_rank[id(pair[0])])
         results = []
         for doc, score in selected[:k]:
             meta = doc.metadata
