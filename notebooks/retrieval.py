@@ -120,6 +120,7 @@ class ResearchRetriever:
         min_score: float | None = None,
         drop_bibliography: bool = True,
         rerank_model: str | None = None,
+        max_rerank_gap: float | None = None,
     ):
         self.vector_store = vector_store
         self.paper_metadata = paper_metadata or {}
@@ -128,6 +129,7 @@ class ResearchRetriever:
         self.min_score = min_score
         self.drop_bibliography = drop_bibliography
         self.rerank_model = rerank_model
+        self.max_rerank_gap = max_rerank_gap
         self._reranker = None
 
     def _rerank(self, query, candidates):
@@ -211,6 +213,9 @@ class ResearchRetriever:
             eligible.append((doc, score))
 
         ranked = self._rerank(query, eligible)
+        if self.rerank_model and self.max_rerank_gap is not None and ranked:
+            minimum = ranked[0][1] - self.max_rerank_gap
+            ranked = [(doc, score) for doc, score in ranked if score >= minimum]
         selected = []
         counts = {}
         # Reserve one slot per likely paper on cross-paper questions. The

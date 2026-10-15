@@ -139,7 +139,8 @@ def main(args):
         collection_name="beir_scifact_20q_500d_mpnet_cosine",
     )
     retriever = ResearchRetriever(store, max_chunks_per_paper=args.per_paper,
-                                  rerank_model=args.rerank_model)
+                                  rerank_model=args.rerank_model,
+                                  max_rerank_gap=args.max_rerank_gap)
     rows = []
     for index, query_id in enumerate(selected_ids, start=1):
         chunks = retriever.retrieve(queries[query_id], k=10, fetch_k=args.fetch_k)
@@ -168,6 +169,7 @@ def main(args):
         "retriever": (f"ResearchRetriever, k=10, fetch_k={args.fetch_k}, "
                       f"max_chunks_per_paper={args.per_paper}; paper IDs deduplicated"),
         "rerank_model": args.rerank_model,
+        "max_rerank_gap": args.max_rerank_gap,
         "summary": summary, "queries": rows,
     }
     output = args.output
@@ -182,6 +184,7 @@ if __name__ == "__main__":
     parser.add_argument("--output", type=Path,
                         default=ROOT / "evaluation/results/beir_scifact_20q_500d.json")
     parser.add_argument("--rerank-model", default=None)
+    parser.add_argument("--max-rerank-gap", type=float, default=None)
     parser.add_argument("--fetch-k", type=int, default=30)
     parser.add_argument("--per-paper", type=int, default=2)
     main(parser.parse_args())

@@ -57,6 +57,7 @@ def main(args):
         collection_name="evaluation_mpnet_cosine",
         max_chunks_per_paper=retrieval["max_chunks_per_paper"],
         rerank_model=retrieval.get("rerank_model"),
+        max_rerank_gap=retrieval.get("max_rerank_gap"),
     )
     template = notebook_prompt()
     with urllib.request.urlopen(f"{args.host.rstrip('/')}/api/tags", timeout=30) as response:

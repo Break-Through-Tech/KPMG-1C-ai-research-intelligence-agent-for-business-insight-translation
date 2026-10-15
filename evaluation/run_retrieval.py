@@ -60,7 +60,8 @@ def load_corpus(benchmark, parser):
     return parsed, metadata
 
 
-def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None):
+def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
+        max_rerank_gap=None):
     from langchain_huggingface import HuggingFaceEmbeddings
 
     benchmark = json.loads(benchmark_path.read_text())
@@ -80,7 +81,8 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None):
                                persist_directory=cache,
                                collection_name="evaluation_mpnet_cosine")
     retriever = ResearchRetriever(store, max_chunks_per_paper=per_paper,
-                                  rerank_model=rerank_model)
+                                  rerank_model=rerank_model,
+                                  max_rerank_gap=max_rerank_gap)
     rows = []
     for item in benchmark["queries"]:
         chunks = retriever.retrieve(item["query"], k=k, fetch_k=fetch_k,
@@ -121,6 +123,7 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None):
               "model": "sentence-transformers/all-mpnet-base-v2",
               "k_chunks": k, "fetch_k": fetch_k, "max_chunks_per_paper": per_paper,
               "rerank_model": rerank_model,
+              "max_rerank_gap": max_rerank_gap,
               "summary": summary, "queries": rows}
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2) + "\n")
@@ -136,6 +139,7 @@ if __name__ == "__main__":
     argparser.add_argument("--fetch-k", type=int, default=30)
     argparser.add_argument("--per-paper", type=int, default=2)
     argparser.add_argument("--rerank-model", default=None)
+    argparser.add_argument("--max-rerank-gap", type=float, default=None)
     args = argparser.parse_args()
     run(args.benchmark.resolve(), args.output.resolve(), args.k, args.fetch_k,
-        args.per_paper, args.rerank_model)
+        args.per_paper, args.rerank_model, args.max_rerank_gap)
