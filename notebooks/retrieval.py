@@ -121,7 +121,6 @@ class ResearchRetriever:
         drop_bibliography: bool = True,
         rerank_model: str | None = None,
         max_rerank_gap: float | None = None,
-        rank_fusion: bool = False,
         order_by_vector: bool = False,
     ):
         self.vector_store = vector_store
@@ -132,7 +131,6 @@ class ResearchRetriever:
         self.drop_bibliography = drop_bibliography
         self.rerank_model = rerank_model
         self.max_rerank_gap = max_rerank_gap
-        self.rank_fusion = rank_fusion
         self.order_by_vector = order_by_vector
         self._reranker = None
 
@@ -153,14 +151,6 @@ class ResearchRetriever:
             best = ranked[0][1]
             ranked = [(index, score) for index, score in ranked
                       if score >= best - self.max_rerank_gap]
-        if self.rank_fusion:
-            # Both stages get a vote. A passage that only one method ranks
-            # highly should not automatically take the first context slot.
-            cross_rank = {index: rank for rank, (index, _) in enumerate(ranked, 1)}
-            fused = [(candidates[index][0],
-                      1 / (10 + index + 1) + 1 / (10 + cross_rank[index]))
-                     for index, _ in ranked]
-            return sorted(fused, key=lambda pair: pair[1], reverse=True)
         return [(candidates[index][0], score) for index, score in ranked]
 
     @classmethod
