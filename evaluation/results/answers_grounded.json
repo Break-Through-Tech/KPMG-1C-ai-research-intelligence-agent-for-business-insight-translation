@@ -2,7 +2,7 @@
   "model": "llama3.2",
   "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
   "notebook_prompt_sha256": "7bd10a37f4b96ba6c13c57c93cc013cb39859ea56d189d273451007613eaab71",
-  "retrieval_result": "evaluation/results/retrieval_reranked.json",
+  "retrieval_result": "evaluation/archive/didnt_work/retrieval_reranked.json",
   "answers": [
     {
       "id": "q01",

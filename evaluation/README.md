@@ -6,6 +6,21 @@ questions the papers cannot answer. The fact snippets in the labels were
 checked against the source PDFs. This is a small project-specific diagnostic
 set, not a population-level estimate of RAG quality or a BEIR benchmark.
 
+## Use the changes in the team notebook
+
+Open [`notebooks/eda_workbook.ipynb`](../notebooks/eda_workbook.ipynb) and run
+its metadata, PDF extraction, parser, and embeddings cells, followed by the
+shared-index and research-assistant cells. The notebook now calls
+`notebooks/ingest.py`, `notebooks/retrieval.py`, and
+`notebooks/answer_validation.py` directly. It builds a resumable Chroma index,
+skips reference sections, reranks candidate passages, shows stable chunk IDs
+with citations, and checks that any attached quote appears in its cited chunk.
+The notebook has its own step-by-step setup note immediately above the answer
+cell. Install `evaluation/requirements.txt`; the answer cell uses a local
+Ollama server with `llama3.2` by default. It writes a new
+`research_mpnet_cosine_v3_citable` collection so an older index cannot hide
+the parser and citation-metadata changes.
+
 ## Run the retrieval evaluation
 
 From the repository root:
@@ -32,10 +47,26 @@ whether its answer was factual. The two unanswerable questions are counted
 separately. `citation_metadata_complete` checks paper IDs and source URLs on
 returned chunks; it does not validate generated citations.
 
+To reproduce the notebook's current retrieval settings on the five PDFs:
+
+```bash
+python evaluation/run_retrieval.py --output evaluation/results/retrieval_ordered.json --per-paper 4 --fetch-k 60 --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
+```
+
+The latest run found all labeled relevant papers and 23/28 labeled snippets
+literally in selected chunks. The original baseline found 7/28 snippets. This
+strict wording check does not measure answer correctness.
+
 ## BEIR SciFact relevance test
 
 ```bash
 python evaluation/run_beir_scifact.py
+```
+
+For the notebook's current retrieval settings on the **same** tiny subset:
+
+```bash
+python evaluation/run_beir_scifact.py --output evaluation/results/beir_scifact_20q_500d_ordered.json --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
 ```
 
 This downloads the [official BEIR SciFact dataset](https://github.com/beir-cellar/beir)
@@ -59,7 +90,7 @@ answer accuracy or business usefulness.
 
 The answer prompt and Ollama `llama3.2` call live in
 `notebooks/eda_workbook.ipynb`. `run_answers.py` uses that prompt and model
-with the newer `ResearchRetriever` passage and paper-citation formatting.
+with passage-specific citations.
 Start a local Ollama server and pull the model, then run:
 
 ```bash
@@ -69,7 +100,12 @@ python evaluation/run_answers.py
 python evaluation/check_answers.py
 ```
 
-The answer runner resumes completed queries in `evaluation/results/answers.json`.
+The answer runner resumes completed queries in its chosen output file. To test
+the notebook's current retrieval settings, pass `--retrieval
+evaluation/results/retrieval_ordered.json` and a new `--output` path. The full
+25-answer result in `results/answers_grounded.json` used an earlier passage
+order; the final ordering has a full retrieval test and a one-answer pilot,
+not a full answer-quality run.
 `check_answers.py` verifies citation numbers, literal quotes against the
 retrieved passages, and the notebook prompt's abstention phrase. It cannot
 verify claim support. For each answer, inspect the source passages and record:
