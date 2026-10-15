@@ -29,6 +29,7 @@ def test_wrong_quote_source_and_number_are_flagged():
 
 def test_abstention_cannot_also_cite_answer():
     assert answer_issues("The provided papers do not address this question. [1]", CHUNKS)
+    assert answer_issues("The survey had 92 commuters [1]. The provided papers do not address the question.", CHUNKS)
 
 
 def test_attached_quote_is_literal_and_passage_specific():

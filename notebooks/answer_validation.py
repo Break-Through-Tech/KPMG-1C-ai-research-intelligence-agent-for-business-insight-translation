@@ -7,6 +7,7 @@ the prose accurately interprets the research; that still needs review.
 import re
 
 ABSTENTION = "The provided papers do not address this question."
+NONANSWER = re.compile(r"\b(?:provided\s+)?papers?\s+(?:do|does)\s+not\s+(?:address|answer)\b", re.I)
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
 NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
@@ -51,7 +52,7 @@ def attach_evidence(answer, chunks, question=""):
     model's interpretation is correct.
     """
     body = re.split(r"\n\s*Evidence\s*:", answer, maxsplit=1, flags=re.I)[0].strip()
-    if ABSTENTION in body:
+    if NONANSWER.search(body) and not CITATION.search(body):
         return body
     cited = [int(number) for number in CITATION.findall(body)
              if 1 <= int(number) <= len(chunks)]
@@ -84,7 +85,7 @@ def answer_issues(answer, chunks):
     allowed = set(range(1, len(chunks) + 1))
     if cited - allowed:
         issues.append(f"Unknown passage citations: {sorted(cited - allowed)}")
-    abstained = ABSTENTION in answer
+    abstained = bool(NONANSWER.search(answer))
     if abstained:
         if cited:
             issues.append("The answer both abstains and cites an answer.")
