@@ -33,7 +33,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 DEFAULT_PERSIST_DIRECTORY = "arxiv_data/chroma_db"
-DEFAULT_COLLECTION_NAME = "research_mpnet_cosine_v2"  # built by ingest.py
+DEFAULT_COLLECTION_NAME = "research_mpnet_cosine_v3_citable"  # built by ingest.py
 DEFAULT_METADATA_PATH = "arxiv_data/metadata/papers.jsonl"
 
 # Sections that match queries on vocabulary alone but hold no findings.

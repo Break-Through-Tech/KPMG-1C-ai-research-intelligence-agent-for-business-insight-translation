@@ -20,7 +20,7 @@ import re
 from langchain_core.documents import Document
 
 DEFAULT_PERSIST_DIRECTORY = "arxiv_data/chroma_db"
-DEFAULT_COLLECTION_NAME = "research_mpnet_cosine_v2"
+DEFAULT_COLLECTION_NAME = "research_mpnet_cosine_v3_citable"
 EMBEDDING_MODEL = "sentence-transformers/all-mpnet-base-v2"
 EXCLUDED_SECTIONS = {"references", "bibliography", "acknowledgments", "acknowledgements"}
 
