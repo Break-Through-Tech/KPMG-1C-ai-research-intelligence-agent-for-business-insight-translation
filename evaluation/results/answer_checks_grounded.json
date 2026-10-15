@@ -1,0 +1,368 @@
+{
+  "summary": {
+    "answer_count": 25,
+    "positive_answers_with_citation": 18,
+    "positive_answers": 23,
+    "answers_with_invalid_citation": 0,
+    "positive_answers_with_verified_direct_quote": 18,
+    "negative_answers_with_abstention_phrase": 2,
+    "negative_answers": 2
+  },
+  "answers": [
+    {
+      "id": "q01",
+      "cited_numbers": [
+        "1",
+        "2"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q02",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q03",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q04",
+      "cited_numbers": [
+        "1",
+        "2"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [
+        "The answer both abstains and cites an answer."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q05",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q06",
+      "cited_numbers": [
+        "2",
+        "3",
+        "4"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q07",
+      "cited_numbers": [
+        "1",
+        "2"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q08",
+      "cited_numbers": [
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q09",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q10",
+      "cited_numbers": [
+        "2"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q11",
+      "cited_numbers": [
+        "3",
+        "4"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q12",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q13",
+      "cited_numbers": [
+        "1",
+        "2"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q14",
+      "cited_numbers": [
+        "1"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q15",
+      "cited_numbers": [
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q16",
+      "cited_numbers": [
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q17",
+      "cited_numbers": [
+        "1",
+        "2",
+        "4"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q18",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper.",
+        "Check numbers absent from cited passages: ['3.2', '3.3']"
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q19",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper.",
+        "Check numbers absent from cited passages: ['2024']"
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q20",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q21",
+      "cited_numbers": [
+        "1",
+        "3",
+        "5"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "issues": [
+        "The answer both abstains and cites an answer."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q22",
+      "cited_numbers": [
+        "1",
+        "2",
+        "4"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 2,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q23",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 2,
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q24",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [],
+      "is_negative": true,
+      "abstention_phrase": true
+    },
+    {
+      "id": "q25",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "issues": [],
+      "is_negative": true,
+      "abstention_phrase": true
+    }
+  ]
+}
