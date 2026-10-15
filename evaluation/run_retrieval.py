@@ -16,7 +16,7 @@ from pypdf import PdfReader
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
 from ingest import build_vector_store  # noqa: E402
-from retrieval import ResearchRetriever  # noqa: E402
+from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
 
 
 def compact(text):
@@ -60,13 +60,15 @@ def load_corpus(benchmark, parser):
     return parsed, metadata
 
 
-def run(benchmark_path, output_path, k, fetch_k, per_paper):
+def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
+        max_rerank_gap=None, order_by_vector=False):
     from langchain_huggingface import HuggingFaceEmbeddings
 
     benchmark = json.loads(benchmark_path.read_text())
     parser, parser_source = notebook_parser()
     parsed, metadata = load_corpus(benchmark, parser)
     corpus_fingerprint = hashlib.sha256(parser_source.encode())
+    corpus_fingerprint.update((ROOT / "notebooks/ingest.py").read_bytes())
     for path in sorted((ROOT / "data").glob("*.pdf")):
         corpus_fingerprint.update(path.read_bytes())
     fingerprint = corpus_fingerprint.hexdigest()[:12]
@@ -78,10 +80,14 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper):
     store = build_vector_store(parsed, metadata, embeddings,
                                persist_directory=cache,
                                collection_name="evaluation_mpnet_cosine")
-    retriever = ResearchRetriever(store, max_chunks_per_paper=per_paper)
+    retriever = ResearchRetriever(store, max_chunks_per_paper=per_paper,
+                                  rerank_model=rerank_model,
+                                  max_rerank_gap=max_rerank_gap,
+                                  order_by_vector=order_by_vector)
     rows = []
     for item in benchmark["queries"]:
-        chunks = retriever.retrieve(item["query"], k=k, fetch_k=fetch_k)
+        chunks = retriever.retrieve(item["query"], k=k, fetch_k=fetch_k,
+                                    min_papers=2 if needs_multiple_papers(item["query"]) else 1)
         ids = list(dict.fromkeys(chunk.paper_id for chunk in chunks))
         gold = item["relevant_papers"]
         hits = [paper_id for paper_id in gold if paper_id in ids]
@@ -92,6 +98,7 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper):
                      "relevant_papers": gold, "retrieved_papers": ids,
                      "retrieved_chunks": [
                          {"paper_id": c.paper_id, "section": c.section,
+                          "chunk_id": c.chunk_id,
                           "score": round(c.score, 4), "source_url": c.source_url}
                          for c in chunks],
                      "recall": len(hits) / len(gold) if gold else None,
@@ -116,6 +123,9 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper):
               "corpus_fingerprint": fingerprint,
               "model": "sentence-transformers/all-mpnet-base-v2",
               "k_chunks": k, "fetch_k": fetch_k, "max_chunks_per_paper": per_paper,
+              "rerank_model": rerank_model,
+              "max_rerank_gap": max_rerank_gap,
+              "order_by_vector": order_by_vector,
               "summary": summary, "queries": rows}
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(result, indent=2) + "\n")
@@ -130,5 +140,10 @@ if __name__ == "__main__":
     argparser.add_argument("--k", type=int, default=5, help="Number of retrieved chunks")
     argparser.add_argument("--fetch-k", type=int, default=30)
     argparser.add_argument("--per-paper", type=int, default=2)
+    argparser.add_argument("--rerank-model", default=None)
+    argparser.add_argument("--max-rerank-gap", type=float, default=None)
+    argparser.add_argument("--order-by-vector", action="store_true")
     args = argparser.parse_args()
-    run(args.benchmark.resolve(), args.output.resolve(), args.k, args.fetch_k, args.per_paper)
+    run(args.benchmark.resolve(), args.output.resolve(), args.k, args.fetch_k,
+        args.per_paper, args.rerank_model, args.max_rerank_gap,
+        args.order_by_vector)

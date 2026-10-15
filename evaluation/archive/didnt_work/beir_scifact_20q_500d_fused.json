@@ -1,0 +1,486 @@
+{
+  "dataset": "BEIR SciFact",
+  "split": "test",
+  "dataset_url": "https://public.ukp.informatik.tu-darmstadt.de/thakur/BEIR/datasets/scifact.zip",
+  "archive_md5": "5f7d1de60b170fc8027bb7898e2efca1",
+  "full_corpus_documents": 5183,
+  "indexed_corpus_documents": 500,
+  "labeled_relevant_documents_in_subset": 19,
+  "test_queries_available": 300,
+  "sampled_test_queries": 20,
+  "sample_seed": 42,
+  "sample_method": "random.Random(42).sample(numerically sorted test query IDs, 20)",
+  "corpus_method": "all judged relevant articles for selected claims plus random.Random(43) distractors to 500 total",
+  "model": "sentence-transformers/all-mpnet-base-v2",
+  "index": "title plus abstract, chunked at 350 MPNet tokens with 50-token overlap; cosine Chroma",
+  "retriever": "ResearchRetriever, k=10, fetch_k=30, max_chunks_per_paper=2; paper IDs deduplicated",
+  "rerank_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+  "max_rerank_gap": 8.0,
+  "rank_fusion": true,
+  "summary": {
+    "hit_at_1": 0.95,
+    "hit_at_5": 1.0,
+    "hit_at_10": 1.0,
+    "recall_at_5": 1.0,
+    "recall_at_10": 1.0,
+    "mrr_at_10": 0.975,
+    "ndcg_at_10": 0.9815464876785729
+  },
+  "queries": [
+    {
+      "query_id": "248",
+      "query": "Chenodeosycholic acid treatment increases whole-body energy expenditure.",
+      "relevant_ids": {
+        "1568684": 1
+      },
+      "retrieved_ids": [
+        "1568684"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "56",
+      "query": "APOE4 expression in iPSC-derived neurons increases AlphaBeta production and tau phosphorylation causing GABA neuron degeneration.",
+      "relevant_ids": {
+        "4709641": 1
+      },
+      "retrieved_ids": [
+        "4709641"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "649",
+      "query": "Integrating classroom-based collaborative learning with Web-based collaborative learning leads to subpar class performance",
+      "relevant_ids": {
+        "12789595": 1
+      },
+      "retrieved_ids": [
+        "12789595",
+        "15040589",
+        "3202143",
+        "42800527",
+        "4462155",
+        "60206680",
+        "10692412",
+        "9754530"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "577",
+      "query": "In mice, P. chabaudi parasites are able to proliferate faster early in infection when inoculated at lower numbers than when inoculated at high numbers.",
+      "relevant_ids": {
+        "5289038": 1
+      },
+      "retrieved_ids": [
+        "23801039",
+        "5289038",
+        "40584205",
+        "9142761",
+        "39668245",
+        "22621251",
+        "4465735",
+        "8596357"
+      ],
+      "metrics": {
+        "hit_at_1": 0,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 0.5,
+        "ndcg_at_10": 0.6309297535714575
+      }
+    },
+    {
+      "query_id": "536",
+      "query": "Hypocretin neurones induce panicprone state in rats.",
+      "relevant_ids": {
+        "16056514": 1
+      },
+      "retrieved_ids": [
+        "16056514",
+        "36357627",
+        "25007443",
+        "27022864",
+        "13172737"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "314",
+      "query": "Deamination of cytidine to uridine on the minus strand of viral DNA results in catastrophic G-to-A mutations in the viral genome.",
+      "relevant_ids": {
+        "4347374": 1
+      },
+      "retrieved_ids": [
+        "4347374",
+        "24221369",
+        "2566674",
+        "8596357",
+        "29134911",
+        "2721426",
+        "21793890",
+        "28904104",
+        "35711485"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "233",
+      "query": "Cell autonomous sex determination in somatic cells does not occur in Galliformes.",
+      "relevant_ids": {
+        "4388470": 1
+      },
+      "retrieved_ids": [
+        "4388470",
+        "4457834"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "1303",
+      "query": "Tirasemtiv has no effect on fast-twitch muscle.",
+      "relevant_ids": {
+        "12631697": 1
+      },
+      "retrieved_ids": [
+        "12631697",
+        "37037012",
+        "5775033",
+        "8604837",
+        "25475802",
+        "18446525",
+        "35766603",
+        "9588931"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "212",
+      "query": "CR is associated with higher methylation age.",
+      "relevant_ids": {
+        "22038539": 1
+      },
+      "retrieved_ids": [
+        "22038539",
+        "4434951",
+        "3202143",
+        "29190724",
+        "2566674",
+        "32776084"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "1019",
+      "query": "Rapid phosphotransfer rates govern fidelity in two component systems",
+      "relevant_ids": {
+        "11603066": 1
+      },
+      "retrieved_ids": [
+        "11603066"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "75",
+      "query": "Active H. pylori urease has a polymeric structure that compromises two subunits, UreA and UreB.",
+      "relevant_ids": {
+        "4387784": 1
+      },
+      "retrieved_ids": [
+        "4387784",
+        "11603066"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "72",
+      "query": "Activator-inhibitor pairs are provided dorsally by Admpchordin.",
+      "relevant_ids": {
+        "6076903": 1
+      },
+      "retrieved_ids": [
+        "6076903",
+        "25007443",
+        "36357627",
+        "14308244",
+        "4425507",
+        "5700349",
+        "25475802",
+        "16511863",
+        "16056514",
+        "39545358"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "217",
+      "query": "CX3CR1 on the Th2 cells promotes T cell survival",
+      "relevant_ids": {
+        "21366394": 1
+      },
+      "retrieved_ids": [
+        "21366394",
+        "40365566",
+        "29125354"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "532",
+      "query": "Hyperfibrinogenemia decreases rates of femoropopliteal bypass thrombosis.",
+      "relevant_ids": {
+        "12991445": 1
+      },
+      "retrieved_ids": [
+        "12991445",
+        "4910408",
+        "750781",
+        "21636085",
+        "4890578",
+        "31889025",
+        "10582939",
+        "24088502",
+        "20554003"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "551",
+      "query": "ITAM phosphorylation prevents the transfer of the T cell receptor (TCR) signal from the echo-domain to the cytoplasmic tail of the T cell receptor (TCR).",
+      "relevant_ids": {
+        "33499189": 1
+      },
+      "retrieved_ids": [
+        "33499189",
+        "2714623",
+        "9283422",
+        "10562341",
+        "15972906",
+        "40094786",
+        "6961811",
+        "6936141",
+        "11666252"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "1225",
+      "query": "The locus rs647161 is associated with colorectal carcinoma.",
+      "relevant_ids": {
+        "9650982": 1
+      },
+      "retrieved_ids": [
+        "9650982",
+        "4729644",
+        "24783597"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "57",
+      "query": "APOE4 expression in iPSC-derived neurons increases AlphaBeta production and tau phosphorylation, delaying GABA neuron degeneration.",
+      "relevant_ids": {
+        "4709641": 1
+      },
+      "retrieved_ids": [
+        "4709641"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "1339",
+      "query": "Ultrasound guidance significantly raises the number of traumatic procedures when attempting needle insertion.",
+      "relevant_ids": {
+        "15482274": 1
+      },
+      "retrieved_ids": [
+        "15482274"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "507",
+      "query": "Helminths interfere with immune system control of macrophages activated by IL-4 favor Mycobacterium tuberculosis replication.",
+      "relevant_ids": {
+        "30774694": 1
+      },
+      "retrieved_ids": [
+        "30774694",
+        "23801039",
+        "4319174",
+        "15414628",
+        "2274272",
+        "883747",
+        "3984231"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    },
+    {
+      "query_id": "1012",
+      "query": "Radioiodine treatment of non-toxic multinodular goitre reduces thyroid volume.",
+      "relevant_ids": {
+        "9745001": 1
+      },
+      "retrieved_ids": [
+        "9745001"
+      ],
+      "metrics": {
+        "hit_at_1": 1,
+        "hit_at_5": 1,
+        "hit_at_10": 1,
+        "recall_at_5": 1.0,
+        "recall_at_10": 1.0,
+        "mrr_at_10": 1.0,
+        "ndcg_at_10": 1.0
+      }
+    }
+  ]
+}

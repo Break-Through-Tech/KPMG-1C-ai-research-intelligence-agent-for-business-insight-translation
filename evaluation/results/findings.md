@@ -75,10 +75,10 @@ up two numbers: random forest scored **69.6%**, while the best vision-based
 setup scored **71.5%**. On q08, it gave the right comparison and then said the
 papers didn't answer the question. So we have both retrieval and answer-writing
 problems. A citation number can be valid even when the claim next to it is
-wrong. The current notebook prompt also doesn't ask for the direct quote
+wrong. The notebook prompt at the time also didn't ask for the direct quote
 required by issue #5.
 
-### Possible improvements (just suggestions, they may or may not work)
+### Suggestions from the first run
 
 1. Pick passages that contain the specific number or method the question asks
    for, while leaving room for both papers on two-paper questions.
@@ -91,6 +91,44 @@ required by issue #5.
 This test covers only five related papers, and one person reviewed the
 answers. It doesn't tell us how the system will do on the larger planned
 research collection.
+
+### What changed in the notebook
+
+The shared ingestion code now keeps reference sections out of the index and
+adds a stable ID to each chunk. Retrieval considers more passages, reranks
+them, reserves space for a second paper when the question asks across papers,
+and shows the chosen passages in vector-search order. The answer cell uses
+those passage numbers, adds a literal excerpt from a cited paper, and points
+out citation and quote problems for review.
+
+On the **same 25 questions and five PDFs**, the [latest retrieval
+run](retrieval_ordered.json) got these results:
+
+| Measure | Earlier run | Latest run |
+| --- | ---: | ---: |
+| Questions with every labeled paper found | 23/23 | 23/23 |
+| Paper MRR@5 | 0.978 | 1.000 |
+| Literal labeled fact snippets in chosen chunks | 7/28 | 23/28 |
+
+The literal snippet check still has the wording limitation explained above.
+The larger gain suggests the model gets more of the facts it needs, but it
+doesn't prove the written answers are right.
+
+We also did a [full 25-question `llama3.2` answer
+run](answers_grounded.json) with an earlier version of the reranked passage
+order. Mechanical [source checks](answer_checks_grounded.json) found citations
+and verified literal quotes in **18/23** answerable responses, versus 14/23
+citations and 0/23 quotes in the original run. Both unanswerable questions
+were declined. The model now answered q11's **74.9%** and q13's **92 / 454**
+questions because those facts reached its context. It still confused Router
+with Bidder on q01, contradicted itself on q04, gave the wrong comparison on
+q08, and declined q12. A quote matching a source does not by itself prove
+that the answer is faithful to that source.
+
+The notebook's final passage order has been rerun for retrieval, but **not for
+all 25 generated answers**. A [one-question pilot](../archive/didnt_work/answer_pilot_ordered.json)
+still added unrelated Bidder details to a Router answer. The next answer
+quality comparison needs a full run and human review of every claim.
 
 ## 2. BEIR SciFact subset
 
@@ -120,3 +158,11 @@ was a small test. Searching 500 articles is easier than
 searching all 5,183, so **don't compare these scores with published results
 from the full BEIR corpus**. Many SciFact claims are also biomedical, unlike
 the business research questions this project is meant to handle.
+
+With the [notebook's current passage selection and
+ordering](beir_scifact_20q_500d_ordered.json), hit@1 stayed at **18/20**,
+hit@5 stayed at **20/20**, MRR@10 stayed at **0.950**, and nDCG@10 stayed at
+**0.963** on the same tiny subset. This test still says nothing about answer
+accuracy or business usefulness. Earlier reranker-only and rank-fusion trials
+are kept in the [archive](../archive/didnt_work/README.md) with the reasons we
+didn't use them.

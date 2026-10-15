@@ -100,16 +100,55 @@ def test_context_and_sources_share_citation_numbers(retriever):
     context = retriever.format_context(results)
     sources = retriever.format_sources(results).splitlines()
     numbers = retriever.citation_numbers(results)
-    assert sorted(numbers.values()) == list(range(1, len({r.paper_id for r in results}) + 1))
-    for paper_id, number in numbers.items():
-        assert f"[{number}] Paper {paper_id}" in context
-        assert sources[number - 1].startswith(f"[{number}] Paper {paper_id}")
+    assert sorted(numbers.values()) == list(range(1, len(results) + 1))
+    for result in results:
+        assert f"[{result.rank}] Paper {result.paper_id}" in context
+        assert f"chunk {result.chunk_id}" in context
+        assert sources[result.rank - 1].startswith(f"[{result.rank}] Paper {result.paper_id}")
     assert "Ann, Bo, Cy et al." in retriever.format_sources(retriever.retrieve("agent audit", paper_ids=["p1"]))
 
 
 def test_empty_query_rejected(retriever):
     with pytest.raises(ValueError):
         retriever.retrieve("   ")
+
+
+def test_reranking_and_paper_diversity(retriever):
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [10 if "routing" in text else 1 for _, text in pairs]
+
+    retriever.rerank_model = "fake"
+    retriever._reranker = Reranker()
+    results = retriever.retrieve("agent audit", k=3, min_papers=2)
+    assert results[0].paper_id == "p2"
+    assert {result.paper_id for result in results} == {"p1", "p2"}
+
+
+def test_rerank_gap_drops_extreme_outlier(retriever):
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [10 if "routing" in text else -2 for _, text in pairs]
+
+    retriever.rerank_model = "fake"
+    retriever._reranker = Reranker()
+    retriever.max_rerank_gap = 8
+    assert {result.paper_id for result in retriever.retrieve("routing", k=3)} == {"p2"}
+
+
+def test_vector_order_keeps_reranked_passages_but_changes_prompt_order(retriever):
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [10 if "routing" in text else 1 for _, text in pairs]
+
+    retriever.rerank_model = "fake"
+    retriever._reranker = Reranker()
+    selected_by_reranker = retriever.retrieve("agent audit", k=3, min_papers=2)
+    retriever.order_by_vector = True
+    selected_by_vector = retriever.retrieve("agent audit", k=3, min_papers=2)
+    assert {(c.paper_id, c.text) for c in selected_by_vector} == {
+        (c.paper_id, c.text) for c in selected_by_reranker}
+    assert selected_by_vector[0].paper_id == "p1"
 
 
 BIBLIOGRAPHY = (

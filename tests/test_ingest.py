@@ -40,12 +40,20 @@ def test_build_documents_rejects_unknown_title():
         build_documents({"Unknown": {"Abstract": "x"}}, PAPERS)
 
 
+def test_build_documents_skips_references_but_keeps_appendix():
+    parsed = {"Paper One": {"all": "...", "2 Results": "finding",
+                            "References": "cited works", "A Methods": "extra evidence"}}
+    docs = build_documents(parsed, PAPERS)
+    assert [doc.metadata["section"] for doc in docs] == ["2 Results", "A Methods"]
+
+
 def test_chunk_ids_are_unique_and_stable():
     chunks = chunk_documents(build_documents(PARSED, PAPERS), chunk_size=10, chunk_overlap=2,
                              length_function=words)
     ids = chunk_ids(chunks)
     assert len(ids) == len(set(ids))
     assert ids[0] == "p1_0_1" and "p1_2_2" in ids
+    assert [chunk.metadata["chunk_id"] for chunk in chunks] == ids
 
 
 def test_build_vector_store_uses_cosine_and_is_idempotent(tmp_path):
