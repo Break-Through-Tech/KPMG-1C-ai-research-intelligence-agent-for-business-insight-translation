@@ -1,1 +1,20 @@
+# Core RAG & Embeddings
+pypdf
+langchain-chroma
+langchain-core
+langchain-text-splitters
+langchain-huggingface
+sentence-transformers
 
+# Data & EDA
+numpy
+pandas
+matplotlib
+seaborn
+requests
+
+# UI & Interaction Layer
+streamlit
+
+# Testing & Evaluation
+pytest
