@@ -13,6 +13,7 @@
 | --- | --- | --- |
 | Kathleen Higgins | @kathigg | RAG evaluation and KPI |
 | QiQi Li          | @qiqi0211| EDA, RAG evaluation, and prompt engineering | 
+| Thien Nguyen     | @Trungu | EDA, LangChain Pipeline Dev | 
 
 
 ---
