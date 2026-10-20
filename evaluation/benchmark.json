@@ -1,0 +1,36 @@
+{
+  "papers": {
+    "2608.20316": "Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation",
+    "2608.20318": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+    "2608.20319": "Inducing Task Models from Computer-Use Traces",
+    "2608.20320": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+    "2608.20331": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation"
+  },
+  "queries": [
+    {"id":"q01","query":"How does Pandora's Router decide when an expensive specialist estimate is worth paying for?","relevant_papers":["2608.20316"],"evidence":["closed-form value-of-information expressions"]},
+    {"id":"q02","query":"What is the difference between Pandora's Router and Pandora's Bidder?","relevant_papers":["2608.20316"],"evidence":["decentralized setting, Pandora’s Bidder"]},
+    {"id":"q03","query":"In which three domains was the costly-value-estimation routing policy evaluated?","relevant_papers":["2608.20316"],"evidence":["a standard multi-LLM benchmark, retrieval-augmented specialists, and LLMs with variable inference-time reasoning"]},
+    {"id":"q04","query":"What limitation appears when competing specialists' estimates are noisy?","relevant_papers":["2608.20316"],"evidence":["increase the strategic specialist’s utility at the expense of others"]},
+    {"id":"q05","query":"How many frozen repositories and training algorithm families are in AI4AI-Bench?","relevant_papers":["2608.20318"],"evidence":["10 frozen research repositories spanning 10 training algorithm families"]},
+    {"id":"q06","query":"What is the AI4AI-Bench time budget for an agent and for the replay?","relevant_papers":["2608.20318"],"evidence":["4 hours on one B300","rerun from scratch for up to 12 hours"]},
+    {"id":"q07","query":"How are the incommensurable AI4AI-Bench task metrics normalized?","relevant_papers":["2608.20318"],"evidence":["0 is an uninformative model","0.1 is the algorithm the repository ships"]},
+    {"id":"q08","query":"How do submissions that change the learning algorithm compare with those that do not?","relevant_papers":["2608.20318"],"evidence":["0.226 against 0.126 for the rest"]},
+    {"id":"q09","query":"What two kinds of task structure does TMI recover from computer-use traces?","relevant_papers":["2608.20319"],"evidence":["hierarchical objective model","procedure model of the control flow"]},
+    {"id":"q10","query":"How well does task model induction group interleaved tasks?","relevant_papers":["2608.20319"],"evidence":["0.974 agreement against ground-truth groupings"]},
+    {"id":"q11","query":"How much of observed execution does TMI reconstruct?","relevant_papers":["2608.20319"],"evidence":["74.9% of the observed execution steps"]},
+    {"id":"q12","query":"What was the held-out task accuracy gain from skills derived from TMI?","relevant_papers":["2608.20319"],"evidence":["improve held-out task accuracy by 30.0%"]},
+    {"id":"q13","query":"How many commuters and respondent-scenario observations did the weather travel survey collect?","relevant_papers":["2608.20320"],"evidence":["92 student commuters","454 respondent–scenario observations"]},
+    {"id":"q14","query":"Which travel modes responded most clearly to adverse weather and snow?","relevant_papers":["2608.20320"],"evidence":["Cycling was particularly sensitive to adverse weather","public transit use increased substantially under the Snowy scenario"]},
+    {"id":"q15","query":"How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?","relevant_papers":["2608.20320"],"evidence":["69.6% five-class accuracy","69.9% without task-specific fitting"]},
+    {"id":"q16","query":"What was the best vision-based travel mode prediction accuracy?","relevant_papers":["2608.20320"],"evidence":["highest observed five-class accuracy of 71.5%"]},
+    {"id":"q17","query":"What is the patient-oriented medical report interpretation task introduced with G-CARL?","relevant_papers":["2608.20331"],"evidence":["Patient-oriented Medical Report Interpretation"]},
+    {"id":"q18","query":"How does G-CARL supervise factuality and response coverage?","relevant_papers":["2608.20331"],"evidence":["multi-source retrieval for atomic claim verification","instance-specific weighted checklists for response coverage"]},
+    {"id":"q19","query":"What benchmark and evaluation dimensions accompany G-CARL?","relevant_papers":["2608.20331"],"evidence":["MMedReport","three-dimensional evaluation protocol"]},
+    {"id":"q20","query":"What did clinician pairwise preferences find about G-CARL?","relevant_papers":["2608.20331"],"evidence":["more accurate and better aligned with patient needs"]},
+    {"id":"q21","query":"Which papers address auditable AI workflows derived from user activity or survey responses?","relevant_papers":["2608.20319","2608.20320"],"evidence":[]},
+    {"id":"q22","query":"Which papers evaluate AI agents or model specialists using benchmark tasks and costs?","relevant_papers":["2608.20316","2608.20318"],"evidence":[]},
+    {"id":"q23","query":"Which papers discuss evidence-grounded explanations and auditable task models?","relevant_papers":["2608.20319","2608.20331"],"evidence":[]},
+    {"id":"q24","query":"What is KPMG's 2026 revenue forecast?","relevant_papers":[],"evidence":[]},
+    {"id":"q25","query":"Which of these papers reports the stock price of NVIDIA on October 14, 2026?","relevant_papers":[],"evidence":[]}
+  ]
+}

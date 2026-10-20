@@ -1,0 +1,1172 @@
+{
+  "benchmark": "evaluation/benchmark.json",
+  "corpus_fingerprint": "0b290e1a4959",
+  "model": "sentence-transformers/all-mpnet-base-v2",
+  "k_chunks": 5,
+  "fetch_k": 60,
+  "max_chunks_per_paper": 4,
+  "rerank_model": "cross-encoder/ms-marco-MiniLM-L6-v2",
+  "max_rerank_gap": 8.0,
+  "summary": {
+    "positive_queries": 23,
+    "negative_queries": 2,
+    "macro_recall_at_k": 1.0,
+    "hit_at_k": 1.0,
+    "mrr_at_k": 1.0,
+    "evidence_coverage": 0.8214285714285714,
+    "evidence_facts": 28,
+    "unsupported_queries_with_results": 2,
+    "citation_metadata_complete": 1.0
+  },
+  "queries": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "retrieved_papers": [
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "5 Pandora\u2019s Bidder",
+          "chunk_id": "2608.20316_5_1",
+          "score": 6.5962,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_1",
+          "score": 6.1619,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_21",
+          "score": 5.3754,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_22",
+          "score": 5.3288,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        false
+      ]
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "retrieved_papers": [
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_1",
+          "score": 4.1157,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "5 Pandora\u2019s Bidder",
+          "chunk_id": "2608.20316_5_5",
+          "score": 3.1074,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20316_1_4",
+          "score": 2.7344,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_22",
+          "score": 2.6954,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        false
+      ]
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "retrieved_papers": [
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20316_1_4",
+          "score": 4.231,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "chunk_id": "2608.20316_0_1",
+          "score": 4.1222,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_4",
+          "score": 2.7519,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_20",
+          "score": 1.7755,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q04",
+      "query": "What limitation appears when competing specialists' estimates are noisy?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "retrieved_papers": [
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "chunk_id": "2608.20316_0_2",
+          "score": 3.5764,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q05",
+      "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "retrieved_papers": [
+        "2608.20318"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20318",
+          "section": "6 Conclusion",
+          "chunk_id": "2608.20318_13_1",
+          "score": 5.0025,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.2 AI4AI-Bench algorithmic tasks",
+          "chunk_id": "2608.20318_3_1",
+          "score": 3.4705,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "chunk_id": "2608.20318_0_1",
+          "score": 3.2225,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20318_1_4",
+          "score": 2.8972,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q06",
+      "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "retrieved_papers": [
+        "2608.20318"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "chunk_id": "2608.20318_12_4",
+          "score": 1.0972,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "chunk_id": "2608.20318_0_1",
+          "score": -0.5535,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "6 Conclusion",
+          "chunk_id": "2608.20318_13_1",
+          "score": -1.0211,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.1 Task formulation",
+          "chunk_id": "2608.20318_2_1",
+          "score": -1.4805,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q07",
+      "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "retrieved_papers": [
+        "2608.20318"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "chunk_id": "2608.20318_0_1",
+          "score": 3.1107,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.2 AI4AI-Bench algorithmic tasks",
+          "chunk_id": "2608.20318_3_2",
+          "score": 1.7994,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "chunk_id": "2608.20318_12_4",
+          "score": -0.1379,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "6 Conclusion",
+          "chunk_id": "2608.20318_13_1",
+          "score": -0.154,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "retrieved_papers": [
+        "2608.20318"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20318",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20318_1_7",
+          "score": 4.6428,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "chunk_id": "2608.20318_9_1",
+          "score": 4.0099,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "chunk_id": "2608.20318_9_10",
+          "score": 3.8267,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "4.2 Reasoning effort buys nerve, and nerve is what pays",
+          "chunk_id": "2608.20318_10_1",
+          "score": 2.864,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "retrieved_papers": [
+        "2608.20319"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20319",
+          "section": "3 Method",
+          "chunk_id": "2608.20319_5_1",
+          "score": 7.205,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "7 Conclusion",
+          "chunk_id": "2608.20319_16_1",
+          "score": 4.5805,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Abstract",
+          "chunk_id": "2608.20319_1_1",
+          "score": 3.6055,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "2 Problem Formulation",
+          "chunk_id": "2608.20319_4_1",
+          "score": 3.4928,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "retrieved_papers": [
+        "2608.20319"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20319",
+          "section": "discussion",
+          "chunk_id": "2608.20319_3_5",
+          "score": 4.3317,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "discussion",
+          "chunk_id": "2608.20319_3_4",
+          "score": 3.9018,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "discussion",
+          "chunk_id": "2608.20319_3_3",
+          "score": 3.0742,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "3.2 Latent Task Induction",
+          "chunk_id": "2608.20319_7_1",
+          "score": 2.266,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        false
+      ]
+    },
+    {
+      "id": "q11",
+      "query": "How much of observed execution does TMI reconstruct?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "retrieved_papers": [
+        "2608.20319"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20319",
+          "section": "discussion",
+          "chunk_id": "2608.20319_3_4",
+          "score": 0.7667,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "discussion",
+          "chunk_id": "2608.20319_3_5",
+          "score": 0.0332,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Abstract",
+          "chunk_id": "2608.20319_1_1",
+          "score": -0.0431,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.2 Latent Task Induction Stability",
+          "chunk_id": "2608.20319_12_1",
+          "score": -1.0429,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q12",
+      "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "retrieved_papers": [
+        "2608.20319",
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "chunk_id": "2608.20319_14_4",
+          "score": 3.8296,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "chunk_id": "2608.20319_14_1",
+          "score": 1.3971,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.2 Latent Task Induction Stability",
+          "chunk_id": "2608.20319_12_1",
+          "score": 1.2447,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "chunk_id": "2608.20319_14_3",
+          "score": 0.7149,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_5",
+          "score": -3.1548,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        false
+      ]
+    },
+    {
+      "id": "q13",
+      "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "retrieved_papers": [
+        "2608.20320"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20320",
+          "section": "Abstract",
+          "chunk_id": "2608.20320_1_1",
+          "score": 6.268,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "4.1 Data Collection Agent: Chatbot Survey and Deployment",
+          "chunk_id": "2608.20320_17_1",
+          "score": 3.3884,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "7 Conclusions",
+          "chunk_id": "2608.20320_25_1",
+          "score": 2.5964,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "4.2 Data Processing Agent",
+          "chunk_id": "2608.20320_18_1",
+          "score": 2.251,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q14",
+      "query": "Which travel modes responded most clearly to adverse weather and snow?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "retrieved_papers": [
+        "2608.20320"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20320",
+          "section": "Abstract",
+          "chunk_id": "2608.20320_1_1",
+          "score": -0.3865,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "chunk_id": "2608.20320_24_2",
+          "score": -1.8147,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20320_2_1",
+          "score": -2.2462,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "5.2 LLM Zero-Shot",
+          "chunk_id": "2608.20320_22_2",
+          "score": -2.4991,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q15",
+      "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "retrieved_papers": [
+        "2608.20320"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "chunk_id": "2608.20320_24_3",
+          "score": 6.1135,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "chunk_id": "2608.20320_24_2",
+          "score": 4.4366,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "Abstract",
+          "chunk_id": "2608.20320_1_1",
+          "score": 4.2129,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "7 Conclusions",
+          "chunk_id": "2608.20320_25_1",
+          "score": 3.1926,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q16",
+      "query": "What was the best vision-based travel mode prediction accuracy?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "retrieved_papers": [
+        "2608.20320"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20320",
+          "section": "Abstract",
+          "chunk_id": "2608.20320_1_2",
+          "score": 7.4838,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "chunk_id": "2608.20320_24_3",
+          "score": 7.1037,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "Abstract",
+          "chunk_id": "2608.20320_1_1",
+          "score": 4.6215,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "chunk_id": "2608.20320_24_2",
+          "score": 3.2905,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q17",
+      "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "retrieved_papers": [
+        "2608.20331"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "Abstract",
+          "chunk_id": "2608.20331_1_1",
+          "score": 7.5824,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "5 Conclusion",
+          "chunk_id": "2608.20331_11_1",
+          "score": 6.7038,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "Front Matter",
+          "chunk_id": "2608.20331_0_1",
+          "score": 5.0601,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20331_2_1",
+          "score": 4.4739,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "retrieved_papers": [
+        "2608.20331"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "5 Conclusion",
+          "chunk_id": "2608.20331_11_1",
+          "score": 4.4617,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20331_2_5",
+          "score": 4.1611,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "3.1 Overall Architecture",
+          "chunk_id": "2608.20331_4_1",
+          "score": 2.3683,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "Abstract",
+          "chunk_id": "2608.20331_1_1",
+          "score": 2.2762,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "q19",
+      "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "retrieved_papers": [
+        "2608.20331"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "4.1 Experimental Setup",
+          "chunk_id": "2608.20331_8_1",
+          "score": 4.7469,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.3 Ablation Study",
+          "chunk_id": "2608.20331_10_6",
+          "score": 1.0033,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "chunk_id": "2608.20331_9_1",
+          "score": -0.3258,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.1 Experimental Setup",
+          "chunk_id": "2608.20331_8_2",
+          "score": -0.6432,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true,
+        false
+      ]
+    },
+    {
+      "id": "q20",
+      "query": "What did clinician pairwise preferences find about G-CARL?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "retrieved_papers": [
+        "2608.20331"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "chunk_id": "2608.20331_9_8",
+          "score": 4.4122,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "Abstract",
+          "chunk_id": "2608.20331_1_1",
+          "score": 4.1451,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "5 Conclusion",
+          "chunk_id": "2608.20331_11_1",
+          "score": 2.1891,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.1 Experimental Setup",
+          "chunk_id": "2608.20331_8_1",
+          "score": -0.1114,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": [
+        true
+      ]
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "relevant_papers": [
+        "2608.20319",
+        "2608.20320"
+      ],
+      "retrieved_papers": [
+        "2608.20320",
+        "2608.20319"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20320",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20320_2_5",
+          "score": -0.5555,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Abstract",
+          "chunk_id": "2608.20319_1_1",
+          "score": -2.4744,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "3.1 Framework Overview",
+          "chunk_id": "2608.20320_8_1",
+          "score": -0.6835,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "results",
+          "chunk_id": "2608.20320_7_1",
+          "score": -1.2502,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "3.1 Framework Overview",
+          "chunk_id": "2608.20320_8_2",
+          "score": -1.8109,
+          "source_url": "https://arxiv.org/abs/2608.20320"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": []
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "relevant_papers": [
+        "2608.20316",
+        "2608.20318"
+      ],
+      "retrieved_papers": [
+        "2608.20316",
+        "2608.20318"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20316_1_4",
+          "score": 2.4528,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "chunk_id": "2608.20318_12_3",
+          "score": 1.862,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "chunk_id": "2608.20318_0_1",
+          "score": 1.1961,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "chunk_id": "2608.20316_0_1",
+          "score": 0.7138,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "chunk_id": "2608.20318_12_4",
+          "score": 0.43,
+          "source_url": "https://arxiv.org/abs/2608.20318"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": []
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "relevant_papers": [
+        "2608.20319",
+        "2608.20331"
+      ],
+      "retrieved_papers": [
+        "2608.20331",
+        "2608.20319"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20331_2_2",
+          "score": -1.1889,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "3.3 Task Model Construction",
+          "chunk_id": "2608.20319_8_1",
+          "score": -1.8984,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Abstract",
+          "chunk_id": "2608.20319_1_1",
+          "score": -2.2224,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "1 Introduction",
+          "chunk_id": "2608.20319_2_1",
+          "score": -2.9528,
+          "source_url": "https://arxiv.org/abs/2608.20319"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "5 Conclusion",
+          "chunk_id": "2608.20331_11_1",
+          "score": -3.0078,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        }
+      ],
+      "recall": 1.0,
+      "reciprocal_rank": 1.0,
+      "evidence_hits": []
+    },
+    {
+      "id": "q24",
+      "query": "What is KPMG's 2026 revenue forecast?",
+      "relevant_papers": [],
+      "retrieved_papers": [
+        "2608.20331",
+        "2608.20316"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "chunk_id": "2608.20331_9_3",
+          "score": -6.0984,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "chunk_id": "2608.20316_0_1",
+          "score": -7.301,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "6 Related Work",
+          "chunk_id": "2608.20316_6_2",
+          "score": -8.5885,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_9",
+          "score": -9.2931,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "D.3 Monetary costs for value functions",
+          "chunk_id": "2608.20316_17_1",
+          "score": -9.7317,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": null,
+      "reciprocal_rank": 0,
+      "evidence_hits": []
+    },
+    {
+      "id": "q25",
+      "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+      "relevant_papers": [],
+      "retrieved_papers": [
+        "2608.20316",
+        "2608.20331"
+      ],
+      "retrieved_chunks": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_9",
+          "score": -8.0333,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "chunk_id": "2608.20331_9_3",
+          "score": -8.9642,
+          "source_url": "https://arxiv.org/abs/2608.20331"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "chunk_id": "2608.20316_4_10",
+          "score": -8.0985,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "D.3 Monetary costs for value functions",
+          "chunk_id": "2608.20316_17_1",
+          "score": -8.7932,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "chunk_id": "2608.20316_0_1",
+          "score": -9.7472,
+          "source_url": "https://arxiv.org/abs/2608.20316"
+        }
+      ],
+      "recall": null,
+      "reciprocal_rank": 0,
+      "evidence_hits": []
+    }
+  ]
+}
