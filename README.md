@@ -17,7 +17,7 @@
 
 ## 🎯 **Project Highlights**
 
-**In progress. **
+**In progress.**
 
 **Example:**
 
