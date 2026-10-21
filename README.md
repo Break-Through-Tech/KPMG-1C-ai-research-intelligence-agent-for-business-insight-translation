@@ -17,6 +17,7 @@
 
 ## 🎯 **Project Highlights**
 
+In progress. 
 **Example:**
 
 - Developed a machine learning model using `[model type/technique]` to address `[challenge project task]`.
@@ -27,6 +28,8 @@
 ---
 
 ## 👩🏽‍💻 **Setup and Installation**
+
+In progress. 
 
 **Provide step-by-step instructions so someone else can run your code and reproduce your results. Depending on your setup, include:**
 
