@@ -1,0 +1,748 @@
+{
+  "model": "llama3.2",
+  "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+  "notebook_prompt_sha256": "ecdc3d7022d8dc5dbbf5b9feed2a7e12d552d98e535f9127166c4d4c719417e9",
+  "retrieval_result": "evaluation/results/retrieval.json",
+  "answers": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "answer": "Pandora's Router decides when an expensive specialist estimate is worth paying for when the value of information exceeds the cost. [1]",
+      "source_list": "[1] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316",
+      "passages": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "Router with\ud835\udc53-only,\ud835\udc54-only, and the margin baseline). Pandora minimizes regret plus inspection cost at nearly all cost levels\ud835\udc50\ud835\udc54, in all settings. When the cost of\ud835\udc54is low, Pandora\u2019s Router queries it for nearly every specialist, and all methods except\ud835\udc53-only (which never queries\ud835\udc54) perform similarly. As\ud835\udc50\ud835\udc54 increases, the\ud835\udc54-always baseline continues to make a fixed number of queries regardless of cost, while\ud835\udc53-only still never queries at all. Pandora\u2019s Router interpolates between these extremes, querying\ud835\udc54 only when the value of information exceeds the cost. The result is a total regret + inspection cost that tracks the lower envelope of the baselines across the full\ud835\udc50\ud835\udc54 range. As a secondary analysis, Figure 6 shows the cost-performance tradeoff offered by Pandora\u2019s Router, Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation in terms of monetary costs and routing regret. The costs are computed from the Gemini API prices described in Section 2.2. When\ud835\udc50\ud835\udc54 = 0.001, we are in a setting in which users are eager to pay for queries that improve routing; here Pandora\u2019s Router obtains regret that almost matches\ud835\udc54-only, while incurring much lower inspection costs. When\ud835\udc50\ud835\udc54 = 0.1, we are in a setting in which users are unwilling to pay for queries to\ud835\udc54. As a result, the Pandora\u2019s Router never queries\ud835\udc54, and routing performance and cost match the\ud835\udc53-only baseline. In the MATH domain the aggregate results for Pandora and Margin are nearly identical. Because there are only two routing targets, the regret is determined largely by the decision about how many\ud835\udc54 values to query: with two queries, both methods always select"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "distribution, it does not yield any improvement in overall routing success and inspection cost. An extension for handling correlated values.In routing, the Pandora-OI and Pandora-NI policies described above must contend with an additional complication: the hidden values of the boxes are 3Pilot experiments showed similar results with\ud835\udc46= 30, with performance degrading significantly only at\ud835\udc46= 10. We chose\ud835\udc46=100because the overall computational costs of this operation are cheap relative to value estimation itself. 4As a small technical detail, Beyhaghi and Kleinberg (2019) use theexpected valueof the heldout box as the initial value \ud835\udc63, rather than our choice of the backup price, which, empirically, we found to perform slightly better. See Section D.5. Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation Algorithm 1Pandora\u2019s Router (with non-obligatory inspection) Require: Cheap value estimatesf =(\ud835\udc53 1 (\ud835\udc65),..., \ud835\udc53 \ud835\udc40(\ud835\udc65)), multi-variate Gaussian signal model parameters(\u210e,\u03a3), costs{\ud835\udc50 \ud835\udc5a}, number of Monte Carlo samples\ud835\udc46. 1:Compute predicted means\ud835\udf07 \ud835\udc5a \u2190\u210e(f)\ud835\udc5a for all\ud835\udc5a 2:Compute reservation prices\ud835\udc62 rsv \ud835\udc5a via root-finding on Equation (1) 3:Compute backup prices\ud835\udc62 backup \ud835\udc5a for all\ud835\udc5avia root-finding on Equation (2) 4:foreach candidate held-out box\ud835\udc5a=0,1,...,\ud835\udc40do 5:// Note:\ud835\udc5a=0corresponds to Pandora-OI on{1,...,\ud835\udc40}with\ud835\udc62 backup 0 =\u2212\u221e. 6://\u02c6\ud835\udf08 \ud835\udc5a is an MC estimate"
+        }
+      ],
+      "seconds": 14.1,
+      "prompt_tokens": 1112,
+      "answer_tokens": 28
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "answer": "The provided papers do not address this question.\n\nThe passages cover the performance and behavior of Pandora's Router in various settings, including its ability to minimize regret plus inspection cost, and its cost-performance tradeoff.",
+      "source_list": "[1] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316",
+      "passages": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "baseline. In the MATH domain the aggregate results for Pandora and Margin are nearly identical. Because there are only two routing targets, the regret is determined largely by the decision about how many\ud835\udc54 values to query: with two queries, both methods always select the\ud835\udc54-maximizer; with zero queries both methods almost always select the\ud835\udc53-maximizer (except in very rare cases where the reserve price ordering is different from the ordering of\ud835\udc53). Because Margin inherits the query budget from Pandora, it is unsurprising that its overall performance is very similar."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "Router with\ud835\udc53-only,\ud835\udc54-only, and the margin baseline). Pandora minimizes regret plus inspection cost at nearly all cost levels\ud835\udc50\ud835\udc54, in all settings. When the cost of\ud835\udc54is low, Pandora\u2019s Router queries it for nearly every specialist, and all methods except\ud835\udc53-only (which never queries\ud835\udc54) perform similarly. As\ud835\udc50\ud835\udc54 increases, the\ud835\udc54-always baseline continues to make a fixed number of queries regardless of cost, while\ud835\udc53-only still never queries at all. Pandora\u2019s Router interpolates between these extremes, querying\ud835\udc54 only when the value of information exceeds the cost. The result is a total regret + inspection cost that tracks the lower envelope of the baselines across the full\ud835\udc50\ud835\udc54 range. As a secondary analysis, Figure 6 shows the cost-performance tradeoff offered by Pandora\u2019s Router, Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation in terms of monetary costs and routing regret. The costs are computed from the Gemini API prices described in Section 2.2. When\ud835\udc50\ud835\udc54 = 0.001, we are in a setting in which users are eager to pay for queries that improve routing; here Pandora\u2019s Router obtains regret that almost matches\ud835\udc54-only, while incurring much lower inspection costs. When\ud835\udc50\ud835\udc54 = 0.1, we are in a setting in which users are unwilling to pay for queries to\ud835\udc54. As a result, the Pandora\u2019s Router never queries\ud835\udc54, and routing performance and cost match the\ud835\udc53-only baseline. In the MATH domain the aggregate results for Pandora and Margin are nearly identical. Because there are only two routing targets, the regret is determined largely by the decision about how many\ud835\udc54 values to query: with two queries, both methods always select"
+        }
+      ],
+      "seconds": 3.0,
+      "prompt_tokens": 820,
+      "answer_tokens": 42
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "answer": "The three domains in which the costly-value-estimation routing policy was evaluated are MATH, RAG, and EmbedLLM. [1]",
+      "source_list": "[1] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316",
+      "passages": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "0.127 0.122 0.029 0.151 0.398 0.992 1.390 Random-\ud835\udc41 pr 0.164 0.011 0.175 0.135 0.027 0.162 0.363 0.075 0.438 Margin-\ud835\udc41 pr 0.094 0.011 0.105 0.101 0.027 0.128 0.314 0.075 0.389 Pandora\u2019s Router 0.094 0.0110.105 0.091 0.0270.118 0.311 0.0750.386 Table 2|Routing evaluation results averaged across query costs\ud835\udc50\ud835\udc54. Lower is better on all metrics; best regret + cost per setting isbolded. See Section D.4 in the Appendix for a breakdown of results per cost level\ud835\udc50\ud835\udc54, together with significance tests. 10\u22123 10\u22122 10\u22121 9\u00b710 \u22122 0.1 0.11 0.12 0.13 \ud835\udc50\ud835\udc54 Regret + Inspection Cost MATH 10\u22123 10\u22122 10\u22121 0.1 0.15 0.2 \ud835\udc50\ud835\udc54 RAG 10\u22125 10\u22124 10\u22123 10\u22122 10\u22121 0.38 0.4 0.42 0.44 \ud835\udc50\ud835\udc54 EmbedLLM \ud835\udc53-only \ud835\udc54-always Pandora\u2019s Router Margin-\ud835\udc41\ud835\udc5d\ud835\udc5f Figure 2|Routing performance on the MATH, RAG, and EmbedLLM domains for varying costs of querying \ud835\udc54, with \ud835\udc53=KNN 3. The ideal value estimation policy would minimize regret + inspection cost at every cost level. Pandora\u2019s Router achieves near-minimal total cost across the full range of \ud835\udc50\ud835\udc54 (where\ud835\udc50 \ud835\udc5a =\ud835\udc50\ud835\udc54 for"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "distribution, it does not yield any improvement in overall routing success and inspection cost. An extension for handling correlated values.In routing, the Pandora-OI and Pandora-NI policies described above must contend with an additional complication: the hidden values of the boxes are 3Pilot experiments showed similar results with\ud835\udc46= 30, with performance degrading significantly only at\ud835\udc46= 10. We chose\ud835\udc46=100because the overall computational costs of this operation are cheap relative to value estimation itself. 4As a small technical detail, Beyhaghi and Kleinberg (2019) use theexpected valueof the heldout box as the initial value \ud835\udc63, rather than our choice of the backup price, which, empirically, we found to perform slightly better. See Section D.5. Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation Algorithm 1Pandora\u2019s Router (with non-obligatory inspection) Require: Cheap value estimatesf =(\ud835\udc53 1 (\ud835\udc65),..., \ud835\udc53 \ud835\udc40(\ud835\udc65)), multi-variate Gaussian signal model parameters(\u210e,\u03a3), costs{\ud835\udc50 \ud835\udc5a}, number of Monte Carlo samples\ud835\udc46. 1:Compute predicted means\ud835\udf07 \ud835\udc5a \u2190\u210e(f)\ud835\udc5a for all\ud835\udc5a 2:Compute reservation prices\ud835\udc62 rsv \ud835\udc5a via root-finding on Equation (1) 3:Compute backup prices\ud835\udc62 backup \ud835\udc5a for all\ud835\udc5avia root-finding on Equation (2) 4:foreach candidate held-out box\ud835\udc5a=0,1,...,\ud835\udc40do 5:// Note:\ud835\udc5a=0corresponds to Pandora-OI on{1,...,\ud835\udc40}with\ud835\udc62 backup 0 =\u2212\u221e. 6://\u02c6\ud835\udf08 \ud835\udc5a is an MC estimate"
+        }
+      ],
+      "seconds": 3.2,
+      "prompt_tokens": 1162,
+      "answer_tokens": 31
+    },
+    {
+      "id": "q04",
+      "query": "What limitation appears when competing specialists' estimates are noisy?",
+      "answer": "When competing specialists' estimates are noisy, value-of-information reasoning can increase the strategic specialist's utility at the expense of others. [1]",
+      "source_list": "[1] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[2] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20316",
+          "section": "Front Matter",
+          "text": "benchmark, retrieval-augmented specialists, and LLMs with variable inference-time reasoning\u2014show that Pandora\u2019s Router matches the routing quality of exhaustive estimation, while querying the expensive estimator far less often. In the decentralized setting, value-of-information reasoning improves allocative efficiency when competing estimates are accurate; when competing estimates are noisy, however, it can increase the strategic specialist\u2019s utility at the expense of others."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "5 Pandora\u2019s Bidder",
+          "text": "price is worth accepting, and whether or not to pay to observe a refined estimate before making this decision. Concretely, for a given query\ud835\udc65, the platform solicits\ud835\udc3a\ud835\udc57 from each of the\ud835\udc40\u22121nonstrategic specialists and sets the posted price as\ud835\udc5d=max \ud835\udc57\u2260\ud835\udc5a \ud835\udc3a\ud835\udc57. Note that the platform could incorporate a markup to extract profit, but here we simply use the best competing estimate. The strategic specialist\ud835\udc5athen faces a decision: accept the price (winning the right to answer the query, instead of the platform\u2019s choice), or decline (in which case the platform routes to the specialist that set the price). Specialist\ud835\udc5a begins with only the cheap estimate, which yields a predicted mean\ud835\udf07\ud835\udc5a(\ud835\udc65)=\u210e( f)\ud835\udc5a for \ud835\udc3a\ud835\udc5a, as in Equation (4). The expected gain from paying\ud835\udc50\ud835\udc5a to observe\ud835\udc3a\ud835\udc5a before responding to the price\ud835\udc5dis VoI(\ud835\udc5d)=\ud835\udd3c[(\ud835\udc3a \ud835\udc5a \u2212\ud835\udc5d)+]\u2212(\ud835\udf07 \ud835\udc5a \u2212\ud835\udc5d)+.(6) This is the difference in expected profit between deciding after observing\ud835\udc3a\ud835\udc5a and deciding based only on \ud835\udf07\ud835\udc5a. The structure mirrors the reservation price computation for Pandora\u2019s Router in 4, but with the price\ud835\udc5d playing the role of the outside option. When\ud835\udc5d is low relative to\ud835\udf07\ud835\udc5a, the specialist can confidently accept based on\ud835\udc53 alone; when\ud835\udc5dis high, the specialist can confidently decline. The value of information peaks when\ud835\udc5dis close to\ud835\udf07\ud835\udc5a and the correct action is uncertain. The conditionVoI(\ud835\udc5d)=\ud835\udc50 \ud835\udc5a defines aninterval [\ud835\udc5dlo,\ud835\udc5dhi]within which it is worth paying for the refined estimate (Parkes, 2005). Using the same Gaussian model as in Equations (4) and (5), the boundaries satisfy (\ud835\udf07\ud835\udc5a \u2212\ud835\udc5d)\u03a6(\ud835\udefc \ud835\udc5a)+\ud835\udf0e \ud835\udc5a \ud835\udf19(\ud835\udefc\ud835\udc5a)=\ud835\udc50"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "generation (3.61), whereas SFT and MLLM-as-a- Judge bring marginal gains and even degrade professionalism. This indicates that grounding rewards in verifiable medicalevidencesuppresseshallucinatedcontentandbetter elicitsthemedicalaccuracyalreadylatentinthebasemodel, rather than merely fitting the PMRI response style. Table 1: Main results on our medical report interpretation benchmark. Numbers are mean over 3 seeds with standard deviation. Method Subjective Metrics Objective Metrics OverallAccuracy Satisfaction Expression Precision (%) Recall (%) General LVLMs GPT-4o (Hurst et al. 2024) 1.588\u00b10.007 0.974\u00b10.007 0.358\u00b10.001 0.256\u00b10.001 95.26 42.63 ERNIE 4.5 VL (Baidu ERNIE Team 2025)1.709\u00b10.010 1.088\u00b10.012 0.376\u00b10.002 0.245\u00b10.000 95.27 53.74 GLM-4.6V (Team et al. 2026b) 1.819\u00b10.014 1.159\u00b10.013 0.395\u00b10.002 0.265\u00b10.001 95.90 59.51 Step-3.7-Flash (StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "3.2 Results",
+          "text": "The whole study sits in the lowest fifth of the scale.The mean score over the 290 cells is0.166, the strongest system averages0.250(Figure 2), and the single best configuration in the study, Claude Opus 5 at medium effort, averages0.288. Against a scale on which0.1is the algorithm each repository already ships and1 .0is the task optimum, that is a fifth of the distance at the very top and well under a tenth on average. In the other direction, 124 of the 290 cells fall below0.1: more than two fifths of the attempts leave the repository with something worse than what it had. None of this is legible in the raw units of Table 2, where lifting weight averaging by0.015of top-1 accuracy and taking a perplexity from53.4to13 .0are both simply cells that beat a baseline. Systems are ordered, and the ordering is compressed.Figure 2 separates the six cleanly \u2014 Claude Opus 5 at0.250, then GPT-5.6 Sol at0.191, Kimi K3 at0.174, Claude Sonnet 5 at0.145, GPT-5.6 Terra at 0.135and GPT-5.6 Luna at0 .117. But the entire range lies inside the bottom quarter of the scale, so the choice of system moves the number without moving the regime: the best system\u2019s average is closer to the weakest system\u2019s than it is to the optimum it was asked to approach. Spend does not explain the result.The cost column of Table 2 ranges about ninefold across systems on the same harness \u2014 a median configuration costs"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.5 Scoring",
+          "text": "of53.4is a cross-entropy oflog 53.4 = 3.98nats above a perfect predictor and one of16.2is2 .79nats above it, so the submission removed1.19of the3 .98nats that separated the repository\u2019s own recipe from the optimum. Every number in this paper that combines more than one task \u2014 a system\u2019s average, the study-wide mean \u2014 is a mean of\u03c3."
+        }
+      ],
+      "seconds": 5.3,
+      "prompt_tokens": 1774,
+      "answer_tokens": 29
+    },
+    {
+      "id": "q05",
+      "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+      "answer": "There are 10 frozen repositories and 10 families of training algorithms in AI4AI-Bench [1].",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[3] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "text": "AI4AI. To our knowledge, AI4AI-Bench is the first benchmark to make that step the object of evaluation: it removes the agent, reruns the submitted source from a clean start, and classifies the patch to verify whether the gain came from execution, data, or a change to the training algorithm itself."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.1 Task formulation",
+          "text": "Each task presents an agent with a research repository, a base model to start from, and an inexpensive proxy metric that can be evaluated freely during development 2.2. The agent is given 4 hours on one B300 GPU and a single objective: improve the training algorithm implemented in the repository. Its submission is neither a number nor a trained model, but the repository\u2019s source code after the agent\u2019s modifications. After submission, the agent can no longer modify or interact with the code. The submitted repository is then run from scratch under a fixed budget, and the resulting model is scored by a predetermined evaluator (2.3). Formally, a task is a tuple(C, a0, q, m, d), whereC is the repository\u2019s source in its frozen state,a0 the model it starts from,q an inexpensive proxy available to the agent,m the final metric, andd\u2208 {\u2191,\u2193}its direction. An agent observes(C, a0, q)under an exploration budgetTe = 4hours on one B300 GPU and returns a rewritten source C\u2032; it never evaluatesm. Execution ofC\u2032 under a verification budgetTv = 12hours yields a model Table 1 The ten AI4AI-Bench tasks.Each freezes a research repository and asks an agent to improve the training algorithm that repository applies to its own model.Starting modelis the modela0 the procedure begins with, and Evaluation metricthe quantity a fixed evaluator computes afterwards, with its direction. Between them the ten cover ten families of training algorithm rather than ten instances of one, and their metrics are"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "(StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11 Kimi K2.5 (Team et al. 2026a) 1.903\u00b10.002 1.221\u00b10.002 0.418\u00b10.001 0.264\u00b10.001 97.63 76.42 Gemini 3.1 Pro (Google DeepMind 2026)1.964\u00b10.008 1.229\u00b10.008 0.438\u00b10.003 0.297\u00b10.002 98.10 80.29 Medical LVLMs Hulumed (Jiang et al. 2025b) 1.020\u00b10.018 0.480\u00b10.013 0.282\u00b10.004 0.258\u00b10.002 72.28 32.65 Medgemma (Sellergren et al. 2026) 1.004\u00b10.005 0.460\u00b10.008 0.289\u00b10.004 0.255\u00b10.001 74.30 33.86 Lingshu (Xu et al. 2025) 1.527\u00b10.003 0.902\u00b10.002 0.357\u00b10.003 0.268\u00b10.002 89.69 39.41 Qwen-VL series Qwen3-VL-4B-Instruct (Base) 1.527\u00b10.010 0.897\u00b10.007"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "text": "family. We compare three sources of learning, each fed into the same skill creator. Raw demonstration passes the grounded trace directly, the workflow summary baseline (Wang et al., 2025) passes a phase-based summary of the demonstration, and Ourspasses the task model. ANo skillcondition bounds performance without any generated skill, and aHuman curatedcondition substitutes the expert-written skills released with the benchmark for a generated one. All skills are generated and all held-out instances executed with gpt-5-mini, so performance differences isolate the source of learning. We report the five SkillLearnBench metrics of skill coverage, executability, safety, agent trajectory alignment, and held-out task accuracy. 2The skill creation component of the Codex CLI agent, https://github.com/openai/codex. Table 5: Extrinsic evaluation on SkillLearnBench. Each row is a source of learning fed into the same skill creator. Cov. is skill coverage; Exec. is executability; Safe. is safety; Align. is agent trajectory alignment; Acc. is held-out task accuracy. All values are percentages (\u2191). No skill produces no generated artifact, so the skillquality columns are not applicable. Human curated baseline judges the expert-written skills released with the original benchmark. Skill quality Execution Source of learning Cov. Exec. Safe. Align. Acc. No skill N/A N/A N/A 59.20 8.57 Human curated 93.59 63.80 90.50 56.59 10.00 Raw demonstration 52.46"
+        }
+      ],
+      "seconds": 4.5,
+      "prompt_tokens": 1457,
+      "answer_tokens": 23
+    },
+    {
+      "id": "q06",
+      "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+      "answer": "The AI4AI-Bench time budget for an agent is 4 hours on one B300 GPU. [1]\n\nThe AI4AI-Bench time budget for the replay is 12 hours. [1]",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[3] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "text": "AI4AI. To our knowledge, AI4AI-Bench is the first benchmark to make that step the object of evaluation: it removes the agent, reruns the submitted source from a clean start, and classifies the patch to verify whether the gain came from execution, data, or a change to the training algorithm itself."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.1 Task formulation",
+          "text": "Each task presents an agent with a research repository, a base model to start from, and an inexpensive proxy metric that can be evaluated freely during development 2.2. The agent is given 4 hours on one B300 GPU and a single objective: improve the training algorithm implemented in the repository. Its submission is neither a number nor a trained model, but the repository\u2019s source code after the agent\u2019s modifications. After submission, the agent can no longer modify or interact with the code. The submitted repository is then run from scratch under a fixed budget, and the resulting model is scored by a predetermined evaluator (2.3). Formally, a task is a tuple(C, a0, q, m, d), whereC is the repository\u2019s source in its frozen state,a0 the model it starts from,q an inexpensive proxy available to the agent,m the final metric, andd\u2208 {\u2191,\u2193}its direction. An agent observes(C, a0, q)under an exploration budgetTe = 4hours on one B300 GPU and returns a rewritten source C\u2032; it never evaluatesm. Execution ofC\u2032 under a verification budgetTv = 12hours yields a model Table 1 The ten AI4AI-Bench tasks.Each freezes a research repository and asks an agent to improve the training algorithm that repository applies to its own model.Starting modelis the modela0 the procedure begins with, and Evaluation metricthe quantity a fixed evaluator computes afterwards, with its direction. Between them the ten cover ten families of training algorithm rather than ten instances of one, and their metrics are"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.2 Latent Task Induction Stability",
+          "text": "includes only successful runs. Dataset SubsetNJudge gpt-5.5 claude-sonnet-5 HumanWork All 38 94.74 89.47 SkillsBench All 74 93.24 98.65 By agent Claude Code 23 95.65 100.00 Codex 19 84.21 94.74 Gemini CLI 32 96.88 100.00 By skill None 21 95.24 95.24 Self-generated 13 84.62 100.00 Curated 40 95.00 100.00 identity without observing the dataset label. On successful SkillsBench runs, the overall match rate is 93.24%, with similar rates across most agent harnesses and skill conditions. The induced latent task set changes with the underlying assigned task rather than merely reflecting idiosyncratic execution traces. The claude-sonnet-5 judge yields consistently high match rates, 89.47% on human sessions and 98.65% on SkillsBench, and does not favor task models induced from Claude Code trajectories, indicating that the result is not an artifact of a single judge family."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.1 Latent Task Induction Robustness",
+          "text": "three trajectories per condition. The bottom row reports the overall mean. dARI\u2191MAE\u2193 2 0.980\u00b10.024 0.29\u00b10.34 3 0.975\u00b10.032 0.50\u00b10.60 4 0.968\u00b10.029 0.64\u00b10.61 Overall 0.974\u00b10.028 0.48\u00b10.54 meration. Both metrics are averaged across all trajectories per condition. Induction stays robust under heavy interleaving. Table 1 reports ARI and MAE aggregated over all task counts K\u2208 {2, . . . ,15}for each interleaving difficulty level. The system reaches 0.974 overall ARI, recovering non-contiguous task partitions even when activities are densely interwoven. MAE stays below 1 across all conditions, so the predicted task count tracks the true count as the number of concurrent tasks grows from 2 to 15. Appendix B.1 presents the error analysis."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "how many times,\ud835\udc41pr, in total\ud835\udc54\ud835\udc5a was queried over a test set (in hindsight), and then reallocate those\ud835\udc41pr inspections according to the following rules: \u2022 Random- \ud835\udc41pr:A simple control where\ud835\udc54\ud835\udc5a is randomly queried up to\ud835\udc41pr times over the entire test set; for every example we route to the best candidate among the randomly inspected options. We route toarg max\ud835\udc5a \ud835\udc53\ud835\udc5a as a default if no inspections were made for that example. \u2022 Margin- \ud835\udc41pr: An uncertainty-based heuristic that queries\ud835\udc54\ud835\udc5a for specialists whose\ud835\udc53-scores are close to being best: letting\ud835\udc5a\u2032=arg max\ud835\udc57 \ud835\udc53\ud835\udc57, if \ud835\udc53\ud835\udc5a\u2032 \u2212\ud835\udc53 \ud835\udc5a is small, we inspect both\ud835\udc54\ud835\udc5a and \ud835\udc54\ud835\udc5a\u2032. Again, we inspect\ud835\udc54\ud835\udc5a for at most\ud835\udc41pr specialists over the entire test set, and route to\ud835\udc5a\u2032as a default. Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation Method MATH RAG EmbedLLM Regret Cost Total Regret Cost Total Regret Cost Total f-only 0.117 0.000 0.117 0.150 0.000 0.150 0.393 0.000 0.393 g-only 0.090 0.038 0.128 0.084 0.057 0.141 0.370 1.986 2.356 Top-2 0.090 0.038 0.128 0.107 0.038 0.146 0.402 0.036 0.438 Coin Flip 0.107 0.019 0.127 0.122 0.029 0.151 0.398 0.992 1.390 Random-\ud835\udc41 pr 0.164 0.011 0.175 0.135 0.027 0.162"
+        }
+      ],
+      "seconds": 6.2,
+      "prompt_tokens": 1716,
+      "answer_tokens": 44
+    },
+    {
+      "id": "q07",
+      "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+      "answer": "The incommensurable AI4AI-Bench task metrics are normalized by mapping each task to one scale, with 0 being an uninformative model, 0.1 being the algorithm, and 1.0 being the task optimum. The mean score across 29 configurations of 6 systems on all 10 tasks is 0.166, and the best system reaches 0.250 [1].",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "2.2 AI4AI-Bench algorithmic tasks",
+          "text": "differently, and so does the baseline. The ten metrics are incommensurable: an aesthetic score, a perplexity, a solve rate, a pass rate, an unlearning balanced score. They cannot be averaged as they stand, and every per-task number in this paper is reported in its own units against its own baseline."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "text": "every task is mapped onto one scale on which0is an uninformative model,0.1is the algorithm the repository ships, and1.0 is the task optimum. Across 29 configurations of 6 systems on all 10 tasks the mean score is0.166, and the best system reaches0.250: even the strongest closes under a fifth of the distance between the algorithm that was already there and the optimum. The submissions show where that distance went: most never change how the model learns at all, and the minority that do average0.226against0 .126 for the rest. More reasoning effort mostly buys the willingness to go there, taking that minority from 8%of submissions to64%and the mean score from0 .094to0 .196. We release the task suite, the evaluators and every scored submission, so that the measurement can be repeated as these systems change. Date:August 21, 2026 Homepage:https://lab.einsia.ai/ai4ai Correspondence:nana@einsia.ai"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.1 Latent Task Induction Robustness",
+          "text": "three trajectories per condition. The bottom row reports the overall mean. dARI\u2191MAE\u2193 2 0.980\u00b10.024 0.29\u00b10.34 3 0.975\u00b10.032 0.50\u00b10.60 4 0.968\u00b10.029 0.64\u00b10.61 Overall 0.974\u00b10.028 0.48\u00b10.54 meration. Both metrics are averaged across all trajectories per condition. Induction stays robust under heavy interleaving. Table 1 reports ARI and MAE aggregated over all task counts K\u2208 {2, . . . ,15}for each interleaving difficulty level. The system reaches 0.974 overall ARI, recovering non-contiguous task partitions even when activities are densely interwoven. MAE stays below 1 across all conditions, so the predicted task count tracks the true count as the number of concurrent tasks grows from 2 to 15. Appendix B.1 presents the error analysis."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.2 Latent Task Induction Stability",
+          "text": "includes only successful runs. Dataset SubsetNJudge gpt-5.5 claude-sonnet-5 HumanWork All 38 94.74 89.47 SkillsBench All 74 93.24 98.65 By agent Claude Code 23 95.65 100.00 Codex 19 84.21 94.74 Gemini CLI 32 96.88 100.00 By skill None 21 95.24 95.24 Self-generated 13 84.62 100.00 Curated 40 95.00 100.00 identity without observing the dataset label. On successful SkillsBench runs, the overall match rate is 93.24%, with similar rates across most agent harnesses and skill conditions. The induced latent task set changes with the underlying assigned task rather than merely reflecting idiosyncratic execution traces. The claude-sonnet-5 judge yields consistently high match rates, 89.47% on human sessions and 98.65% on SkillsBench, and does not favor task models induced from Claude Code trajectories, indicating that the result is not an artifact of a single judge family."
+        }
+      ],
+      "seconds": 6.0,
+      "prompt_tokens": 1130,
+      "answer_tokens": 85
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "answer": "Submissions that change the learning algorithm average 0.226 against 0.126 for those that do not change the algorithm, indicating that changing the learning algorithm results in a higher score. [1]\n\nThe provided papers do not address the question of how submissions that change the learning algorithm compare with those that do not change the learning algorithm. Instead, they cover the design of the AI4AI-Bench, a benchmark that isolates the algorithmic level, and the results of numerical experiments on a different problem, including the performance of a routing algorithm.",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[3] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "text": "Everything so far has been a score, and a score says only whether a submission worked. It does not say whether the agent designed an algorithm or tuned one that was already there, and those are the two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line diff can replace a learning rule, and a thousand-line refactor can leave the training procedure exactly as it was. The distinction has to be read off the submitted code, by asking which part of the training procedure it modifies. We group every change into eight families on two sides of that line (Table 4). The grouping is assigned by a separate language model reading each submitted diff against the definitions that follow. Four changehow this run goes: how long it trains and how often it saves; the training hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to keep; and how much trainable capacity to attach and where, such as the rank and placement of an adapter. Four changehow the model learns: the loss it optimizes, by adding, removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure did not have before; the update rule itself, replaced by a different one; and the data the procedure trains on. The families are not exclusive \u2014 a submission matches3.13of them on average, since changing a loss usually drags a hyperparameter along with it \u2014 so we report how many submissions reach a side rather than assigning each to a single family. Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay entirely on the run"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "1 Introduction",
+          "text": "optimum. The submissions say where the remaining distance went. Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it \u2014 the objective, the supervision signal, the learning rule, the data \u2014 average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes that mechanism; few of these submissions do. In summary, we make the following contributions: \u2022 A benchmark that isolates the algorithmic level.Ten research repositories spanning ten families of training algorithms, evaluated under a unified protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring. \u2022 A measurement of what agentsdo, not only whether they win.Every submission is classified by what it changes, which is what turns \u201cthe agent improved the training algorithm\u201d into a checkable statement rather than a restatement of the score. \u2022 Revealing a gap between algorithmic exploration and actual improvement.The algorithmic design level is where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "E Tarasova, V. Erofeeva, O. Granichin, and K. Chernikov",
+          "text": "However, this does not account for amortization of the embedding cost\ud835\udc50\ud835\udc53 across target models, which would be most significant in this domain because it has the largest number of models. D.4. Numerical results and significance tests Numerical results and significance tests for the routing evaluations are shown in Tables 3, 4, and 5. In each table, bold indicates the lowest regret + inspection cost, asterisk indicates a statistically significantimprovementoverallalternativesat \ud835\udc5d < .05byapairedbootstraptest. Theseresultspresent a consistent picture: Pandora\u2019s router is in the argmin of regret at nearly every cost level. At low costs, itmatches \ud835\udc54-always; athighcostsitmatches \ud835\udc53-only; atintermediatecosts, itoftenoffersthebestregret, although this difference is usually not statistically significant with respect to all alternatives. D.5. Alternative algorithm We build on prior work on non-obligatory inspection Beyhaghi and Kleinberg (2019), which differs slightly from Algorithm 1: instead of using\ud835\udc62backup \ud835\udc5a in lines 6, 8, and 9, they use\ud835\udf07\ud835\udc5a.In low-cost settings, we have\ud835\udc62backup \ud835\udc5a < \ud835\udc38[\ud835\udc49\ud835\udc5a]=\ud835\udf07 \ud835\udc5a, which means that in these settings, our variant of the algorithm is less likely to commit to non-inspection and is therefore more aligned with Pandora-OI. In high-cost settings, \ud835\udc62backup \ud835\udc5a > \ud835\udc38[\ud835\udc49\ud835\udc5a]=\ud835\udf07 \ud835\udc5a, which means that in these settings, our variant is more likely to commit to non-inspection and is therefore more similar to\ud835\udc54-always. Empirically, our variant is slightly Pandora\u2019s AI"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "text": "92.674.9 88.5 w/o objective model 3.37 3.76 77.9 85.1 63.2 84.1 w/o procedure model3.744.34 78.9 96.7 N/A N/A w/o reconciliation 3.664.40 99.1 99.156.0 70.3 claude-sonnet-5 judge Workflow summary 2.46 2.71 93.2 92.8 68.6 N/A Direct gen.3.533.18 85.6 75.3 47.8 78.3 Ours 3.45 3.68 97.297.2 87.8 91.8 w/o objective model 3.21 3.55 81.1 89.7 76.6 80.5 w/o procedure model3.763.74 90.4 95.4 N/A N/A w/o reconciliation 3.533.97 100.096.9 87.3 87.0 tasks. SkillLearnBench contains 20 task families, each grouping multiple tasks of a similar nature that can be addressed with similar strategies. For each task family we induce a task model from a single successful demonstration of one instance and pass it to the skill creator of Codex,2 which synthesizes a reusable skill. The skill is scored against the SkillLearnBench rubric and then deployed on heldout instances of the same family. We compare three sources of learning, each fed into the same skill creator. Raw demonstration passes the grounded trace directly, the workflow summary baseline (Wang et al., 2025) passes a phase-based summary of the demonstration, and"
+        }
+      ],
+      "seconds": 9.2,
+      "prompt_tokens": 1823,
+      "answer_tokens": 112
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "answer": "TMI recovers two kinds of task structure: \n\n* Semantic actions and activities \n* Objective and procedure models",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "3 Method",
+          "text": "TMI recovers task models from raw computer-use traces in three stages (Figure 2).Event grounding and activity segmentationrecovers what each event did from its visual context and groups the grounded events into semantic actions and activities (3.1). Latent task inductiondiscovers the tasks pursued in the session and assigns each activity to the task it realizes (3.2).Task model constructionbuilds complementary objective and procedure models for each task and reconciles them into a single task model, in which every node pairs an objective with the control-flow operator over its children (3.3)."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "7 Conclusion",
+          "text": "We introduced TASKMODELINDUCTION, which abstracts raw computer-use events into activities, discovers the latent tasks they realize, and reconciles separately induced objective and procedure models into one task model per task. It turns everyday computer-use activity traces into durable, auditable records of how work are carried out. Experiments show that this representation recovers interleaved execution faithfully and yields better downstream agent skills than raw traces or workflow summaries. TMI has the potential to facilitate the study of how work is carried out across domains and to make these records reusable as knowledge for both people and agents."
+        }
+      ],
+      "seconds": 1.9,
+      "prompt_tokens": 542,
+      "answer_tokens": 23
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "answer": "The system recovers non-contiguous task partitions even when activities are densely interwoven, with an overall ARI of 0.974. [1]",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[2] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "4.1 Latent Task Induction Robustness",
+          "text": "three trajectories per condition. The bottom row reports the overall mean. dARI\u2191MAE\u2193 2 0.980\u00b10.024 0.29\u00b10.34 3 0.975\u00b10.032 0.50\u00b10.60 4 0.968\u00b10.029 0.64\u00b10.61 Overall 0.974\u00b10.028 0.48\u00b10.54 meration. Both metrics are averaged across all trajectories per condition. Induction stays robust under heavy interleaving. Table 1 reports ARI and MAE aggregated over all task counts K\u2208 {2, . . . ,15}for each interleaving difficulty level. The system reaches 0.974 overall ARI, recovering non-contiguous task partitions even when activities are densely interwoven. MAE stays below 1 across all conditions, so the predicted task count tracks the true count as the number of concurrent tasks grows from 2 to 15. Appendix B.1 presents the error analysis."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.1 Latent Task Induction Robustness",
+          "text": "density grow. Setup.To test robustness under varying degrees of task multiplicity and interleaving density, we construct synthetic multi-task trajectories from the HumanWork (Wang et al., 2025) sessions, each of which records one task carried out end to end. We sample K sessions, cut each into d contiguous segments, and shuffle the segments into one composite trajectory, so every task reappears at d non-contiguous points. Larger K means more concurrent tasks and larger d means more frequent switching between them. We sweepK from 2 to 15 and d from 2 to 4, generating three independent trajectories per condition, and full construction details are in Appendix B. Each trajectory is processed through the full grounding and segmentation stage (3.1) followed by latent task induction (3.2). The system produces a predicted task count \u02c6K and an assignment of activities to predicted tasks. We assess task assignment with the Adjusted Rand Index (Hubert and Arabie, 1985) ( ARI), which measures pairwise agreement between predicted and groundtruth partitions of activities after correcting for chance (range [\u22121,1] , higher is better) and task count with mean absolute error MAE=| \u02c6K\u2212K| , where lower values indicate more precise task enu- Table 1: Latent task induction performance by interleaving difficulty d (number of segments per session), averaged over K\u2208 {2, . . . ,15}and three trajectories per condition. The bottom row reports the overall mean. dARI\u2191MAE\u2193 2 0.980\u00b10.024 0.29\u00b10.34 3 0.975\u00b10.032"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "text": "every task is mapped onto one scale on which0is an uninformative model,0.1is the algorithm the repository ships, and1.0 is the task optimum. Across 29 configurations of 6 systems on all 10 tasks the mean score is0.166, and the best system reaches0.250: even the strongest closes under a fifth of the distance between the algorithm that was already there and the optimum. The submissions show where that distance went: most never change how the model learns at all, and the minority that do average0.226against0 .126 for the rest. More reasoning effort mostly buys the willingness to go there, taking that minority from 8%of submissions to64%and the mean score from0 .094to0 .196. We release the task suite, the evaluators and every scored submission, so that the measurement can be repeated as these systems change. Date:August 21, 2026 Homepage:https://lab.einsia.ai/ai4ai Correspondence:nana@einsia.ai"
+        }
+      ],
+      "seconds": 3.9,
+      "prompt_tokens": 1127,
+      "answer_tokens": 33
+    },
+    {
+      "id": "q11",
+      "query": "How much of observed execution does TMI reconstruct?",
+      "answer": "The provided passages do not address this question. The passages cover the three stages of TMI (Event grounding and activity segmentation, Latent task induction, and Task model construction) and some limitations of the method, including the potential for personally identifiable information to be included in the induced artifacts.",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "3 Method",
+          "text": "TMI recovers task models from raw computer-use traces in three stages (Figure 2).Event grounding and activity segmentationrecovers what each event did from its visual context and groups the grounded events into semantic actions and activities (3.1). Latent task inductiondiscovers the tasks pursued in the session and assigns each activity to the task it realizes (3.2).Task model constructionbuilds complementary objective and procedure models for each task and reconciles them into a single task model, in which every node pairs an objective with the control-flow operator over its children (3.3)."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Limitations",
+          "text": "TMI operates on naturalistic computer-use traces that may contain personally identifiable information. Future deployments that apply this method to raw computer-use traces should consider privacy redaction of screenshots and keyboard events before induction, so that private and sensitive content does not propagate into induced artifacts distributed for downstream uses such as skill learning. Studying the effect of such redaction on the induction quality is left to future work. Ethics Statement This work uses three publicly available datasets, which are all released for research use. We use them as released and do not attempt to identify any individual user. The synthetic multi-task trajectories constructed for the robustness evaluation are assembled by merging segments of these existing public sessions; no new data collection involving human subjects was conducted. Skill generation and agent evaluation are performed on benchmark tasks with no access to private user data. We do not foresee direct harms from this work."
+        }
+      ],
+      "seconds": 3.1,
+      "prompt_tokens": 591,
+      "answer_tokens": 58
+    },
+    {
+      "id": "q12",
+      "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+      "answer": "The held-out task accuracy gain from skills derived from TMI is 18.57, as reported in Table 5 of [1].",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[2] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[3] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "5 Extrinsic Evaluation",
+          "text": "Exec. Safe. Align. Acc. No skill N/A N/A N/A 59.20 8.57 Human curated 93.59 63.80 90.50 56.59 10.00 Raw demonstration 52.46 53.4992.5263.15 11.43 Workflow summary 54.07 59.35 91.74 66.18 14.29 Ours54.95 67.6590.5767.99 18.57 The task model is an effective representation for skill transfer.Skills generated from our task models are more executable and transfer better to held-out tasks than skills generated from raw demonstrations or workflow summaries. As shown in Table 5, our model improves executability from 59.35 to 67.65 and held-out accuracy from 14.29 to 18.57 over the strongest baseline, a 30% relative accuracy gain. The expert-written skills score highest on skill coverage at 93.59 but reach 10.00 held-out accuracy, below every induced source, so skill coverage and held-out accuracy do not move together in this setting. We report the curated condition as a reference point for skill quality rather than as an upper bound on accuracy."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.2 Latent Task Induction Stability",
+          "text": "The induced latent task set should reflect the actual task being performed and remain stable across different execution strategies. Since induction never observes the task label, agreement with the assigned task indicates that induced tasks capture task identity rather than execution idiosyncrasies. Metric.We evaluate on all 38 Human- Work (Wang et al., 2025) sessions and on the SkillsBench runs whose task outcome is marked successful. For each run i, TMI observes only the trajectory and produces an induced latent task set Ti. The dataset\u2019s ground-truth assigned task yi is withheld from induction and used only for evaluation. We give Ti and yi to the LLM judge, which returns a binary label indicating whether the induced task set correctly captures the assigned task. We report the average match rate across runs. To control for judge-family bias, we repeat the evaluation with judges from two model families, gpt-5.5 and claude-sonnet-5. Induced tasks track task identity, not execution idiosyncrasies.Table 2 reports match rates for both datasets. On human sessions, the induced task set matches the assigned task in 94.74% of runs, indicating that induction recovers the task Table 2: Latent task identity match rate (%). Each judge compares the induced task set with the held-out assigned task. We report results from gpt-5.5 and claude-sonnet- 5. SkillsBench includes only successful runs. Dataset SubsetNJudge gpt-5.5 claude-sonnet-5 HumanWork All 38 94.74 89.47 SkillsBench All 74 93.24 98.65 By agent Claude Code 23"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.2 AI4AI-Bench algorithmic tasks",
+          "text": "differently, and so does the baseline. The ten metrics are incommensurable: an aesthetic score, a perplexity, a solve rate, a pass rate, an unlearning balanced score. They cannot be averaged as they stand, and every per-task number in this paper is reported in its own units against its own baseline."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "text": "T erra GPT-5.6 Luna 0.0 0.1 0.2 0.3 0.4 0.5mean score .27 .29 .28 .19 .22 .10 .11 .22 .14 .16 .17 .13 .20 .14 .24 .20 .25 .06 .11 .13 .13 .14 .23 .09 .08 .12 .12 .15 .14 none low medium high xhigh max 0.1 = the algorithm the repository ships Figure 2 Mean score by system and reasoning effort.One group per model, one bar per effort level, each the mean of that configuration\u2019s ten task scores; deeper colour is more effort. The dashed line at0.1is the algorithm each repository already ships. Kimi K3 was run at a single level. Every system in the study sits inside the lowest fifth of the scale, and no system rises monotonically with effort. that says in as many words to improve this training algorithm, and more than half of the submissions never reach that layer. Do the submissions that reached it do better? On the scale of 2.5 they do, and by a wide margin: submissions that touch the learning procedure average0.226against0 .126for those that stay on the run side, a gap of 0.100against a standard error of0.022. It is not the artifact of a single task \u2014 dropping agentic RL, where imitation learning lifts the whole column, still leaves0.182against0 .128\u2014 nor of a single system, since the 0.000 0.025 0.050 0.075 0.100"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "4.3 Data Modeling Agent: Modeling and LLM Setup",
+          "text": "to random-guessing baselines of 20.0% for the five-class task and 50.0% for the binary task. The full traditional-model estimates and LLM experiments are reported in Section 5. Figure 3: Sample profile of survey respondents."
+        }
+      ],
+      "seconds": 5.5,
+      "prompt_tokens": 1515,
+      "answer_tokens": 29
+    },
+    {
+      "id": "q13",
+      "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+      "answer": "The provided papers do not address this question.\n\nThe passages cover an agentic approach for active data collection, travel behavior modeling, and weather-sensitive demand prediction, including a multi-agent framework for commuter travel-behavior research.",
+      "source_list": "[1] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20320",
+          "section": "1 Introduction",
+          "text": "Understanding and predicting travel behavior is a fundamental component of transportation planning, encompassing interrelated decisions regarding when, where, and how individuals travel. Among these decisions, mode choice is particularly consequential because it determines how demand is distributed across transportation systems and influences infrastructure needs, environmental impacts, andtheeffectivenessofpoliciesaimedatencouragingsustainablemobility(McFadden,1974; Ben-Akiva and Lerman, 1985). Mode choice is shaped not only by individual and alternative-specific characteristics but also by the context in which travel occurs. Weather is an important example, as precipitation, extreme temperatures, and adverse road conditions can alter the attractiveness of walking and cycling and shift travelers toward transit or private vehicles, with effects that vary across individuals and seasons (Hyland et al., 2018; B\u00f6cker et al., 2013; Saneinejad et al., 2012). Understanding such context-dependent responses therefore requires approaches capable of capturing heterogeneous travel behavior under conditions that may not be adequately represented in observed travel data. Collecting behavioral data that capture these contextual variations remains challenging. Traditional travel surveys, whether administered through interviews, paper questionnaires, or static web forms, can be costly and time-consuming to implement and scale (Krueger et al., 2016; Bansal and Kockelman, 2018). Stated-preference (SP) surveys provide an important alternative by allowing researchers to examine choices under controlled or hypothetical conditions, including weather scenarios that may be difficult to observe systematically in revealed-preference data. However, conventional SP instruments typically describe such situations using fixed textual descriptions, requiring respondents to construct the intended context themselves and limiting the incorporation of richer"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "results",
+          "text": "Iterative feedback Survey refinement Processing refinement Modeling refinement Figure 1: Multi-agent framework for commuter travel-behavior research. Solid arrows denote forward data and artifact flows, whereas dashed arrows denote refinements implemented in a subsequent workflow iteration. from survey design through data processing to behavioral prediction on a common empirical dataset. The present paper addresses this gap by instantiating the three stages as specialized agents and applying them to the same commuter mode-choice dataset. Note:The table summarizes functions supported by the general framework. The subset implemented in the present case study is described in Section 4. capture; it does not refer to active learning or adaptive sampling. Weather-sensitive demand prediction refers to individual mode-choice prediction across the five predefined weather scenarios. The framework follows the information flow: Q Acol(\u00b7;ucol) \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Draw,Bcol) Apro(\u00b7,E;upro) \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Dpro,Zpro) Amod(\u00b7;umod) \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192 \u0010 cM,Rmod \u0011 (1) whereQdenotes the researcher-defined survey specification;u col,u pro, andu mod denote the user instructions provided to the three agents;Draw is the collected raw dataset;Bcol is the survey deployment package; E represents optional external data;Dpro is the processed dataset; Zpro contains supplementary processing outputs;cM is the fitted model or set of models; andRmod contains model estimates, predictions, diagnostics, and evaluation results. Equation (1) represents one forward execution pass. The dashed arrows in Figure"
+        }
+      ],
+      "seconds": 4.0,
+      "prompt_tokens": 996,
+      "answer_tokens": 45
+    },
+    {
+      "id": "q14",
+      "query": "Which travel modes responded most clearly to adverse weather and snow?",
+      "answer": "The travel modes that responded most clearly to adverse weather and snow are cycling and public transit. According to the passage, the coefficients for cycling are negative under Rainy, Foggy/cold, and Snowy conditions, indicating lower relative utility for cycling under these weather scenarios. Similarly, the coefficient for public transit is positive under Hot-humid conditions, but the passage does not provide information on how public transit responds to other adverse weather conditions.",
+      "source_list": "[1] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20320",
+          "section": "2.1 Travel Behavior and Mode Choice",
+          "text": "Mode choice is one of the oldest and most heavily modeled problems in transportation research, and the multinomial logit (MNL) model has been its dominant framework for decades (McFadden, 1974; Ben-Akiva and Lerman, 1985). Grounded in random utility theory, MNL and its extensions such as nested and mixed logit remain the standard tool for estimating how travel time, cost, and individual characteristics translate into a discrete travel choice, in large part because their coefficients admit a direct behavioral interpretation (Train, 2009). Machine learning (ML) classifiers, including random forests, gradient boosting, and support vector machines, have become an increasingly common complement to discrete choice models. Comparative studies have repeatedly found that ML classifiers can match or exceed MNL on predictive accuracy, particularly when the feature set is large or the choice set is imbalanced, though the resulting models are harder to interpret in behavioral terms (Hensher and Ton, 2000; Ali and Fissha, 2026). Both model families face a common challenge: traveler preferences are not fixed but vary with weather, season, the built environment, and individual heterogeneity. Weather in particular has a well-documented association with active-mode choice, with cold, wet, and low-visibility conditions suppressing walking and cycling and shifting travelers toward transit or driving (B\u00f6cker et al., 2013; Saneinejad et al., 2012; Hyland et al., 2018). Capturing this sensitivity often requires stated-preference (SP) methods that vary conditions directly, because revealed-preference data may not span the full range of weather a respondent might encounter (Bansal and Kockelman,"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "5.1.2 Discrete Choice and Machine-Learning Models",
+          "text": "The MNL model provides an interpretable benchmark for the weather-related mode-choice patterns observed descriptively. The expanded specification includes weather-scenario indicators, mobility resources, cycling experience, age, household income, and self-rated weather importance, and significantly improves model fit relative to the baseline specification (LR= 53.92, d f= 8, p < 0.0001). With Walking and Sunny weather as the reference categories, the coefficients indicate lower relative utility for cycling and higher relative utility for public transit and driving under adverse scenarios. The Cycling coefficients are negative under Rainy (\u03b2 = \u22120.856, p = 0.044), Foggy/cold (\u03b2 = \u22121.166, p = 0.012), and Snowy conditions (\u03b2 = \u22121.820, p = 0.009), with the Figure 4: Stated mode share across weather scenarios (left) and change in mode share relative to the Sunny scenario, in percentage points (right). Table 2: Selected Multinomial Logit Coefficients (Reference Mode: Walking; Reference Weather: Sunny) Mode Covariate Coef. Rob.t p Cycling Rainy (vs. Sunny)\u22120.856\u22122.01 0.044 Cycling Foggy/cold (vs. Sunny)\u22121.166\u22122.52 0.012 Cycling Snowy (vs. Sunny)\u22121.820\u22122.63 0.009 Cycling Owns bicycle 1.219 2.06 0.039 Cycling Cycling experience (yrs.) 0.341 2.67 0.008 Public Transit Hot\u2013humid (vs. Sunny) 0.518 2.17"
+        }
+      ],
+      "seconds": 6.1,
+      "prompt_tokens": 1041,
+      "answer_tokens": 89
+    },
+    {
+      "id": "q15",
+      "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+      "answer": "The best text-only zero-shot LLM achieved a five-class accuracy point estimate of 69.9%, while random forest achieved 71.5% [1].",
+      "source_list": "[1] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320\n[2] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316",
+      "passages": [
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "text": "labeled travel-behavior data are limited, although the small sample and multiple evaluated configurations require cautious interpretation. The five-class task provides a clearer assessment of whether models distinguish among individual modes. Vision-based prediction.The vision experiments directly connect the survey and prediction stages of the multi-agent workflow by providing the models with the same generated weather images shown to respondents. The best vision-based configuration achieved a five-class accuracy point estimate of 71.5%, compared with 69.9% for the highest text-only zero-shot LLM result and 69.6% for random forest. These small differences should be interpreted as descriptive point-estimate differences rather than evidence of statistical superiority. Vision combined with few-shot prompting also produced gains for selected models. Because each weather condition was represented by one fixed image, the results indicate that these specific images provided additional predictive signal for selected models; they do not establish generalization to unseen weather images or visual environments. Limitations and future research.The findings should be interpreted in light of several limitations. The sample consists of 92 students from one university and is not representative of the wider population. The analysis is based on stated choices rather than observed travel under actual weather conditions, and uncontrolled visual features within the generated images may have influenced both respondents and models. Each weather condition was represented by one fixed image, so weather condition and image identity were not separately identified. The relatively small and imbalanced dataset also limits detailed analysis of minority modes and traveler subgroups, while the results may vary across other LLM families and inference settings. The framework itself was not experimentally compared with a conventional research workflow; its contribution therefore concerns integration, traceability, and modularity rather than a measured"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "5.1.2 Discrete Choice and Machine-Learning Models",
+          "text": "the five-class mode-choice task and 88.8% for the binary active-versus-non-active task. Logistic regression reached 60.2% and 85.1%, respectively, while the MNL achieved 44.7% five-class and 81.2% binary accuracy. The five-class results show a predictive advantage for the machine-learning models, particularly random forest, whereas the smaller differences in binary accuracy should be interpreted in light of the strong majority-class imbalance. These findings highlight complementary roles: the MNL provides behaviorally interpretable evidence on weather scenarios and traveler characteristics, whereas the ML models provide stronger data-trained benchmarks for the LLM experiments that follow."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "E Tarasova, V. Erofeeva, O. Granichin, and K. Chernikov",
+          "text": "generate responses using Gemini-3.1-Flash-Lite. Prompts are shown in Appendix C.2. We use 4 few-shot examples per dataset (16 total) in order to prompt the LLM to generate answers in the right format. The responses are judged for correctness against the ground-truth answers given in each dataset. For each question, we sample8responses and score each for correctness. The reward is the average correctness score, less a constant cost penalty of0.05 for systems that use retrieval (i.e., Wikipedia and Pubmed specialists). This cost value was chosen to make the routing problem non-trivial (i.e., the model without retrieval can compete when retrieval is not necessary). To avoid false negatives inherent in exact string matching, we use Gemini-3.1-Flash as an LLM-as-a-judge using the same annotation prompt as Sun et al. (2024) (Appendix A.1, Prompt 2), which was measured to have very strong agreement with human judgements (98%). EmbedLLM.The EmbedLLM dataset is composed of questions from benchmarks such as GPQA (Rein et al., 2023), GSM8K (Cobbe et al., 2021), and MMLU (Hendrycks et al., 2020), along with the scores from123models(Zhuangetal.,2025). Weusethisdatasetwithoutmodification. FollowingJitkrittum et al. (2025), we set the model costs a linear multiple of the number of parameters."
+        }
+      ],
+      "seconds": 4.2,
+      "prompt_tokens": 1179,
+      "answer_tokens": 34
+    },
+    {
+      "id": "q16",
+      "query": "What was the best vision-based travel mode prediction accuracy?",
+      "answer": "The provided papers do not address this question.\n\nThe passages cover the evaluation of various models for patient-oriented medical report interpretation, including the G-CARL model, and the comparison of different models' performance on various tasks.",
+      "source_list": "[1] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320\n[2] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[3] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331",
+      "passages": [
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "text": "and traveler subgroups, while the results may vary across other LLM families and inference settings. The framework itself was not experimentally compared with a conventional research workflow; its contribution therefore concerns integration, traceability, and modularity rather than a measured reduction in survey cost or processing effort. In addition, the configuration comparisons were exploratory, and the highest reported accuracy may partly reflect the evaluation of multiple models and prompt settings on the same sample. Future research could evaluate the workflow with larger and more diverse samples, additional trip purposes and locations, and revealed-preference validation. Controlled image experiments could isolate the effects of weather, road condition, and surrounding environment. Further work could also examine prediction calibration, subgroup performance, and transferability across populations. The multi-agent workflow could support adaptive surveys and carefully validated synthetic respondents, but such outputs should be validated against human behavior before being used in transportation planning or policy analysis."
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "6 Discussion",
+          "text": "The MNL estimates were consistent with these descriptive patterns, showing lower relative utility for cycling-related modes and higher relative utility for transit and driving under adverse scenarios. This agreement supports the internal coherence of the survey responses, although it does not by itself establish external validity or actual travel behavior under observed weather. LLM configuration and comparison with conventional models.LLM performance was strongly influenced by the information included in the prompt. RC, which adds habitual travel information to BC, produced the most consistent improvement, showing that habitual travel behavior contains predictive information not fully captured by demographics and mobility resources. EXP framing generally outperformed RP, particularly for smaller models, while gains from increasing model size diminished among larger models. Persona augmentation and few-shot prompting were most useful when they supplied missing information. Persona descriptions improved prediction mainly under BC, where habitual travel information was unavailable, but added little under RC. Few-shot examples improved five-class accuracy for several models, particularly smaller ones, although the gains generally stabilized after a small number of demonstrations. The conventional and LLM-based models therefore play complementary roles. The MNL provides behavioral interpretation, while logistic regression and random forest offer data-trained predictive benchmarks. Random forest achieved the highest trained-model accuracy, while the best zero-shot LLM produced a comparable five-class point estimate without task-specific fitting to the survey records. This result suggests potential value for LLM-based prediction when labeled travel-behavior data are limited, although the small sample and multiple evaluated configurations require cautious interpretation. The five-class task provides a clearer assessment of whether models distinguish among individual modes. Vision-based prediction.The vision experiments directly connect the survey and"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "E Tarasova, V. Erofeeva, O. Granichin, and K. Chernikov",
+          "text": "1.002 16.887 0.393 0.3930.391 Table 5|Numerical results on EmbedLLM routing. Bold indicates lowest regret + inspection cost, asterisk indicates significance at\ud835\udc5d < .05(paired bootstrap). 10\u22122.5 10\u22122 10\u22121.5 0.1 0.11 0.12 0.13 Cost Regret + Inspection Cost math 10\u22122 10\u22121.5 0.1 0.12 0.14 0.16 0.18 Cost RAG 10\u22125 10\u22124 10\u22123 10\u22122 10\u22121 0.38 0.4 0.42 0.44 Cost embedllm \ud835\udc53-only \ud835\udc54-always Pandora-NI (BK) Pandora NI Figure 7|Evaluation of the Beyhaghi and Kleinberg (2019) algorithm, which uses\ud835\udf07\ud835\udc5a instead of \ud835\udc62backup \ud835\udc5a for evaluating committing policies. superior to the original algorithm, as shown in Figure 7. D.6. Non-Gaussian signal models Our implementation models\ud835\udc54|\ud835\udc53 as a conditional Gaussian, but real value distributions are bounded in , so a Gaussian may not be an appropriate model. For this reason, we also experimented using K-NN on the vector of\ud835\udc53-scores to estimate local conditional mean and local standard deviation directly from the neighborhood of\ud835\udc53. For\ud835\udc3e= 16this indeed improved calibration metrics somewhat: empirical coverage of the\u00b11\ud835\udf0einterval ranged between 58.7% (RAG) \u2013 78.1% (MATH) for Gaussian, and 63.0% (RAG) \u2013 74.8% (MATH) for KNN (theoretical target:68.27%). For the\u00b12\ud835\udf0einterval, the range"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "(StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11 Kimi K2.5 (Team et al. 2026a) 1.903\u00b10.002 1.221\u00b10.002 0.418\u00b10.001 0.264\u00b10.001 97.63 76.42 Gemini 3.1 Pro (Google DeepMind 2026)1.964\u00b10.008 1.229\u00b10.008 0.438\u00b10.003 0.297\u00b10.002 98.10 80.29 Medical LVLMs Hulumed (Jiang et al. 2025b) 1.020\u00b10.018 0.480\u00b10.013 0.282\u00b10.004 0.258\u00b10.002 72.28 32.65 Medgemma (Sellergren et al. 2026) 1.004\u00b10.005 0.460\u00b10.008 0.289\u00b10.004 0.255\u00b10.001 74.30 33.86 Lingshu (Xu et al. 2025) 1.527\u00b10.003 0.902\u00b10.002 0.357\u00b10.003 0.268\u00b10.002 89.69 39.41 Qwen-VL series Qwen3-VL-4B-Instruct (Base) 1.527\u00b10.010 0.897\u00b10.007"
+        }
+      ],
+      "seconds": 5.8,
+      "prompt_tokens": 1672,
+      "answer_tokens": 45
+    },
+    {
+      "id": "q17",
+      "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+      "answer": "The patient-oriented medical report interpretation task introduced with G-CARL requires both evidence-grounded medical factuality and context-dependent patient communication [1].",
+      "source_list": "[1] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331",
+      "passages": [
+        {
+          "paper_id": "2608.20331",
+          "section": "Front Matter",
+          "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation Shiao Xie1 , Siyu Chen1 , Jianwei Lv1, Bo Yuan1, Yujin Wang1 , Xiandong Li1 1Baidu Inc., China"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "5 Conclusion",
+          "text": "In this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework that decomposes reward supervision through retrieval-grounded claim verification and case-specific checklist guidance. ExtensiveexperimentsonthenewlyconstructedMMedReport benchmark, together with clinician-authored evaluation and human preference studies, show that G-CARL consistently improves the quality of patient-oriented medical report interpretation.Wehopethisworklaysthefoundationformore reliable and patient-centered multimodal medical assistants."
+        }
+      ],
+      "seconds": 1.9,
+      "prompt_tokens": 509,
+      "answer_tokens": 30
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "answer": "G-CARL assigns reward mechanisms according to the verifiability boundary of each objective [1]. For externally verifiable medical factuality, it decomposes each response into atomic medical claims, retrieves supporting evidence from the uploaded report and a multisource medical datastore, and evaluates each claim for factual support and contextual relevance [1]. This claim-level reward provides localized supervision for sparse factual errors and discourages unsupported elaboration [1].",
+      "source_list": "[1] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[2] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[3] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20331",
+          "section": "1 Introduction",
+          "text": "reward, making the supervision coarse and highly dependent on the judge model\u2019s medical knowledge. As a result, localized hallucinations may be overlooked when the overall response appears fluent and plausible, despite the fact that a single unsupported medical claim can fundamentally mislead patients. Recent work has introduced rubric-based rewards to provide more structured supervision (Arora et al. 2025; Gunjal et al. 2025). However, static rubrics remain insufficientforPMRIbecauseevaluationprioritiesvarysubstantially across cases. PMRI errors often stem not from entirely incorrect responses, but from omitting case-critical information or emphasizing secondary details while overlooking the most important clinical recommendations and user concerns. Since static rubrics are designed to capture generic response quality, they are often insensitive to these case-specific omissions and misplaced emphases. Toaddressthesechallenges,weproposeG-CARL,areinforcement learning framework with retrieval-grounded and checklist-guided rewards. G-CARL assigns reward mechanisms according to the verifiability boundary of each objective. For externally verifiable medical factuality, it decomposes each response into atomic medical claims, retrieves supporting evidence from the uploaded report and a multisourcemedicaldatastore,andevaluateseachclaimforfactual support and contextual relevance. This claim-level reward provides localized supervision for sparse factual errors and discouragesunsupportedelaboration.Forcontext-dependent objectives such as demand satisfaction and expression quality,G-CARLconstructsinstance-specificweightedchecklists"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "1 Introduction",
+          "text": "reward provides localized supervision for sparse factual errors and discouragesunsupportedelaboration.Forcontext-dependent objectives such as demand satisfaction and expression quality,G-CARLconstructsinstance-specificweightedchecklists throughMLLMgenerationfollowedbyclinicianrefinement. Each checklist item is assigned an automatically generated weight, allowing the reward to emphasize the aspects most relevant to the current report and user question. This yields an explicit checklist score that provides transparent supervision for whether the response addresses the user\u2019s concern appropriately. In summary, our contributions are as follows: \u2022WeformulatePMRIasanevidence-groundedandpatientfacingmultimodalgenerationtask,andproposeG-CARL, a reinforcement learning framework that decomposes reward supervision according to the heterogeneous verifiability of different objectives. \u2022We propose a retrieval-grounded claim reward that provides fine-grained supervision for medical factuality through atomic claim verification, and a case-specific checklist reward that explicitly supervises demand satisfactionandexpressionqualitywithoutrelyingonasingle reference response. \u2022We constructMMedReport, a real-world PMRI benchmark with clinician-designed evaluation protocols. Extensive experiments across multiple LVLM backbones demonstrate that G-CARL consistently outperforms supervised and reinforcement learning baselines, with the gains further validated by clinician preference and user comprehension studies."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "D Task Model Fidelity Rubric",
+          "text": "The LLM judge and human annotators use the same three rubrics below. Each evaluation call receives the task instruction, activity trace, and induced task model, then returns scores for one rubric group. The judge is instructed to use only evidence from the provided inputs and to return structured JSON matching the schema. Rubric 1 | Latent Task Recovery (scored 1\u20135,\u2191) Evaluates whether the root objective of the induced task model correctly identifies the latent task the agent was pursuing. 5 Correctly identifies the task intent, deliverable, and abstraction level. Specific enough to distinguish the task but not tied to incidental tools or local actions. 4 Mostly correct, with a minor issue in specificity, abstraction, or a secondary deliverable. 3 Partially correct. Captures the broad goal or domain but misses an important part of the task intent, deliverable, or scope. 2 Weak match. Describes only a local phase, a tool action, or a vague activity rather than the full latent task. 1 Incorrect or unsupported. Describes the wrong task, hallucinates intent, or is not grounded in the trace. Rubric 2 | Subgoal Decomposition Quality Coverage score(1\u20135, \u2191): evaluates whether the subgoals span all major phases of the observed task. 5 All major phases of the task are represented by subgoals. 4 Most major phases are represented; only minor phases are missing or merged. 3 Some important phases are represented, but at least one major phase is missing or poorly covered. 2 Decomposition captures only a small part of the task or uses very coarse/noisy phases. 1 Subgoals do not meaningfully cover the trace. Binary checks(per"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "3.3.2 Conversational interaction and response validation",
+          "text": "For respondenti and question\u2113, leth(r) i\u2113 denote the interaction history after clarification roundr. The agent evaluates whether the accumulated response satisfies the question requirement: \u03be(r) i\u2113 =V col \u0010 q\u2113, h(r) i\u2113 ;\u0398 col \u0011 , \u03be (r) i\u2113 \u2208 {0,1}(7) where \u03be(r) i\u2113 = 1indicates that the response is sufficiently complete and valid. If\u03be(r) i\u2113 = 0and the maximum number of clarification rounds has not been reached, the agent generates a questionspecific clarification: qc,(r+1) i\u2113 =F col \u0010 q\u2113, h(r) i\u2113 ,u col \u0011 (8) The process continues until the response is accepted or the predefined clarification limitRmax is reached. The final structured answer is: xcol i\u2113 =E col \u0010 h(Ri\u2113) i\u2113 , q\u2113 \u0011 , R i\u2113 \u2264R max (9) where Ecol maps the interaction history to the survey schema. For fixed-choice questions, deterministic option matching is used whenever possible. LLM-based mapping is used only when an answer is provided in unrestricted text or speech and cannot be mapped using deterministic rules. The agent may also provide procedural assistance, such as explaining a survey term, repeating a question, changing the interaction language, or allowing a respondent to revise an earlier answer. Such assistance must not recommend a travel mode, signal a preferred response, or otherwise alter the intended behavioral task."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "F Implementation Details and Pipeline",
+          "text": "Prompt Templates This appendix lists the fixed instruction templates used by each LLM call in the pipeline. The two action-grounding prompts (Figure 4) are used by the vision-language grounding step described in Section 3.1. The backward semantic-action segmentation prompt (Figure 5) and the activity segmentation prompt (Figure 6) are both used by the two segmentation passes described in the same section. The latent task discovery and consolidation prompts (Figures 7 and 8) are used by the twophase latent task induction in Section 3.2. The objective-model, procedure-model, and reconciliation prompts (Figures 9, 10, and 11) are used by the objective, procedure, and reconciliation steps in Section 3.3. Table 12: Full objective rubric results. Cov. is the objective coverage score from Table 4 (5-point Likert,\u2191); Nodes is the mean number of judged objective nodes per session. Coh. is subgoal coherence; NOv. is sibling non-overlap; Gran. is granularity appropriateness; P-Ch. is parent-child consistency; Bnd. is boundary grounding; All 5 is the rate of nodes passing all five checks. All check columns are per-node pass rates (%, \u2191). /Sess. is the mean number of fully valid nodes per session (\u2191). The claude-sonnet-5 judge covers 35 of 38 sessions for the workflow baseline. Best per judge in bold. Model Cov. Nodes Coh. NOv. Gran. P-Ch. Bnd. All 5 /Sess. gpt-5.5 judge Workflow"
+        }
+      ],
+      "seconds": 8.8,
+      "prompt_tokens": 1985,
+      "answer_tokens": 86
+    },
+    {
+      "id": "q19",
+      "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+      "answer": "The benchmark that accompanies G-CARL is MMedReport, a real-world multimodal PMRI benchmark collected from online healthcare consultations, containing 2,450 instances [2]. The evaluation dimensions for PMRI responses are:\n\n1. Medical Accuracy (Accuracy)\n2. Demand Satisfaction (Satisfaction)\n3. Expression Quality (Expression), each scored according to a clinician-authored rubric ranging from -2 to 3 [2].",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[3] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "text": "AI4AI. To our knowledge, AI4AI-Bench is the first benchmark to make that step the object of evaluation: it removes the agent, reruns the submitted source from a clean start, and classifies the patch to verify whether the gain came from execution, data, or a change to the training algorithm itself."
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "(StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11 Kimi K2.5 (Team et al. 2026a) 1.903\u00b10.002 1.221\u00b10.002 0.418\u00b10.001 0.264\u00b10.001 97.63 76.42 Gemini 3.1 Pro (Google DeepMind 2026)1.964\u00b10.008 1.229\u00b10.008 0.438\u00b10.003 0.297\u00b10.002 98.10 80.29 Medical LVLMs Hulumed (Jiang et al. 2025b) 1.020\u00b10.018 0.480\u00b10.013 0.282\u00b10.004 0.258\u00b10.002 72.28 32.65 Medgemma (Sellergren et al. 2026) 1.004\u00b10.005 0.460\u00b10.008 0.289\u00b10.004 0.255\u00b10.001 74.30 33.86 Lingshu (Xu et al. 2025) 1.527\u00b10.003 0.902\u00b10.002 0.357\u00b10.003 0.268\u00b10.002 89.69 39.41 Qwen-VL series Qwen3-VL-4B-Instruct (Base) 1.527\u00b10.010 0.897\u00b10.007"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "A The ten tasks",
+          "text": "Each task freezes one research repository and asks for the same thing: improve the training algorithm that repository applies to its own model. What differs between them is the algorithm, the asset the agent is given, and the pair of metrics either side of the evaluation boundary \u2014 a cheap one it may query as often as it likes during its four hours, and the one that decides its result, computed afterwards by an evaluator it never sees. The two are related differently on different tasks, and the relation matters when reading a column: on some the proxy is a subsample of the final protocol, on others it is a different benchmark entirely. OpenR1 \u2014 supervised fine-tuning.Qwen2.5-Coder-1.5B-Instruct is fine-tuned on a decontaminated 8,005-row Python CodeForces projection; the shipped recipe is completion-only supervised fine-tuning with the prompt tokens masked. A candidate may select, reweight, pack, transform or synthesise training signal from those rows, and may change the masking or the objective. The proxy islivecodebench_public_pass_at_1; the final metric is the whole LiveCodeBench v6 release slice, 175 problems under the benchmark\u2019s own sampling protocol \u2014 ten samples per problem at temperature0.2and top-p 0.95, capped at 2,048 new tokens, scored as the mean over problems of the fraction of samples that pass every official test. RAGEN \u2014 multi-turn agentic RL.A Qwen2.5-3B-Instruct policy is trained on Sokoban with multi-turn on-policy"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.1 Experimental Setup",
+          "text": "Datasets.We evaluate G-CARL primarily on(1)MMedReport, a real-world multimodal PMRI benchmark collectedfromonlinehealthcareconsultations.Itcontains2,450 instances, each including dialogue history, a user query, uploaded medical report images, and clinician-verified reference annotations. All instances undergo quality control, deidentification,and manualverificationto ensuredataquality andpatientprivacy.Detaileddatasetstatisticsareprovidedin Appendix A. Following the standard split, 2,200 instances areusedfortrainingand250forevaluation.Toassessbroader medical capability beyond PMRI, we further evaluate the trained models on an external benchmark,(2)CMB(Wang et al. 2024), which evaluates both medical QA accuracy and theprofessionalismofopen-endedclinicalinterpretationunder an LLM-as-a-judge protocol. Evaluation Protocol.We evaluate PMRI responses using both subjective and objective metrics. (1)Subjective Evaluation. Responses are evaluated along three clinician-defined dimensions:Medical Accuracy(Accuracy),Demand Satisfaction(Satisfaction), andExpression Quality(Expression). Each dimension is scored according to a detailed clinicianauthored rubric ranging from\u22122to3. We employ GPT- 5.2 (OpenAI 2025) as the judge by strictly following these evaluation criteria. The complete judging protocol is provided in theAppendix Bto facilitate reproducibility. (2) Objective Evaluation. In addition to holistic assessment, we report"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "5.1.2 Discrete Choice and Machine-Learning Models",
+          "text": "64.6\u00b14.3 73.0\u00b14.2 69.8\u00b14.4 71.5\u00b14.1 63.9\u00b15.0 70.6\u00b14.1 Gemma 4:26B 61.2\u00b14.6 71.1\u00b14.0 59.6\u00b14.7 69.6\u00b14.4 59.3\u00b14.5 69.7\u00b14.0 57.4\u00b14.3 69.7\u00b14.5 Gemma 3:27B 60.7\u00b14.6 71.0\u00b14.1 54.1\u00b14.1 69.5\u00b14.2 49.1\u00b14.5 71.5\u00b14.2 47.1\u00b14.6 68.3\u00b14.2 Gemma 4:31B 63.1\u00b14.4 69.5\u00b14.0 62.2\u00b14.7 68.6\u00b14.0 59.2\u00b14.6 70.4\u00b14.0 56.7\u00b14.9 70.3\u00b14.3 Qwen 3.6:35B 64.3\u00b14.3 71.9\u00b14.0 61.5\u00b14.4 68.4\u00b14.1 56.4\u00b14.6 71.0\u00b14.3 52.1\u00b14.7 68.5\u00b14.2 produced the highest accuracy, reaching 69.6% for the five-class mode-choice task and 88.8% for the binary active-versus-non-active task. Logistic regression reached 60.2% and 85.1%, respectively, while the MNL achieved 44.7%"
+        }
+      ],
+      "seconds": 9.0,
+      "prompt_tokens": 1874,
+      "answer_tokens": 88
+    },
+    {
+      "id": "q20",
+      "query": "What did clinician pairwise preferences find about G-CARL?",
+      "answer": "G-CARL was consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction, with preference margins of 136:85 and 106:64, respectively.",
+      "source_list": "[1] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[2] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "andproducesclinicallyaccurateinterpretations.Similarly,in therightexample,SFTfailstoincorporatetheuser\u2019ssmoking andalcoholcessationhistory,whileMLLM-as-a-Judgefails toaddresstheuser\u2019sprimaryconcernofwhethertocontinue themedication.Incontrast,ourmethodeffectivelyintegrates historical context, directly answers the user\u2019s question, and provides evidence-grounded recommendations. Human Preference Evaluation.We conduct a blind pairwise human preference study on 250 held-out cases. Three professional clinicians compare anonymized responses generated by G-CARL and the baselines across the three evaluation dimensions and overall preference, with majority voting used for the final decision. We additionally recruit 50 participants without medical training to evaluate the comprehensibility of the generated interpretations. As shown in Fig. 4, G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge,particularlyinmedicalaccuracyanddemand satisfaction, with preference margins of 136:85 and 106:64, respectively. It also achieves substantially higher comprehensibilityratingsfromnon-expertparticipants,suggestingthatitsresponsesareeasierforpatientstounderstand."
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "generation (3.61), whereas SFT and MLLM-as-a- Judge bring marginal gains and even degrade professionalism. This indicates that grounding rewards in verifiable medicalevidencesuppresseshallucinatedcontentandbetter elicitsthemedicalaccuracyalreadylatentinthebasemodel, rather than merely fitting the PMRI response style. Table 1: Main results on our medical report interpretation benchmark. Numbers are mean over 3 seeds with standard deviation. Method Subjective Metrics Objective Metrics OverallAccuracy Satisfaction Expression Precision (%) Recall (%) General LVLMs GPT-4o (Hurst et al. 2024) 1.588\u00b10.007 0.974\u00b10.007 0.358\u00b10.001 0.256\u00b10.001 95.26 42.63 ERNIE 4.5 VL (Baidu ERNIE Team 2025)1.709\u00b10.010 1.088\u00b10.012 0.376\u00b10.002 0.245\u00b10.000 95.27 53.74 GLM-4.6V (Team et al. 2026b) 1.819\u00b10.014 1.159\u00b10.013 0.395\u00b10.002 0.265\u00b10.001 95.90 59.51 Step-3.7-Flash (StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "5.1.2 Discrete Choice and Machine-Learning Models",
+          "text": "RP-RC RP-BC Model5-cl. Binary 5-cl. Binary 5-cl. Binary 5-cl. Binary Gemma 4:e2B 44.0\u00b14.5 68.7\u00b14.1 31.6\u00b14.1 66.8\u00b14.3 41.2\u00b15.0 67.9\u00b14.2 32.3\u00b14.3 65.8\u00b14.1 Llama 3.2:3B 41.2\u00b14.3 62.5\u00b14.5 12.7\u00b13.6 56.7\u00b14.4 26.7\u00b13.7 60.7\u00b14.3 18.6\u00b13.6 60.3\u00b14.5 Gemma 3:4B 64.2\u00b14.4 79.1\u00b13.3 41.3\u00b14.0 64.1\u00b14.4 54.5\u00b14.2 75.9\u00b13.9 36.7\u00b14.2 55.6\u00b14.4 Gemma 4:e4B 42.8\u00b14.4 67.9\u00b14.4 40.4\u00b14.5 66.4\u00b14.2 40.1\u00b14.5 68.3\u00b14.0 35.7\u00b14.5 66.0\u00b14.2 Gemma 4:12B 69.9\u00b13.9 73.5\u00b14.2 64.6\u00b14.3 73.0\u00b14.2 69.8\u00b14.4 71.5\u00b14.1 63.9\u00b15.0 70.6\u00b14.1 Gemma 4:26B"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.5 Scoring",
+          "text": "meet at\u03c3 = 0.1: matching the recipe the repository ships is the pivot of the scale, what lies below it measures how far a submission fell short of that, and what lies above it measures how much of the remaining distance to the optimum it closed. Only the triple(\u03c6, x\u22a5, x)changes from task to task, and each element is fixed by the metric rather than by the results. The optimumx is the metric\u2019s best attainable value: a rate of1, a preference score of100, a perplexity of1, a negative log-likelihood of0. The uninformative pointx\u22a5 is what a model carrying no information about the task would score \u20140for a rate, the chance level of50for pairwise preference, the uniform predictor for a likelihood \u2014 which is why it is not always0in the metric\u2019s own units. And\u03c6 is the identity wherever the metric is already a linear utility, which includes the rates, the aesthetic head and the negative log-likelihood, and is\u2212log for a perplexity, since a perplexity is the exponential of a cross-entropy and only its logarithm lies on the same scale as the likelihood tasks. Without that one transformation, a submission takingowlfrom53 .4to16 .2would read as having closed71%of the distance to the optimum, where the correct figure is30%: a perplexity of53.4is a cross-entropy oflog 53.4 = 3.98nats above a perfect predictor and one of16.2is2 .79nats above it, so the submission removed1.19of the3"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "2.1 Travel Behavior and Mode Choice",
+          "text": "et al., 2018). Capturing this sensitivity often requires stated-preference (SP) methods that vary conditions directly, because revealed-preference data may not span the full range of weather a respondent might encounter (Bansal and Kockelman, 2018; Krueger et al., 2016). Both MNL and ML models, however, require labeled data, and their predictive performance may deteriorate when application conditions differ from those represented during model development. This limitation motivates the growing interest, reviewed in Section 2.3, in LLM-based choice prediction."
+        }
+      ],
+      "seconds": 7.3,
+      "prompt_tokens": 1872,
+      "answer_tokens": 45
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "answer": "The provided papers do not address this question.\n\nThe passages cover the introduction of TASKMODELINDUCTION, a method for inducing task models from computer-use traces, and the proposed multi-agent framework for active data collection, data processing, and behavioral modeling.",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[2] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "7 Conclusion",
+          "text": "We introduced TASKMODELINDUCTION, which abstracts raw computer-use events into activities, discovers the latent tasks they realize, and reconciles separately induced objective and procedure models into one task model per task. It turns everyday computer-use activity traces into durable, auditable records of how work are carried out. Experiments show that this representation recovers interleaved execution faithfully and yields better downstream agent skills than raw traces or workflow summaries. TMI has the potential to facilitate the study of how work is carried out across domains and to make these records reusable as knowledge for both people and agents."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "Abstract",
+          "text": "Naturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI\u2019s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "3.1 Framework Overview",
+          "text": "We propose a multi-agent framework that integrates data collection, data processing, and behavioral modeling for commuter mode-choice research. The framework consists of three specialized agents: a Data Collection Agent, a Data Processing Agent, and a Data Modeling Agent. The agents perform distinct research functions and exchange information through standardized data objects and explicit input\u2013output interfaces. Data transfer, version control, and execution records are organized through a shared workspace and predefined workflow rules. These supporting functions are system infrastructure rather than additional agents. Figure 1 illustrates the forward workflow and the associated refinement paths. In this study, an agent is defined as a goal-directed and researcher-supervised software component that can interpret user instructions, maintain task state, select from an authorized set of tools, and produce structured and auditable outputs. An agent is therefore not restricted to an LLM. Depending on the task, it may combine an LLM with deterministic rules, database operations, statistical software, machine-learning algorithms, or general-purpose programming tools. The proposed framework is consequently a multi-agent research workflow rather than an LLM-only pipeline. The termagentin this framework refers to a software agent that supports the research process and should not be confused with a traveler agent in conventional agent-based transport simulation. Human respondents remain the source of stated survey choices, while researchers retain control over the survey constructs, data-processing requirements, model specifications, and interpretation of results. Throughout this paper,active data collectionrefers to stateful conversational survey administration with predefined interaction logic and structured response Table 1: Roles, interfaces, and supported functions of the three agents. Agent Main inputs Authorized functions Main outputs Data Collection"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "text": "equations , AutoML-Zero evolves learning algorithms from primitive operations , and symbolic program search discovered Lion . These works establish that algorithmic design can be automated, but each demonstrates a method inside a compact search space and short proxy tasks; none is a benchmark of whether a general research agent can diagnose and improve the learning algorithm in an existing repository. Existing agent benchmarks instead score broader outcomes. MLE-Bench and MLE-Dojo reward competition submissions, while ML-Bench exercises repository-level ML tasks ; they mix data and feature engineering with model selection, hyperparameter tuning, debugging, and ensembling. Research-agent systems and benchmarks further cover idea generation, experimentation, paper writing, replication, and open-ended workshop problems , and Frontier-Eng extends executable, verifierdriven improvement to real-world engineering designs . The closest benchmarks begin with an AI system and ask an agent to improve it , but their scores aggregate gains from execution, data, capacity, hyperparameters, and learning rules; accordingly, they find tuning and engineering easier than method invention. Evenautoresearch, which opens architecture, optimizer, and training-loop code , yields edits that behave largely as hyperparameter optimization in controlled comparison . These benchmarks therefore test whether an agent can produce a better artifact, not whether it improved the learning rule that produces its successor\u2014the algorithmic-design step at the core of AI4AI. To our knowledge, AI4AI-Bench is the first benchmark to make that step the object of evaluation: it removes the agent, reruns the submitted source from a clean start, and classifies the patch to verify"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "3.3.3 Deployment and raw-data output",
+          "text": "After the survey has been approved, the agent generates a deployment bundle: Bcol = (URL,QR,version,recruitment material),(10) which may contain a public or tokenized survey link, a QR code, survey version information, and standardized recruitment materials. For respondenti, the collection record is represented as: draw i = \u0010 xcol i ,h i,m i,p i \u0011 ,(11) wherex col i contains the extracted answers,hi contains the raw interaction history,mi contains response and session metadata, andpi contains provenance information such as the survey version, prompt version, interface version, and timestamps. The complete raw dataset is: Draw = N[ i=1 draw i .(12) The raw dataset is treated as immutable. Later corrections, exclusions, or recoding decisions are stored as separate processing operations rather than overwriting the original responses."
+        }
+      ],
+      "seconds": 7.3,
+      "prompt_tokens": 1615,
+      "answer_tokens": 51
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "answer": "The provided papers do not address this question.\n\nThe passages cover the evaluation of AI model routing and allocation, with a focus on the Pandora's AI Model Routing Box and the AI4AI-Bench.",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[2] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[3] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319",
+      "passages": [
+        {
+          "paper_id": "2608.20318",
+          "section": "5 Related work",
+          "text": "AI4AI. To our knowledge, AI4AI-Bench is the first benchmark to make that step the object of evaluation: it removes the agent, reruns the submitted source from a clean start, and classifies the patch to verify whether the gain came from execution, data, or a change to the training algorithm itself."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "text": "every task is mapped onto one scale on which0is an uninformative model,0.1is the algorithm the repository ships, and1.0 is the task optimum. Across 29 configurations of 6 systems on all 10 tasks the mean score is0.166, and the best system reaches0.250: even the strongest closes under a fifth of the distance between the algorithm that was already there and the optimum. The submissions show where that distance went: most never change how the model learns at all, and the minority that do average0.226against0 .126 for the rest. More reasoning effort mostly buys the willingness to go there, taking that minority from 8%of submissions to64%and the mean score from0 .094to0 .196. We release the task suite, the evaluators and every scored submission, so that the measurement can be repeated as these systems change. Date:August 21, 2026 Homepage:https://lab.einsia.ai/ai4ai Correspondence:nana@einsia.ai"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "1 Introduction",
+          "text": "AI model providers now often offer heterogeneous model families spanning a wide range of costs and capabilities: smallandfastmodelsforsimpleprompts, largeandexpensiveonesforcomplextasks, and augmented variants with tools, retrieval, or extended reasoning for more specialized tasks. This raises the question of how to allocate each input to the model best suited for it, for a given level of cost sensitivity. This is theroutingproblem, and a growing body of work addresses it by estimating each model\u2019s expected return on the input and selecting the maximizer (Feng et al., 2026; Hu et al., 2024; Shnitzer et al., 2023). Butvalue estimationis neither free nor particularly easy. An embedding-based predictor is cheap but noisy; a fine-tuned scoring model is more accurate but more expensive; and computing partial solutions, executing tool calls, or running retrieval pipelines can be more expensive still. The routing decision itself thus involves a cost-accuracy tradeoff, which is typically ignored. Consequently, this paper asks the underlying question: when is it worth paying for a better value estimate? The question has a clean analogy in thePandora\u2019s Boxproblem from search theory (Weitzman, 1979). Pandoraispresentedwith \ud835\udc40boxes, eachwithahiddenvaluewhichisknowntoheronlyindistribution. For a cost\ud835\udc50\ud835\udc5a she can open any box\ud835\udc5aand observe its value. At any point, she can stop searching and claim the best value seen thus far. Her goal is to maximize the difference between the value obtained minus the costs paid. Weitzman"
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4 Intrinsic Evaluation",
+          "text": "Datasets.We use two base datasets across the three intrinsic evaluations. The first, which we denote as HumanWork, is the human computer-use dataset from Wang et al. (2025). It comprises 38 recorded sessions spanning 15 tasks across five professional domains (data analysis, engineering, computation, writing, and design), with multiple human users per task and each session labeled with its ground-truth task identity. The sessions total 42.8 hours of recording and 48.7K raw events, averaging 68 minutes of recording and 1.3K events per session. The second is SkillsBench (Li et al., 2026), comprising 86 software engineering tasks executed by coding agents across three harnesses (Claude Code, Codex, and Gemini CLI) and three skill conditions (Appendix C). We select the 15 tasks with the highest average action count, yielding 195 runs with 24.1K agent steps over 49.7 hours of execution. Each evaluation adapts these sources as described below."
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "E Tarasova, V. Erofeeva, O. Granichin, and K. Chernikov",
+          "text": "However, this does not account for amortization of the embedding cost\ud835\udc50\ud835\udc53 across target models, which would be most significant in this domain because it has the largest number of models. D.4. Numerical results and significance tests Numerical results and significance tests for the routing evaluations are shown in Tables 3, 4, and 5. In each table, bold indicates the lowest regret + inspection cost, asterisk indicates a statistically significantimprovementoverallalternativesat \ud835\udc5d < .05byapairedbootstraptest. Theseresultspresent a consistent picture: Pandora\u2019s router is in the argmin of regret at nearly every cost level. At low costs, itmatches \ud835\udc54-always; athighcostsitmatches \ud835\udc53-only; atintermediatecosts, itoftenoffersthebestregret, although this difference is usually not statistically significant with respect to all alternatives. D.5. Alternative algorithm We build on prior work on non-obligatory inspection Beyhaghi and Kleinberg (2019), which differs slightly from Algorithm 1: instead of using\ud835\udc62backup \ud835\udc5a in lines 6, 8, and 9, they use\ud835\udf07\ud835\udc5a.In low-cost settings, we have\ud835\udc62backup \ud835\udc5a < \ud835\udc38[\ud835\udc49\ud835\udc5a]=\ud835\udf07 \ud835\udc5a, which means that in these settings, our variant of the algorithm is less likely to commit to non-inspection and is therefore more aligned with Pandora-OI. In high-cost settings, \ud835\udc62backup \ud835\udc5a > \ud835\udc38[\ud835\udc49\ud835\udc5a]=\ud835\udf07 \ud835\udc5a, which means that in these settings, our variant is more likely to commit to non-inspection and is therefore more similar to\ud835\udc54-always. Empirically, our variant is slightly Pandora\u2019s AI"
+        }
+      ],
+      "seconds": 6.4,
+      "prompt_tokens": 1637,
+      "answer_tokens": 41
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "answer": "Passage [1] discusses evidence-grounded explanations and auditable task models. Specifically, it describes the objective model, which explains why observed activities were performed, and the procedure model, which captures how the execution of the task was organized in time. [1]",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319\n[2] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20319",
+          "section": "3.3 Task Model Construction",
+          "text": "Modeling a task t requires understanding the two types of evidence it carries, procedure and objective. Constructing a task model thus means inducing an objective model Ot and a procedure model Pt from the activities Et of each discovered task t, then reconciling them into the task model Mt (Figure 2(c)). Each is induced independently, so that its structure is resolved under its own evidence before being constrained by the other. Objective model.The objective model is the hierarchy that explains why the observed activities were performed. Its root is the task objective, its leaves are the activities Et, and its internal nodes are latent sub-objectives that jointly explain their descendants. A language model induces Ot from the task objective and Et by recursive decomposition (Wing, 2006), breaking a goal that cannot be pursued directly into sub-goals whose union covers the relevant evidence. Each node denotes the outcome to be achieved, abstracting over the particular strategy used to reach it (e.g.,provision reviewer accountsinstead ofset up each account and verify its sign-in). The children of a node are necessary components or preconditions of their parent and jointly account for its observed activities. A node spanning many activities is refined further (e.g.,iterate on the design decomposes intoimplement changesandvalidate the fix), whereas a node grounded in a single activity has reached the level of a local objective and remains a leaf. The resulting hierarchy is abstract enough to transfer across executions yet grounded enough that every leaf stays tied to an observed activity. Objective-side validity constraints are detailed in Appendix A. Procedure model.The procedure model captures how the execution of the task was organized in time."
+        },
+        {
+          "paper_id": "2608.20319",
+          "section": "4.3 Task Model Fidelity",
+          "text": "Downstream use relies on sub-goal decompositions that accurately capture task phases and procedure steps that faithfully describe the agent\u2019s execution. We assess the structural quality of the induced task model against human judgment and two baselines. Baselines.We compare against two baselines. Workflow summary uses the workflow summarization toolkit from Wang et al. (2025), which produces a phase-based narrative of each observed session without a formal task model schema or control-flow operators. Direct generation prompts gpt-5.4 with the complete task model schema alongside the observed activity trace and asks the model to produce a task model in one pass. Both baselines use gpt-5.4 for generation. We further conduct ablation studies on the three components our method combines.w/o objective modelandw/o procedure modelscore each model as it stands before reconciliation, on the dimensions that model defines. w/o reconciliationkeeps both models but induces them in a single joint pass and merges them, rather than resolving each under its own evidence and reconciling them afterwards. Metrics.We evaluate on all 38 Human- Work (Wang et al., 2025) sessions. For human validation, we randomly sample 20 sessions and assign each to two independent annotators who score the same rubric dimensions (Appendix D.1). We assess six rubric dimensions. Latent task recovery and objective coverage are rated on a 5-point Likert scale, and four per-node binary checks cover objective coherence, parent-child consistency, step description accuracy, and operator correctness. Full rubric definitions are in Appendix D. The LLM judge receives the task"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "3.4 Multi-objective Reward Function",
+          "text": "Inspiredbyrecentadvancesinstructuredreasoning(Yuetal. 2025), we introduce a format reward that encourages the modeltofollowaphysician-orientedclinicalreasoningscaffold during reinforcement learning. As illustrated in Fig. 2, the model is required to organize its intermediate reasoning within the<think></think>block according to a fourstep clinical reasoning workflow before generating the final patient-facinginterpretationinthe<answer></answer> block. This reward does not directly supervise medical correctness;instead,itencouragesastructureddecompositionof report findings, supporting evidence, clinical reasoning, and response planning, thereby improving the coherence and organization of the final response. Our reward function jointly optimizes medical factuality, demand satisfaction and expression quality, which can be defined as: Rtotal =\u03bb factRfact +\u03bb checkRcheck +\u03bb formatRformat,(14) where\u03bb fact,\u03bb check, and\u03bb format are weighting coefficients that balance the contributions of the reward components."
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "2 Related Works",
+          "text": "et al. 2025) uses a GRPO-based framework to elicit explicit reasoning paths for radiology VQA, while Med-R1 (Lai et al. 2026) designs preference signals that align visual perception, intermediate reasoning, and finalanswers.Beyondshort-formQA,MediX-R1(Mullappilly et al. 2026) extends multimodal medical RL to open-ended responses through LLM-based multi-objective rewards. RL has also been explored for report-centric tasks. RadVLM- GRPO (Gundersen et al. 2026) applies clinically grounded rewards to chest X-ray report generation and visual grounding, showing that RL can complement strong SFT. PolicyModel \u2026\u2026 Claim Extraction Rollout Responses SUPPORTED? RELEVANT?Evidence Retrieval Query \ud835\udc92 Reports \ud835\udc70 Claim\ud835\udc50(a) Retrieval-Grounded Claim Reward Evidence \ud835\udf00 AND Retrievalquery #\ud835\udc5e (b) Case-Specific Checklist Reward Draft Checklist review Final Weighted Checklist \ud835\udcaf Response True ? True ? ReferenceModel score\ud835\udc79\ud835\udc87\ud835\udc82\ud835\udc84\ud835\udc95 score\ud835\udc79\ud835\udc84\ud835\udc89\ud835\udc86\ud835\udc84\ud835\udc8c History \ud835\udc89 KL constraint Verifier\ud835\udce5 <think> Reward FunctionsS1:Concern IdentificationS2: Finding ExtractionS3:Relational ReasoningS4: Tailored Planning \ud835\udc79\ud835\udc87\ud835\udc90\ud835\udc93\ud835\udc8e\ud835\udc82\ud835\udc95 \ud835\udc79\ud835\udc87\ud835\udc82\ud835\udc84\ud835\udc95\ud835\udc79\ud835\udc84\ud835\udc89\ud835\udc86\ud835\udc84\ud835\udc8c \ud835\udc64+\ud835\udc64, GeneratorG <answer>Explainable Output </answer> \u201cGenerate Draft Checklist and Expected Claim Number from reports, queries, and history.\u201d Your blood test indicates mild anemia and mildly elevated liver enzymesMild Anemia -Hemoglobin is below the normal reference range. -This finding indicates a reduced oxygen-carrying capacity of the blood and may explain symptoms\u2026Medical Recommendations - Repeat blood count and liver function tests within 2\u20134"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "Front Matter",
+          "text": "every task is mapped onto one scale on which0is an uninformative model,0.1is the algorithm the repository ships, and1.0 is the task optimum. Across 29 configurations of 6 systems on all 10 tasks the mean score is0.166, and the best system reaches0.250: even the strongest closes under a fifth of the distance between the algorithm that was already there and the optimum. The submissions show where that distance went: most never change how the model learns at all, and the minority that do average0.226against0 .126 for the rest. More reasoning effort mostly buys the willingness to go there, taking that minority from 8%of submissions to64%and the mean score from0 .094to0 .196. We release the task suite, the evaluators and every scored submission, so that the measurement can be repeated as these systems change. Date:August 21, 2026 Homepage:https://lab.einsia.ai/ai4ai Correspondence:nana@einsia.ai"
+        }
+      ],
+      "seconds": 7.7,
+      "prompt_tokens": 1916,
+      "answer_tokens": 54
+    },
+    {
+      "id": "q24",
+      "query": "What is KPMG's 2026 revenue forecast?",
+      "answer": "The provided papers do not address this question. The passages cover various topics, including AI model routing, medical report interpretation, and benchmarking LLM agents, but do not mention KPMG's revenue forecast.",
+      "source_list": "[1] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[2] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318",
+      "passages": [
+        {
+          "paper_id": "2608.20316",
+          "section": "4 Allocation",
+          "text": "\ud835\udc54, with \ud835\udc53=KNN 3. The ideal value estimation policy would minimize regret + inspection cost at every cost level. Pandora\u2019s Router achieves near-minimal total cost across the full range of \ud835\udc50\ud835\udc54 (where\ud835\udc50 \ud835\udc5a =\ud835\udc50\ud835\udc54 for all\ud835\udc5a), querying\ud835\udc54frequently when it is cheap and rarely when it is expensive. The primary metric isregret+inspection cost: routing regret (the gap between the selected specialist\u2019s true, realized reward and the oracle best specialist in hindsight) plus the total cost of all\ud835\udc54-queries. Although our method generalizes to heterogeneous costs, for simplicity we use a uniform inspection cost\ud835\udc50 \ud835\udc5a =\ud835\udc50\ud835\udc54 \u2200\ud835\udc5a\u2208{1,...,\ud835\udc40}, and sweep\ud835\udc50 \ud835\udc54 to trace out the cost versus performance frontier. Results.Results for the full set of baselines are shown in Table 2 for all three datasets, averaging over all values of\ud835\udc50\ud835\udc54 (see Section D.4 for results per\ud835\udc50\ud835\udc54; the values tested correspond to those in Figure 2). Pandora\u2019s Router is reliably the best. The two inspection ablations,Margin-\ud835\udc41pr andRandom- \ud835\udc41pr, borrow the query budget from Pandora\u2019s Router, but achieve higher regret because they do not use the budget as effectively. Differences in particular betweenMargin-\ud835\udc41pr, which is the most competitive comparison, and Pandora\u2019s Router at each specific cost level are shown in Figure 2 (for clarity in the figure, we compare Pandora\u2019s Router with\ud835\udc53-only,\ud835\udc54-only, and the margin baseline). Pandora minimizes regret plus inspection cost at nearly all cost levels\ud835\udc50\ud835\udc54, in all settings. When the cost of\ud835\udc54is low, Pandora\u2019s Router queries it for nearly every"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "E Tarasova, V. Erofeeva, O. Granichin, and K. Chernikov",
+          "text": "from prices listed athttps://ai.google.dev/ gemini-api/docs/pricing (retrieved August 1, 2026). In all evaluations, the\ud835\udc53 value estimator is a small MLP applied to a question embedding. The MLP itself is very cheap to run, and can be assumed to be cost-free. The embedding costs $0.20 per million tokens, and this can be amortized across target models, although to be conservative about\ud835\udc50\ud835\udc54/\ud835\udc50\ud835\udc53, we do not account for this amortization here. The\ud835\udc54value estimators are priced as follows: \u2022 SFT-CoT-20, used in the MATH domain, requires running the target model LLM reasoning process for 20 tokens. The cheapest frontier LLM (Gemini 3.5 flash-lite) costs $2.50 per million outputtokens,and$0.25permillioninputtokens. IntheMATHdomain,thereareapproximately 43 tokens per question. This gives\ud835\udc50\ud835\udc53 \u22488.6 \u00d710\u22126 and \ud835\udc50\ud835\udc54 \u22482.5 \u00d720 \u00d710\u22126 = 5 \u00d710\u22125, yielding \ud835\udc50\ud835\udc54/\ud835\udc50\ud835\udc53 \u22485.8. Pandora\u2019s AI Model Routing Box: Efficient Allocation with Costly Value Estimation 10\u22122 10\u22121 0.05 0.06 Surplus Regret MATH 10\u22122 10\u22121 0.1 0.15 RAG 10\u22125 10\u22124 10\u22123 10\u22122 10\u22121 0.09 0.095 0.1 EmbedLLM 10\u22122 10\u22121 0.02 0.025 0.03 \ud835\udc50\ud835\udc54 Efficiency Regret 10\u22122 10\u22121 0.055"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "(StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11 Kimi K2.5 (Team et al. 2026a) 1.903\u00b10.002 1.221\u00b10.002 0.418\u00b10.001 0.264\u00b10.001 97.63 76.42 Gemini 3.1 Pro (Google DeepMind 2026)1.964\u00b10.008 1.229\u00b10.008 0.438\u00b10.003 0.297\u00b10.002 98.10 80.29 Medical LVLMs Hulumed (Jiang et al. 2025b) 1.020\u00b10.018 0.480\u00b10.013 0.282\u00b10.004 0.258\u00b10.002 72.28 32.65 Medgemma (Sellergren et al. 2026) 1.004\u00b10.005 0.460\u00b10.008 0.289\u00b10.004 0.255\u00b10.001 74.30 33.86 Lingshu (Xu et al. 2025) 1.527\u00b10.003 0.902\u00b10.002 0.357\u00b10.003 0.268\u00b10.002 89.69 39.41 Qwen-VL series Qwen3-VL-4B-Instruct (Base) 1.527\u00b10.010 0.897\u00b10.007"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "2.2 AI4AI-Bench algorithmic tasks",
+          "text": "The suite is ten frozen research repositories, listed in Table 1 and chosen so that between them they cover ten families of training algorithm rather than ten instances of one: supervised fine-tuning, multi-turn agentic RL, on-policy distillation, Bradley\u2013Terry reward modeling, preference optimization, diffusion RL, machine unlearning, discrete graph diffusion, weight averaging, and one-shot pruning. Each was admitted on three properties the design depends on. It must ship a training algorithm its authors actually run, not a tutorial or a toy; it must ship a frozen starting model, so that there is something the agent is improvingfrom; and its metric must be recomputable, reproducibly, under a half-day budget on a single B300, or the twelve-hour measurement in 2.3 could not be run at all \u2014 let alone once per cell. Two of the ten do no training. Weight averaging combines a bank of checkpoints that are handed over as data, and one-shot pruning removes weights from a released model in a single pass; neither has a training horizon that could be extended or shortened. They are kept because the algorithmic question is just as real in them \u2014 which checkpoints to combine and how, which weights to remove and by what criterion \u2014 and because a suite that quietly dropped them would be a suite about training loops rather than about algorithm design. The protocol treats them differently, and so does the baseline. The ten metrics are incommensurable: an aesthetic score, a perplexity, a solve rate, a pass rate, an unlearning balanced score. They cannot be averaged as they"
+        },
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "generation (3.61), whereas SFT and MLLM-as-a- Judge bring marginal gains and even degrade professionalism. This indicates that grounding rewards in verifiable medicalevidencesuppresseshallucinatedcontentandbetter elicitsthemedicalaccuracyalreadylatentinthebasemodel, rather than merely fitting the PMRI response style. Table 1: Main results on our medical report interpretation benchmark. Numbers are mean over 3 seeds with standard deviation. Method Subjective Metrics Objective Metrics OverallAccuracy Satisfaction Expression Precision (%) Recall (%) General LVLMs GPT-4o (Hurst et al. 2024) 1.588\u00b10.007 0.974\u00b10.007 0.358\u00b10.001 0.256\u00b10.001 95.26 42.63 ERNIE 4.5 VL (Baidu ERNIE Team 2025)1.709\u00b10.010 1.088\u00b10.012 0.376\u00b10.002 0.245\u00b10.000 95.27 53.74 GLM-4.6V (Team et al. 2026b) 1.819\u00b10.014 1.159\u00b10.013 0.395\u00b10.002 0.265\u00b10.001 95.90 59.51 Step-3.7-Flash (StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11"
+        }
+      ],
+      "seconds": 9.3,
+      "prompt_tokens": 2251,
+      "answer_tokens": 43
+    },
+    {
+      "id": "q25",
+      "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+      "answer": "The provided papers do not address this question.",
+      "source_list": "[1] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331\n[2] Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation \u2014 https://arxiv.org/abs/2608.20316\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318\n[4] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320",
+      "passages": [
+        {
+          "paper_id": "2608.20331",
+          "section": "4.2 Main Results on MMedReport",
+          "text": "(StepFun AI 2026) 1.842\u00b10.011 1.175\u00b10.012 0.412\u00b10.002 0.255\u00b10.001 95.96 72.11 Kimi K2.5 (Team et al. 2026a) 1.903\u00b10.002 1.221\u00b10.002 0.418\u00b10.001 0.264\u00b10.001 97.63 76.42 Gemini 3.1 Pro (Google DeepMind 2026)1.964\u00b10.008 1.229\u00b10.008 0.438\u00b10.003 0.297\u00b10.002 98.10 80.29 Medical LVLMs Hulumed (Jiang et al. 2025b) 1.020\u00b10.018 0.480\u00b10.013 0.282\u00b10.004 0.258\u00b10.002 72.28 32.65 Medgemma (Sellergren et al. 2026) 1.004\u00b10.005 0.460\u00b10.008 0.289\u00b10.004 0.255\u00b10.001 74.30 33.86 Lingshu (Xu et al. 2025) 1.527\u00b10.003 0.902\u00b10.002 0.357\u00b10.003 0.268\u00b10.002 89.69 39.41 Qwen-VL series Qwen3-VL-4B-Instruct (Base) 1.527\u00b10.010 0.897\u00b10.007"
+        },
+        {
+          "paper_id": "2608.20316",
+          "section": "5 Pandora\u2019s Bidder",
+          "text": "price is worth accepting, and whether or not to pay to observe a refined estimate before making this decision. Concretely, for a given query\ud835\udc65, the platform solicits\ud835\udc3a\ud835\udc57 from each of the\ud835\udc40\u22121nonstrategic specialists and sets the posted price as\ud835\udc5d=max \ud835\udc57\u2260\ud835\udc5a \ud835\udc3a\ud835\udc57. Note that the platform could incorporate a markup to extract profit, but here we simply use the best competing estimate. The strategic specialist\ud835\udc5athen faces a decision: accept the price (winning the right to answer the query, instead of the platform\u2019s choice), or decline (in which case the platform routes to the specialist that set the price). Specialist\ud835\udc5a begins with only the cheap estimate, which yields a predicted mean\ud835\udf07\ud835\udc5a(\ud835\udc65)=\u210e( f)\ud835\udc5a for \ud835\udc3a\ud835\udc5a, as in Equation (4). The expected gain from paying\ud835\udc50\ud835\udc5a to observe\ud835\udc3a\ud835\udc5a before responding to the price\ud835\udc5dis VoI(\ud835\udc5d)=\ud835\udd3c[(\ud835\udc3a \ud835\udc5a \u2212\ud835\udc5d)+]\u2212(\ud835\udf07 \ud835\udc5a \u2212\ud835\udc5d)+.(6) This is the difference in expected profit between deciding after observing\ud835\udc3a\ud835\udc5a and deciding based only on \ud835\udf07\ud835\udc5a. The structure mirrors the reservation price computation for Pandora\u2019s Router in 4, but with the price\ud835\udc5d playing the role of the outside option. When\ud835\udc5d is low relative to\ud835\udf07\ud835\udc5a, the specialist can confidently accept based on\ud835\udc53 alone; when\ud835\udc5dis high, the specialist can confidently decline. The value of information peaks when\ud835\udc5dis close to\ud835\udf07\ud835\udc5a and the correct action is uncertain. The conditionVoI(\ud835\udc5d)=\ud835\udc50 \ud835\udc5a defines aninterval [\ud835\udc5dlo,\ud835\udc5dhi]within which it is worth paying for the refined estimate (Parkes, 2005). Using the same Gaussian model as in Equations (4) and (5), the boundaries satisfy (\ud835\udf07\ud835\udc5a \u2212\ud835\udc5d)\u03a6(\ud835\udefc \ud835\udc5a)+\ud835\udf0e \ud835\udc5a \ud835\udf19(\ud835\udefc\ud835\udc5a)=\ud835\udc50"
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "3.2 Results",
+          "text": "66.5 0.694 21.7 96 Claude Sonnet 5 Claude Codexhigh 0.114 0.240 0.421 38.3 0.506 4.49 0.963 66.6 0.694 21.2 101 Claude Sonnet 5 Claude Codemax 0.113 0.232 0.428 74.9 0.542 6.15 0.948 66.2 0.699 14.3 109 Kimi K3 Claude Codemax 0.099 0.186 0.405 74.1 0.542 9.04 0.986 65.2 0.694 14.3 30 GPT-5.6 Sol Codexnone 0.115 0.092 0.426 75.2 0.400 5.82 0.994 67.0 0.694 20.9 339 GPT-5.6 Sol Codexlow 0.127 0.883 0.437 74.0 0.431 \u2013 0.746 66.9 0.694 14.9 337 GPT-5.6 Sol Codexmedium 0.124 \u2013 0.430 73.7 0.494 6.83 0.998 65.5 0.695 15.8 449 GPT-5.6 Sol Codexhigh 0.126 1.00 0.424 74.0 0.458 5.77 0.966 66.0 0.697 13.3 420 GPT-5.6 Sol Codexxhigh 0.125 0.549 0.418 73.8 0.482 5.92 1.03"
+        },
+        {
+          "paper_id": "2608.20320",
+          "section": "10 Declaration of Conflicting Interests",
+          "text": "The authors declare that there is no conflict of interest regarding the publication of this paper."
+        },
+        {
+          "paper_id": "2608.20318",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "text": "0.099 0.543 0.203 0.100 0.129 0.414 0.190 Claude Opus 5 Claude Codemax 0.098 0.169 0.090 0.129 0.183 0.714 0.207 0.114 0.123 0.420 0.225 Claude Sonnet 5 Claude Codelow 0.085 0.025 0.099 0.077 0.095 0.115 0.161 0.099 0.134 0.099 0.099 Claude Sonnet 5 Claude Codemedium 0.000 0.000 0.098 0.086 0.094 0.101 0.162 0.105 0.120 0.326 0.109 Claude Sonnet 5 Claude Codehigh 0.088 0.886 0.098 0.098 0.281 0.100 0.083 0.099 0.123 0.304 0.216 Claude Sonnet 5 Claude Codexhigh 0.089 0.176 0.097 0.000 0.228 0.093 0.157 0.099 0.123 0.309 0.137 Claude Sonnet 5 Claude Codemax 0.088 0.167 0.098 0.100 0.284 0.116 0.146 0.099 0.137 0.398 0.163 Kimi K3 Claude Codemax 0.078 0.117 0.093 0.097 0.284 0.266 0.175 0.108 0.123 0.398 0.174 GPT-5.6 Sol Codexnone"
+        }
+      ],
+      "seconds": 6.7,
+      "prompt_tokens": 2121,
+      "answer_tokens": 10
+    }
+  ]
+}

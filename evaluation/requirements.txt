@@ -1,0 +1,7 @@
+pytest
+pypdf
+langchain-chroma
+langchain-core
+langchain-text-splitters
+langchain-huggingface
+sentence-transformers
