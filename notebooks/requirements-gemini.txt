@@ -1,0 +1,3 @@
+# Optional dependencies for the Google provider in eda_workbook.ipynb
+google-genai
+python-dotenv
