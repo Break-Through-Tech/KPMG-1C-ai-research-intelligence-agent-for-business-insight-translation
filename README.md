@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://www.breakthroughtech.org/"><img src="assets/break-through-tech-logo.png" alt="Break Through Tech logo" width="150"></a>
+  &nbsp;&nbsp;&nbsp;
+  <a href="https://kpmg.com/us/en.html"><img src="assets/kpmg-logo.png" alt="KPMG logo" width="180"></a>
+</p>
+
 # AI Research Intelligence Agent for Business Insight Translation
 
 **Break Through Tech AI Studio × KPMG · Fall 2026 · Prototype in progress**
