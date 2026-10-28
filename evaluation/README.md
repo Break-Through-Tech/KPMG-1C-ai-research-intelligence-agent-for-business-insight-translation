@@ -1,10 +1,12 @@
 # Evaluation on the committed research papers
 
-`benchmark.json` contains 25 manually labeled questions about the five PDFs in
-`data/`: 20 single-paper questions, three cross-paper questions, and two
-questions the papers cannot answer. The fact snippets in the labels were
-checked against the source PDFs. This is a small project-specific diagnostic
-set, not a population-level estimate of RAG quality or a BEIR benchmark.
+`benchmark.json` contains 25 questions and labels drafted by Codex
+(GPT-6-Sol) from the five PDFs in `data/`: 20 single-paper questions, three
+cross-paper questions, and two questions the papers cannot answer. The labeled
+fact snippets were checked against the source PDFs during preparation; the repo
+does not document an independent human annotation pass. This is a small
+project-specific diagnostic set, not a population-level estimate of RAG quality
+or a BEIR benchmark.
 
 ## Use the changes in the team notebook
 

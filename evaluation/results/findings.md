@@ -1,11 +1,11 @@
 # Evaluation results — October 14, 2026
 
 **A quick summary before you get into it:**
-There are two different mini-tests we did. The first you'll read is on arXiv (our actual data, GPT-6-Sol-generated ground-truth), the second is on BEIR (not our data, publically available scientific papers and their ground-truths). 
+There are two different mini-tests here. The first uses our arXiv papers and questions and labels drafted by Codex (GPT-6-Sol). The second uses BEIR's public SciFact data and its relevance labels.
 
 ## 1. arXiv paper test
 
-This dataset comes from the five arXiv research-paper PDFs committed in [`data/`](../../data/); it's got 25 manually written and labeled questions about those papers.
+This dataset comes from the five arXiv research-paper PDFs committed in [`data/`](../../data/); Codex (GPT-6-Sol) drafted 25 questions and their labels from those papers. The labeled fact snippets were checked against the PDFs during preparation, but the repo does not document an independent human annotation pass.
 
 Twenty questions ask about one paper, three need two papers, and two can't be
 answered from these papers at all. For this, the parser and prompt in
