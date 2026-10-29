@@ -91,7 +91,7 @@ def test_which_papers_returns_source_matches_without_model(assistant):
                                  paper_id='p2', title='Routing', section='Results',
                                  source_url='https://example.org/p2', chunk_id='p2_1'))
     ns['generate_answer'] = lambda *args: pytest.fail('Paper search should not call model')
-    result = ns['ask_llm']('Which papers study commuters and routing?')
+    result = ns['ask_llm']('Which papers study survey commuters and routing costs?')
     assert 'Survey [1]' in result and 'Routing [2]' in result
     assert 'Evidence:' in result and 'References:' in result
 

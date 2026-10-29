@@ -18,6 +18,16 @@ WORDS = re.compile(r"[a-z0-9]+")
 STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what",
              "which", "how", "does", "into", "their", "them", "they", "was", "were",
              "are", "have", "has", "paper", "papers", "using", "about"}
+PAPER_SEARCH_STOPWORDS = STOPWORDS | {
+    "these", "those", "address", "addresses", "discuss", "discusses",
+    "evaluate", "evaluates", "report", "reports", "derived", "through",
+    "any", "all", "one", "each", "both", "than", "not", "our", "its",
+}
+
+
+def search_word(word):
+    """Normalize simple plurals for conservative paper-match screening."""
+    return word[:-1] if len(word) > 4 and word.endswith("s") and not word.endswith("ss") else word
 
 
 def compact(text):
@@ -49,7 +59,7 @@ def _best_quote(text, focus):
 
 
 def attach_evidence(answer, chunks, question=""):
-    """Attach one exact quote per cited paper, tied to its passage number.
+    """Attach one exact quote from each passage cited in the answer body.
 
     A literal quote is evidence a reviewer can inspect, not proof that the
     model's interpretation is correct.
@@ -57,26 +67,16 @@ def attach_evidence(answer, chunks, question=""):
     body = re.split(r"\n\s*Evidence\s*:", answer, maxsplit=1, flags=re.I)[0].strip()
     if NONANSWER.search(body) and not CITATION.search(body):
         return body
-    cited = [int(number) for number in CITATION.findall(body)
-             if 1 <= int(number) <= len(chunks)]
-    papers = list(dict.fromkeys(chunks[number - 1].paper_id for number in cited))
-    if not papers:
+    cited = list(dict.fromkeys(
+        int(number) for number in CITATION.findall(body)
+        if 1 <= int(number) <= len(chunks)
+    ))
+    if not cited:
         return body
     evidence = []
-    for paper_id in papers:
-        clean_body = re.sub(r"(?m)^\s*\d+\.\s*", "", body)
-        answer_numbers = [number for number in NUMBER.findall(clean_body)
-                          if len(compact(number)) > 1]
-        focus = question + " " + " ".join(answer_numbers)
-        wanted = set(WORDS.findall(focus.lower())) - STOPWORDS
-        candidates = [(number, _best_quote(chunk.text, focus))
-                      for number, chunk in enumerate(chunks, 1)
-                      if chunk.paper_id == paper_id]
-        number, quote = max(candidates, key=lambda pair: (
-            len(set(WORDS.findall(pair[1].lower())) & wanted)
-            - 2 * len(re.findall(r"[𝑎-𝑧𝛼-𝜔]", pair[1])),
-            -abs(pair[0] - min(cited)),
-        ))
+    focus = question + " " + CITATION.sub("", body)
+    for number in cited:
+        quote = _best_quote(chunks[number - 1].text, focus)
         evidence.append(f'- "{quote}" [{number}]')
     return body + "\n\nEvidence:\n" + "\n".join(evidence)
 
@@ -89,9 +89,24 @@ def paper_search_answer(chunks, question):
     """
     if not chunks:
         return ABSTENTION
+    terms = {search_word(word) for word in WORDS.findall(question.lower())
+             if len(word) > 2 and word not in PAPER_SEARCH_STOPWORDS
+             and not word.isdigit()}
     first_by_paper = {}
+    text_by_paper = {}
     for chunk in chunks:
-        first_by_paper.setdefault(chunk.paper_id, chunk)
+        current = first_by_paper.get(chunk.paper_id)
+        if current is None or getattr(chunk, "score", 0) > getattr(current, "score", 0):
+            first_by_paper[chunk.paper_id] = chunk
+        text_by_paper.setdefault(chunk.paper_id, []).append(chunk.title + " " + chunk.text)
+    minimum = 1 if len(terms) <= 2 else 2
+    first_by_paper = {
+        paper_id: chunk for paper_id, chunk in first_by_paper.items()
+        if len(terms & {search_word(word) for word in WORDS.findall(
+            " ".join(text_by_paper[paper_id]).lower())}) >= minimum
+    }
+    if not first_by_paper:
+        return ABSTENTION
     body = "Top matching papers (check the excerpts for relevance):\n" + "\n".join(
         f"- {chunk.title} [{chunk.rank}]" for chunk in first_by_paper.values()
     )
@@ -115,7 +130,7 @@ def answer_issues(answer, chunks):
         issues.append("No passage citation appears in the answer.")
 
     quotes = QUOTE_CITATION.findall(answer)
-    verified_papers = set()
+    verified_passages = set()
     for quote, number in quotes:
         index = int(number) - 1
         if index not in range(len(chunks)):
@@ -123,10 +138,9 @@ def answer_issues(answer, chunks):
         if len(quote.split()) < 5 or compact(quote) not in compact(chunks[index].text):
             issues.append(f"Quoted text for [{number}] is not verbatim in that passage.")
         else:
-            verified_papers.add(chunks[index].paper_id)
-    cited_papers = {chunks[n - 1].paper_id for n in cited & allowed}
-    if not quotes or cited_papers - verified_papers:
-        issues.append("Include one verified, verbatim Evidence quote per cited paper.")
+            verified_passages.add(index + 1)
+    if not quotes or (cited & allowed) - verified_passages:
+        issues.append("Include one verified, verbatim Evidence quote per cited passage.")
 
     # This is a review signal. A number can be supported by a different chunk
     # or be calculated from evidence, so it should not automatically reject text.

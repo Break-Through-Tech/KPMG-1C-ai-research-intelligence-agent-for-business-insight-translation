@@ -88,7 +88,7 @@ def main(args):
         elif asks_which_papers(item["query"]):
             draft, response = "", {}
             answer = paper_search_answer(chunks, item["query"])
-            kind = "paper_matches"
+            kind = "abstention" if answer == ABSTENTION else "paper_matches"
         else:
             context = (retriever.format_focused_context(item["query"], chunks)
                        if asks_for_comparison(item["query"])

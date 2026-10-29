@@ -32,7 +32,9 @@ def main(args):
                            and len(quote.split()) >= 5
                            and compact(quote) in compact(passages[int(number) - 1].text)]
         negative = not benchmark[item["id"]]["relevant_papers"]
+        kind = item.get("response_kind", "answer")
         rows.append({"id": item["id"], "cited_numbers": sorted(cited),
+                     "response_kind": kind,
                      "invalid_citations": sorted(cited - allowed),
                      "has_citation": bool(cited),
                      "verified_direct_quote": bool(verified_quotes),
@@ -43,8 +45,15 @@ def main(args):
                      in item["answer"]})
     positives = [r for r in rows if not r["is_negative"]]
     negatives = [r for r in rows if r["is_negative"]]
+    direct = [r for r in positives if r["response_kind"] == "answer"]
     summary = {
         "answer_count": len(rows),
+        "positive_direct_answers": len(direct),
+        "positive_direct_answers_with_citation": sum(r["has_citation"] for r in direct),
+        "positive_direct_answers_with_verified_quote": sum(r["verified_direct_quote"] for r in direct),
+        "positive_source_only_responses": sum(
+            r["response_kind"] in {"paper_matches", "source_review"} for r in positives),
+        "positive_abstentions": sum(r["response_kind"] == "abstention" for r in positives),
         "positive_answers_with_citation": sum(r["has_citation"] for r in positives),
         "positive_answers": len(positives),
         "answers_with_invalid_citation": sum(bool(r["invalid_citations"]) for r in rows),

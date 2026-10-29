@@ -4,7 +4,7 @@ from pathlib import Path
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "notebooks"))
-from answer_validation import answer_issues, attach_evidence, paper_search_answer  # noqa: E402
+from answer_validation import ABSTENTION, answer_issues, attach_evidence, paper_search_answer  # noqa: E402
 
 
 CHUNKS = [SimpleNamespace(
@@ -44,12 +44,27 @@ def test_evidence_quote_cannot_replace_a_missing_answer_citation():
     assert any('No passage citation' in issue for issue in answer_issues(answer, CHUNKS))
 
 
+def test_quote_from_an_uncited_passage_does_not_verify_the_citation():
+    chunks = [CHUNKS[0], SimpleNamespace(
+        paper_id='paper1', text='A separate passage contains an unrelated but valid literal quotation.'
+    )]
+    answer = ('The survey had 92 commuters [1].\n'
+              'Evidence: "A separate passage contains an unrelated but valid literal quotation." [2]')
+    assert any('per cited passage' in issue for issue in answer_issues(answer, chunks))
+
+
 def test_paper_search_uses_literal_quotes_from_each_paper():
     chunks = [SimpleNamespace(**vars(CHUNKS[0]), rank=1, title='Survey')]
     chunks.append(SimpleNamespace(
         rank=2, paper_id='paper2', title='Routing',
         text='This routing paper evaluated specialists using several benchmark tasks and costs.',
     ))
-    answer = paper_search_answer(chunks, 'Which papers study surveys and routing?')
+    answer = paper_search_answer(chunks, 'Which papers study survey commuters and routing costs?')
     assert 'Survey [1]' in answer and 'Routing [2]' in answer
     assert answer_issues(answer, chunks) == []
+
+
+def test_paper_search_does_not_claim_unrelated_papers_match():
+    chunks = [SimpleNamespace(**vars(CHUNKS[0]), rank=1, title='Survey')]
+    assert paper_search_answer(
+        chunks, 'Which of these papers reports the NVIDIA stock price?') == ABSTENTION
