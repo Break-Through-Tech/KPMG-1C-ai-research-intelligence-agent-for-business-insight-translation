@@ -7,7 +7,10 @@ from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "notebooks"))
-from retrieval import ResearchRetriever, normalize_section  # noqa: E402
+from retrieval import (  # noqa: E402
+    ResearchRetriever, RetrievedChunk, asks_for_comparison, asks_which_papers,
+    normalize_section,
+)
 
 VOCAB = ["agent", "audit", "supply", "chain", "routing", "cost", "thanks", "et", "al"]
 
@@ -149,6 +152,34 @@ def test_vector_order_keeps_reranked_passages_but_changes_prompt_order(retriever
     assert {(c.paper_id, c.text) for c in selected_by_vector} == {
         (c.paper_id, c.text) for c in selected_by_reranker}
     assert selected_by_vector[0].paper_id == "p1"
+
+
+def test_focused_context_keeps_original_citation_numbers():
+    class Reranker:
+        def predict(self, pairs, **_):
+            return [5 if "winning" in text else 1 for _, text in pairs]
+
+    chunks = [
+        RetrievedChunk(1, .9, "Background context with enough words to make a source window for testing.",
+                       "p1", "First", "Results", "https://example.org/1", "p1_1"),
+        RetrievedChunk(2, .8, "The winning group scored higher than the other group in this comparison study.",
+                       "p2", "Second", "Results", "https://example.org/2", "p2_1"),
+    ]
+    retriever = ResearchRetriever(None, rerank_model="fake")
+    retriever._reranker = Reranker()
+    context = retriever.format_focused_context(
+        "How do the groups compare?", chunks, window_words=30, stride=15,
+    )
+    assert context.startswith("[2] Second")
+    assert "[1] First" in context
+    assert "chunk p2_1" in context
+
+
+def test_query_routing_is_narrow():
+    assert asks_which_papers("Which papers discuss surveys?")
+    assert not asks_which_papers("What do the papers say about surveys?")
+    assert asks_for_comparison("How do the scores compare?")
+    assert not asks_for_comparison("What is the score?")
 
 
 BIBLIOGRAPHY = (

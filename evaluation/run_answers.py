@@ -11,8 +11,12 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
-from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
-from answer_validation import answer_issues, attach_evidence  # noqa: E402
+from retrieval import (  # noqa: E402
+    ResearchRetriever, asks_for_comparison, asks_which_papers, needs_multiple_papers,
+)
+from answer_validation import (  # noqa: E402
+    ABSTENTION, answer_issues, attach_evidence, paper_search_answer,
+)
 
 
 def notebook_prompt():
@@ -78,16 +82,32 @@ def main(args):
             item["query"], k=retrieval["k_chunks"], fetch_k=retrieval["fetch_k"],
             min_papers=2 if needs_multiple_papers(item["query"]) else 1,
         )
-        context = retriever.format_context(chunks)
-        prompt = template.format(context=context, question=item["query"])
         start = time.monotonic()
-        response = ask_ollama(prompt, args.model, args.host)
-        draft = response["response"].strip()
-        answer = attach_evidence(draft, chunks, item["query"])
+        if not chunks:
+            draft, response, answer, kind = "", {}, ABSTENTION, "abstention"
+        elif asks_which_papers(item["query"]):
+            draft, response = "", {}
+            answer = paper_search_answer(chunks, item["query"])
+            kind = "paper_matches"
+        else:
+            context = (retriever.format_focused_context(item["query"], chunks)
+                       if asks_for_comparison(item["query"])
+                       else retriever.format_context(chunks))
+            prompt = template.format(context=context, question=item["query"])
+            response = ask_ollama(prompt, args.model, args.host)
+            draft = response["response"].strip()
+            answer = attach_evidence(draft, chunks, item["query"])
+            kind = "abstention" if answer == ABSTENTION else "answer"
+        draft_issues = answer_issues(answer, chunks)
+        if draft_issues:
+            answer = ("I could not verify a cited answer. Here are source matches to inspect:\n\n"
+                      + paper_search_answer(chunks, item["query"]))
+            kind = "source_review"
         completed[item["id"]] = {
             "id": item["id"], "query": item["query"],
-            "answer": answer,
+            "answer": answer, "response_kind": kind,
             "draft": draft,
+            "draft_issues": draft_issues,
             "remaining_issues": answer_issues(answer, chunks),
             "source_list": retriever.format_sources(chunks),
             "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
@@ -116,7 +136,7 @@ def save_answers(path, model, model_digest, prompt, retrieval_path, completed):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="llama3.2")
+    parser.add_argument("--model", default="qwen2.5:7b")
     parser.add_argument("--host", default="http://127.0.0.1:11434")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "evaluation/results/answers.json")

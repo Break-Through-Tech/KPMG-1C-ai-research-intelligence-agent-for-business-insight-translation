@@ -279,6 +279,51 @@ class ResearchRetriever:
         ]
         return "\n\n".join(blocks)
 
+    def format_focused_context(self, query: str, results: list[RetrievedChunk],
+                               window_words: int = 80, stride: int = 40,
+                               windows_per_paper: int = 2) -> str:
+        """Show short, query-ranked excerpts while retaining original citation IDs.
+
+        This is for answer generation on comparison questions. Validation still
+        uses the complete retrieved chunks, so an excerpt cannot create a new
+        citation or hide a source mismatch.
+        """
+        if not results or not self.rerank_model:
+            return self.format_context(results)
+        if self._reranker is None:
+            from sentence_transformers import CrossEncoder
+            self._reranker = CrossEncoder(self.rerank_model)
+        windows = []
+        for chunk in results:
+            words = list(re.finditer(r"\S+", chunk.text))
+            for start in range(0, len(words), stride):
+                end = min(start + window_words, len(words))
+                if end - start < 10:
+                    continue
+                excerpt = chunk.text[words[start].start():words[end - 1].end()]
+                windows.append((chunk, excerpt))
+        if not windows:
+            return self.format_context(results)
+        scores = self._reranker.predict(
+            [(query, excerpt) for _, excerpt in windows],
+            batch_size=32, show_progress_bar=False,
+        )
+        ranked = sorted(zip(scores, windows), key=lambda pair: -float(pair[0]))
+        counts = {}
+        chosen = []
+        for _, (chunk, excerpt) in ranked:
+            if counts.get(chunk.paper_id, 0) >= windows_per_paper:
+                continue
+            chosen.append((chunk, excerpt))
+            counts[chunk.paper_id] = counts.get(chunk.paper_id, 0) + 1
+            if len(chosen) >= 8:
+                break
+        return "\n\n".join(
+            f"[{chunk.rank}] {chunk.title} — {chunk.section} "
+            f"(chunk {chunk.chunk_id})\n{excerpt}"
+            for chunk, excerpt in chosen
+        )
+
     def format_sources(self, results: list[RetrievedChunk]) -> str:
         """Source list matching each passage number in `format_context`."""
         lines = []
@@ -292,3 +337,13 @@ class ResearchRetriever:
 def needs_multiple_papers(query: str) -> bool:
     """A small, query-only signal for questions explicitly asking across papers."""
     return bool(re.search(r"\b(which|both|across|compare)\b.*\b(papers|studies)\b", query, re.I))
+
+
+def asks_which_papers(query: str) -> bool:
+    """A paper-finding request should return inspectable search results."""
+    return bool(re.match(r"\s*which\s+(?:of\s+these\s+)?papers\b", query, re.I))
+
+
+def asks_for_comparison(query: str) -> bool:
+    """Comparison answers benefit from the most relevant short excerpts."""
+    return bool(re.search(r"\bcompar(?:e|ed|ing|ison)\b", query, re.I))

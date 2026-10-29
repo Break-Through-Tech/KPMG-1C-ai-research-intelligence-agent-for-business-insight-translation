@@ -65,12 +65,45 @@ def test_citations_are_metadata_only_and_keep_original_numbers(assistant):
     assert ns['citation_table']('No citations', chunks) == ''
 
 
-def test_invalid_citation_is_reported(assistant, capsys):
+def test_invalid_citation_is_withheld(assistant, capsys):
     ns, _, _ = assistant
     ns['generate_answer'] = lambda *args: 'Unsupported finding [999].'
     result = ns['ask_llm']('Question')
     assert 'Unknown passage citations: [999]' in capsys.readouterr().out
-    assert 'References:' not in result
+    assert 'I could not verify a cited answer' in result
+    assert 'Unsupported finding' not in result
+    assert 'References:' in result
+
+
+def test_missing_citation_is_withheld_with_inspectable_source(assistant, capsys):
+    ns, _, _ = assistant
+    ns['generate_answer'] = lambda *args: 'The survey counted 92 commuters.'
+    result = ns['ask_llm']('How many commuters?')
+    assert 'No passage citation' in capsys.readouterr().out
+    assert 'The survey counted 92 commuters.' not in result
+    assert 'The survey collected 92 commuters' in result
+    assert 'References:' in result
+
+
+def test_which_papers_returns_source_matches_without_model(assistant):
+    ns, _, chunks = assistant
+    chunks.append(RetrievedChunk(rank=2, score=.8, text='A second study tested routing costs.',
+                                 paper_id='p2', title='Routing', section='Results',
+                                 source_url='https://example.org/p2', chunk_id='p2_1'))
+    ns['generate_answer'] = lambda *args: pytest.fail('Paper search should not call model')
+    result = ns['ask_llm']('Which papers study commuters and routing?')
+    assert 'Survey [1]' in result and 'Routing [2]' in result
+    assert 'Evidence:' in result and 'References:' in result
+
+
+def test_comparison_uses_focused_context(assistant):
+    ns, _, _ = assistant
+    prompts = []
+    ns['rag_retriever'].format_focused_context = lambda *args: 'FOCUSED OUTCOME'
+    ns['generate_answer'] = lambda prompt, provider, model: (
+        prompts.append(prompt) or 'The survey counted 92 commuters [1].')
+    ns['ask_llm']('How do these results compare?')
+    assert 'FOCUSED OUTCOME' in prompts[0]
 
 
 def test_no_passages_abstains_without_generation(assistant):

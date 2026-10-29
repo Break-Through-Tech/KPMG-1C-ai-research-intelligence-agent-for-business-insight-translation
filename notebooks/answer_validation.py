@@ -7,7 +7,10 @@ the prose accurately interprets the research; that still needs review.
 import re
 
 ABSTENTION = "The provided papers do not address this question."
-NONANSWER = re.compile(r"\b(?:provided\s+)?papers?\s+(?:do|does)\s+not\s+(?:address|answer)\b", re.I)
+NONANSWER = re.compile(
+    r"\b(?:provided\s+)?(?:papers?|passages?)\s+(?:do|does)\s+not\s+"
+    r"(?:directly\s+)?(?:address|answer|provide)\b", re.I,
+)
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
 NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
@@ -78,14 +81,32 @@ def attach_evidence(answer, chunks, question=""):
     return body + "\n\nEvidence:\n" + "\n".join(evidence)
 
 
+def paper_search_answer(chunks, question):
+    """List retrieved paper matches with literal excerpts, without LLM claims.
+
+    These are search results to inspect, not a claim that every paper fully
+    answers every part of the question.
+    """
+    if not chunks:
+        return ABSTENTION
+    first_by_paper = {}
+    for chunk in chunks:
+        first_by_paper.setdefault(chunk.paper_id, chunk)
+    body = "Top matching papers (check the excerpts for relevance):\n" + "\n".join(
+        f"- {chunk.title} [{chunk.rank}]" for chunk in first_by_paper.values()
+    )
+    return attach_evidence(body, chunks, question)
+
+
 def answer_issues(answer, chunks):
     """Return actionable failures for a drafted answer and numbered chunks."""
     issues = []
-    cited = {int(n) for n in CITATION.findall(answer)}
+    body = re.split(r"\n\s*Evidence\s*:", answer, maxsplit=1, flags=re.I)[0]
+    cited = {int(n) for n in CITATION.findall(body)}
     allowed = set(range(1, len(chunks) + 1))
     if cited - allowed:
         issues.append(f"Unknown passage citations: {sorted(cited - allowed)}")
-    abstained = bool(NONANSWER.search(answer))
+    abstained = bool(NONANSWER.search(body))
     if abstained:
         if cited:
             issues.append("The answer both abstains and cites an answer.")
@@ -109,7 +130,6 @@ def answer_issues(answer, chunks):
 
     # This is a review signal. A number can be supported by a different chunk
     # or be calculated from evidence, so it should not automatically reject text.
-    body = answer.split("Evidence:", 1)[0]
     body = CITATION.sub("", body)
     source = compact(" ".join(chunks[n - 1].text for n in cited & allowed))
     unsupported = sorted({number for number in NUMBER.findall(body)
