@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
 from retrieval import (  # noqa: E402
-    ResearchRetriever, asks_for_comparison, asks_which_papers, needs_multiple_papers,
+    ResearchRetriever, asks_which_papers, needs_focused_context, needs_multiple_papers,
 )
 from answer_validation import (  # noqa: E402
     ABSTENTION, answer_issues, attach_evidence, paper_search_answer,
@@ -91,7 +91,7 @@ def main(args):
             kind = "abstention" if answer == ABSTENTION else "paper_matches"
         else:
             context = (retriever.format_focused_context(item["query"], chunks)
-                       if asks_for_comparison(item["query"])
+                       if needs_focused_context(item["query"])
                        else retriever.format_context(chunks))
             prompt = template.format(context=context, question=item["query"])
             response = ask_ollama(prompt, args.model, args.host)

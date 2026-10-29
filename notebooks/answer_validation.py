@@ -14,6 +14,7 @@ NONANSWER = re.compile(
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
 NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
+SOURCE_NUMBER = re.compile(r"\d+(?:\s*[.,]\s*\d+)*%?")
 WORDS = re.compile(r"[a-z0-9]+")
 STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what",
              "which", "how", "does", "into", "their", "them", "they", "was", "were",
@@ -34,6 +35,11 @@ def compact(text):
     return re.sub(r"[^a-z0-9]", "", text.lower())
 
 
+def number_key(value):
+    """Treat PDF spacing in decimals as equivalent without joining neighbors."""
+    return re.sub(r"\s+", "", value).rstrip("%").replace(",", "")
+
+
 def _best_quote(text, focus):
     """Pick a literal, question-related word span; return its original PDF text."""
     matches = list(re.finditer(r"\S+", text))
@@ -41,6 +47,8 @@ def _best_quote(text, focus):
         return text.strip()
     wanted = {word for word in WORDS.findall(focus.lower())
               if word not in STOPWORDS and len(word) > 2}
+    wanted_numbers = {number_key(value) for value in SOURCE_NUMBER.findall(focus)
+                      if len(compact(value)) > 1}
     best = (-1, "")
     for start in range(0, len(matches), 5):
         end = min(start + 24, len(matches))
@@ -49,10 +57,12 @@ def _best_quote(text, focus):
         quote = text[matches[start].start():matches[end - 1].end()]
         words = WORDS.findall(quote.lower())
         overlap = len(set(words) & wanted)
-        numbers = sum(word.isdigit() and len(word) > 1 and word in wanted for word in words)
+        numbers = len(wanted_numbers & {
+            number_key(value) for value in SOURCE_NUMBER.findall(quote)
+        })
         artifacts = sum(len(word) > 22 for word in words)
         math_symbols = len(re.findall(r"[𝑎-𝑧𝛼-𝜔]", quote))
-        score = overlap + 2 * numbers - 2 * artifacts - math_symbols
+        score = overlap + 8 * numbers - 2 * artifacts - math_symbols
         if score > best[0]:
             best = (score, quote)
     return best[1]
@@ -145,9 +155,14 @@ def answer_issues(answer, chunks):
     # This is a review signal. A number can be supported by a different chunk
     # or be calculated from evidence, so it should not automatically reject text.
     body = CITATION.sub("", body)
-    source = compact(" ".join(chunks[n - 1].text for n in cited & allowed))
+    source_numbers = {
+        number_key(value)
+        for n in cited & allowed
+        for value in SOURCE_NUMBER.findall(chunks[n - 1].text)
+    }
     unsupported = sorted({number for number in NUMBER.findall(body)
-                          if compact(number) not in source})
+                          if len(compact(number)) > 1
+                          and number_key(number) not in source_numbers})
     if unsupported:
         issues.append(f"Check numbers absent from cited passages: {unsupported}")
     return issues

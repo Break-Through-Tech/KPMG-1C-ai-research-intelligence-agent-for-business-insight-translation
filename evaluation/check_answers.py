@@ -51,6 +51,7 @@ def main(args):
         "positive_direct_answers": len(direct),
         "positive_direct_answers_with_citation": sum(r["has_citation"] for r in direct),
         "positive_direct_answers_with_verified_quote": sum(r["verified_direct_quote"] for r in direct),
+        "positive_direct_answers_passing_source_checks": sum(not r["issues"] for r in direct),
         "positive_source_only_responses": sum(
             r["response_kind"] in {"paper_matches", "source_review"} for r in positives),
         "positive_abstentions": sum(r["response_kind"] == "abstention" for r in positives),

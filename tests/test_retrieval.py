@@ -9,6 +9,7 @@ from langchain_core.embeddings import Embeddings
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "notebooks"))
 from retrieval import (  # noqa: E402
     ResearchRetriever, RetrievedChunk, asks_for_comparison, asks_which_papers,
+    needs_focused_context,
     normalize_section,
 )
 
@@ -180,6 +181,7 @@ def test_query_routing_is_narrow():
     assert not asks_which_papers("What do the papers say about surveys?")
     assert asks_for_comparison("How do the scores compare?")
     assert not asks_for_comparison("What is the score?")
+    assert needs_focused_context("How much of the execution was recovered?")
 
 
 BIBLIOGRAPHY = (

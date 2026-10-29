@@ -103,7 +103,9 @@ def test_comparison_uses_focused_context(assistant):
     ns['generate_answer'] = lambda prompt, provider, model: (
         prompts.append(prompt) or 'The survey counted 92 commuters [1].')
     ns['ask_llm']('How do these results compare?')
+    ns['ask_llm']('How much of the work was recovered?')
     assert 'FOCUSED OUTCOME' in prompts[0]
+    assert 'FOCUSED OUTCOME' in prompts[1]
 
 
 def test_no_passages_abstains_without_generation(assistant):

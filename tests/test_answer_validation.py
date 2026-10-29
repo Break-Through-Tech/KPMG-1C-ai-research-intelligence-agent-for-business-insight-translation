@@ -53,6 +53,24 @@ def test_quote_from_an_uncited_passage_does_not_verify_the_citation():
     assert any('per cited passage' in issue for issue in answer_issues(answer, chunks))
 
 
+def test_number_check_does_not_join_unrelated_digits():
+    chunks = [SimpleNamespace(
+        paper_id='paper1', text='The separate results were 74 and 9, and another score was 94.74%.',
+    )]
+    answer = ('The reconstruction rate was 74.9% [1].\n'
+              'Evidence: "The separate results were 74 and 9, and another score was 94.74%." [1]')
+    assert any('74.9%' in issue for issue in answer_issues(answer, chunks))
+
+
+def test_number_check_handles_pdf_spacing_in_decimals():
+    chunks = [SimpleNamespace(
+        paper_id='paper1', text='The groups average0.226 against0 .126for the rest.',
+    )]
+    answer = ('The scores are 0.226 and 0.126 [1].\n'
+              'Evidence: "The groups average0.226 against0 .126for the rest." [1]')
+    assert answer_issues(answer, chunks) == []
+
+
 def test_paper_search_uses_literal_quotes_from_each_paper():
     chunks = [SimpleNamespace(**vars(CHUNKS[0]), rank=1, title='Survey')]
     chunks.append(SimpleNamespace(

@@ -347,3 +347,8 @@ def asks_which_papers(query: str) -> bool:
 def asks_for_comparison(query: str) -> bool:
     """Comparison answers benefit from the most relevant short excerpts."""
     return bool(re.search(r"\bcompar(?:e|ed|ing|ison)\b", query, re.I))
+
+
+def needs_focused_context(query: str) -> bool:
+    """Put measured outcomes first for comparisons and quantity questions."""
+    return asks_for_comparison(query) or bool(re.search(r"\bhow\s+much\b", query, re.I))
