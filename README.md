@@ -20,7 +20,7 @@ AI papers arrive faster than teams can read them. This project explores a resear
 
 ## Project overview
 
-This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and a direct source excerpt. The current notebook supports local Ollama (`llama3.2`) and an optional Google Gemini provider. The evaluation results below used Ollama, not Gemini.
+This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and direct source excerpts. The notebook uses local Ollama (`qwen2.5:7b`) by default and also supports optional Google Gemini. The evaluation results below used Ollama, not Gemini.
 
 The project measures **retrieval relevance**, **answer accuracy and completeness**, and whether citations and quotes can be traced to a source. Translating findings into business recommendations and assessing their usefulness with KPMG reviewers remain future work. See the [challenge overview](Challenge-Project-Overview.md) for the full scope.
 
@@ -63,9 +63,9 @@ cd notebooks
 jupyter lab eda_workbook.ipynb
 ```
 
-Run the notebook's metadata, PDF extraction, parser, embedding, shared-index, and assistant cells in order. It creates local `arxiv_data/` files and may download papers and embedding models on first use. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem. The five committed PDFs support the evaluation scripts documented in [evaluation/README.md](evaluation/README.md), but the full notebook collection needs its own local metadata catalog and PDFs.
+For a quick demo using the **five committed PDFs**, scroll to **“Run the research assistant on the five committed papers”** near the bottom. Run the next two setup cells, then edit and run the example question cell. The first setup cell builds the saved index if it is missing. You do not need to run the earlier EDA cells for this demo. The full EDA workflow uses local `arxiv_data/` files and requires its metadata, PDF extraction, parser, and embedding cells in order. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem.
 
-For local answers, [install Ollama](https://ollama.com/), then run `ollama pull llama3.2` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+For local answers, [install Ollama](https://ollama.com/), then run `ollama pull qwen2.5:7b` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. The smaller `llama3.2` model can still be selected with `ask_llm(question, model="llama3.2")`, but it had more citation and content errors in this test. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
 
 ## Evaluation and findings
 
