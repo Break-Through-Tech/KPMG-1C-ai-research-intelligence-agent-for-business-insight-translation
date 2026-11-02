@@ -1,42 +1,47 @@
 # Prompt design and testing package
 
-This folder contains the prompt design and evaluation package on the prompt-templates branch. Worked examples are demonstrations; actual model evaluation remains pending.
+## What is included
 
-## Five deliverables
+| File | Purpose |
+|---|---|
+| 01_strategy_and_recommendation.md | Audience, design strategy, scope, preliminary recommendation, and next actions. |
+| template_a.txt and template_b.txt | Version 2 reusable instructions, aligned with professional-services decisions and requested formats. |
+| 04_persona_and_user_stories.md | One optional draft persona, four user stories, and observable success checks. |
+| 05_allison_test_mapping.md | Exact selected questions, links to stories, expected behavior, and evidence preparation. |
+| test_cases.json | Sixteen primary cases: eight questions with original and paraphrased wording. |
+| evidence_inputs.example.json | Empty evidence schema; copy and populate with real retrieved passages and metadata. |
+| 03_evaluation.md and evaluation_results.csv | Review method and 32 blank primary evaluation rows. |
+| stress_cases.json and 02_worked_examples.md | Supplementary transport/synthetic fixtures and historical version 1 demonstrations. |
+| run_comparison.py | Provider-neutral runner; blocked cases are not passed to the model. |
+| build_cases.py | Creates a fresh blank evaluation sheet in a separate destination, without overwriting results. |
+| 06_source_notes.md | Provenance and interpretation of the two advisor documents. |
+| 07_revision_summary.md | Original additions, current revisions, verification, and outstanding work. |
+| test_runner.py | Seven local checks for evidence gating, history, fixed comparisons, and preserving outputs. |
 
-1. Strategy: 01_strategy_and_recommendation.md.
-2. Reusable instructions: template_a.txt and template_b.txt.
-3. Examples: 02_worked_examples.md contains six paired demonstrations; test_cases.json defines ten fixed inputs.
-4. Evaluation: 03_evaluation.md explains the rubric; evaluation_results.csv contains 20 unscored rows for actual runs.
-5. Recommendation: 01_strategy_and_recommendation.md recommends B for testing and states what evidence is still needed before final selection.
+All explanatory documents are Markdown. No Word files are added or deleted. Allison's questions are test inputs, not source evidence or generated answers. Personas are optional. Model testing, independent scores, and stakeholder validation remain pending.
 
-The demonstrations are drafted examples, not captured Gemini or Llama results. Numerical scores and independent review are intentionally pending. Do not submit this package as a completed model benchmark until those steps are done.
+## Start here
 
-## Running the comparison
+Read the strategy and persona, then use the mapping document to obtain evidence from the retrieval team. Populate a copy of evidence_inputs.example.json and supply the research topic. Save a checked A31 prior answer for follow-up cases A41 and A42. Without that evidence the runner blocks actual business-case model calls; it does not fabricate a corpus.
 
-Python standard library only. No provider package, credential, or model is installed by these files. The generation adapter is the team's existing approved model call wrapped as a function that takes a prompt string and returns an answer string. Keep credentials outside this package. The adapter must enforce the model and settings documented on the command line; the runner records these declarations but cannot independently verify provider configuration.
+Run commands from this folder. Standard library only; no credentials or provider dependencies are installed. The team's adapter accepts one prompt string and returns an answer string; it must enforce the model and settings declared on the command line. These declarations are recorded, not verified against the provider. Do not commit API keys or confidential data.
 
-First check input rendering without contacting a model:
+Check all inputs without a model:
 
 ```text
 python run_comparison.py --dry-run --model not_called --split all --output rendered_inputs.json
 ```
 
-Then, after providing an approved adapter such as team_adapter.generate:
+Run only exact originals first using the team's approved adapter:
 
 ```text
-python run_comparison.py --adapter team_adapter:generate --model EXACT_MODEL_ID --split development --output development_run.json
+python run_comparison.py --adapter team_adapter:generate --model EXACT_MODEL_ID --evidence evidence_inputs.json --split development --variant original --output originals_run.json
 ```
 
-Use --settings with a JSON object to document actual generation settings. After reviewing and revising the development cases, run --split held_out with a new output path. Existing output files are never overwritten. Errors are retained as errors, and the runner does not automatically retry calls. The held-out cases are available for transparency; avoid using them to revise the initial template.
+Then repeat with --variant paraphrase and a new output path, holding evidence and model settings fixed. Add the saved prior answer to the A31 evidence entry before running follow-ups; use --case-ids to target those cases if needed. Use --split held_out only after freezing the candidate. Existing output files are never overwritten, and errors are not automatically retried. Use --settings with a JSON object documenting the adapter's actual generation settings.
 
-## What the user and team still need to do
+Run supplementary checks with --suite stress. They do not require a primary evidence file and include deliberately empty evidence. Their outputs need separate review and must not be mixed with the primary business score rows.
 
-- Connect the approved model call and run the cases. No configured Gemini or local Ollama access was found through environment-variable names and command availability in this session; no credentials were read.
-- Obtain an independent teammate's scores and product owner feedback.
-- Complete the actual results and final selection. Only then describe the work as tested in the team's model environment.
-- Agree the appropriate team branch before integration. The new local branch is based on the original current checkout, not automatically on the newest generation branch.
+## Revision status
 
-## Current verification
-
-Local dry-run checks rendered twenty prompts across ten unique cases and confirmed that evaluation scores remain blank. A dry run confirms input preparation only; it does not establish model behavior or research accuracy.
+The original package was committed as a565ebd. Version 2 is based on Allison's two supplied documents, keeps the previous demonstrations as historical examples, and replaces the primary transport tests with business questions. See source notes for the exact inputs. Nothing in this package claims completed model experiments.

@@ -1,6 +1,6 @@
-# Paired examples for design review
+# Supplementary examples from version 1
 
-These are assistant-drafted demonstrations from this conversation, not outputs captured from the team's model. They are not independent experiments and have not been scored by an external reviewer. Inputs are in test_cases.json. T01 through T04 use the same paraphrased saved research evidence. T05 has no evidence. T06 uses synthetic conflicting passages.
+These are assistant-drafted demonstrations from this conversation, not outputs captured from the team's model. They are not independent experiments and have not been scored by an external reviewer. Inputs are now in stress_cases.json. These examples use version 1 templates and do not demonstrate the revised version 2 templates or Allison's primary business cases. T01 through T04 use the same paraphrased saved research evidence. T05 has no evidence. T06 uses synthetic conflicting passages.
 
 ## T01 Forecasting a new transport service
 

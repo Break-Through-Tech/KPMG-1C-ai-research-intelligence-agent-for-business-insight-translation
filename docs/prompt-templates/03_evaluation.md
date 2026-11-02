@@ -1,45 +1,40 @@
 # Evaluation method and results status
 
-## Status
+## Current status
 
-Ten cases are defined. Six paired worked examples have been drafted for design review. No Gemini or Llama run, independent scoring, numerical comparison, or product owner acceptance is claimed. The results CSV deliberately leaves scores blank. The examples cannot prove that either template reliably produces the demonstrated behavior.
+Sixteen primary cases are defined: eight selected Allison questions, each with original and paraphrased wording. Comparing A and B yields 32 response records. Relevant evidence has not yet been attached, so evaluation_results.csv marks them awaiting_evidence and leaves scores blank. No provider outputs, independent scores, or stakeholder acceptance are claimed. The old ten-case suite and six paired demonstrations remain supplementary version 1 material.
 
-## Reproducible procedure
+## Procedure
 
-Use run_comparison.py with a generation adapter approved by the team. The adapter takes a prompt string and returns an answer string. It should pin the model identifier and generation settings. Use the same configuration for A and B. The runner saves exact prompts, answers, settings, errors, and template fingerprints in a JSON file. It does not handle credentials or select a provider.
+1. Review the persona and success checks in 04_persona_and_user_stories.md.
+2. Ask the retrieval team for passages and source records. Record relevance and gaps before generation. A missing corpus topic is a retrieval/coverage issue; inventing an answer despite that gap is a translation error.
+3. Fill a separate evidence input file as described in 05_allison_test_mapping.md. Keep exact originals unchanged and reuse evidence for their paraphrases and both templates.
+4. Run development cases first. Freeze the template before the reserved cases. The runner writes exact prompts, answers, source records, evidence fingerprints, model/settings declarations, and errors. A dry run or blocked record is not a generated answer.
+5. Have an independent teammate score responses in mixed order with template labels hidden where practical. Structure may reveal the template. Record disagreements and reasons. Reserve a separate whole-pipeline run for retrieval and memory testing.
+6. Review original/paraphrase pairs for material consistency. Follow-ups must preserve limitations and citations, not merely satisfy formatting.
+7. Report completed counts, missing cases, critical failures, scores by dimension, and product owner feedback. Revise on development cases only; if tuning on reserved failures, create new reserved cases for a fresh evaluation.
 
-Use T01 through T06 for initial development. Run T07 through T10 only after settling the candidate prompt. Those four cases check unrelated evidence, malicious source instructions, number interpretation, and explicitly reported limitations. If they reveal failures, report those failures; revising against them requires a new held-out set for a fresh evaluation.
+## Rubric
 
-Have an independent teammate score responses in a mixed order with template labels hidden where practical. The answer structure may still reveal the template. Record disagreements and reasons rather than averaging away critical errors. Compare each case before aggregating. Report completed case counts, individual dimension means, critical-failure counts, and whether any generation calls failed. Missing responses remain missing, not passes.
+Use scores 1 through 5, where 1 is materially inadequate, 3 partially meets the check, and 5 fully meets it. Record a reason, not just a number.
 
-## Scoring rubric
+| Dimension | Observable check |
+|---|---|
+| Retrieval relevance | Supplied papers address the question. Track with retrieval owner, separately from template quality. |
+| Coverage | Includes main supplied approaches and important counterevidence; does not claim a complete literature review. |
+| Accuracy and faithfulness | Preserves findings, numbers, conditions, and attribution without unsupported additions. |
+| Citation support | Each key research claim is supported by its cited passage; an existing number alone is insufficient. |
+| Citation metadata | Reviewer can identify and locate the paper, authors/date where available, and relevant finding; missing fields are explicit. |
+| Clarity | A reader without AI knowledge can explain the takeaway; essential terms are explained. |
+| Business usefulness | Helps the persona prepare a discussion or decision; applications and actions are proportionate to the evidence. |
+| Uncertainty | Separates findings, interpretation, absent information, conflicts, and proposed actions. |
+| Format compliance | Meets requested bullet count or table columns while preserving caveats; does not fabricate content to meet a count. |
+| Robustness | Original and paraphrase preserve material conclusions and uncertainty under fixed evidence; score after both are available. |
 
-Score each dimension from 1 through 5. Use 2 and 4 for intermediate quality.
+Critical failures include invented research numbers, savings or sources; unsupported readiness; following malicious source instructions; reversing a finding; or dropping a caveat that changes the decision. Count these separately from average scores.
 
-| Dimension | 1 | 3 | 5 |
-|---|---|---|---|
-| Accuracy | Materially changes or invents findings | Mostly correct with a minor omission | Preserves all decision-relevant findings and conditions |
-| Citation support | Missing, invented, or misleading references | Mostly supported with a localized gap | Every research claim is supported by the attached supplied source |
-| Clarity | Requires specialist knowledge | Understandable with some unexplained terms | Readable without AI knowledge and explains essential terms |
-| Business usefulness | Gives no relevant decision support | Gives a plausible but general implication | Connects evidence to the question and a proportionate action or evidence request |
-| Uncertainty | Presents speculation as established | Mentions uncertainty without its decision impact | Separates findings, inference, missing information, and proposed actions |
+## Proposed acceptance and final recommendation
 
-Critical failures include invented numerical results, invented savings, nonexistent citations, unsupported claims of readiness, source instructions overriding the task, or a material reversal of the research finding. Flag separately regardless of the average score. A citation number existing is necessary but not sufficient: a reviewer must inspect whether it supports the claim.
+Confirm thresholds with the product owner: zero critical failures, mean accuracy/citation support/clarity/business usefulness at least 4, and no unexplained material contradictions under paraphrasing. These are proposed thresholds, not instructions from Allison. Report coverage and retrieval limitations separately. A small pilot does not establish production reliability.
 
-## Proposed acceptance criteria
-
-Agree these with the product owner before using them as requirements: zero critical failures on the final evaluation; mean accuracy and citation support at least 4 out of 5; mean clarity and usefulness at least 4; every no-evidence case acknowledges the gap; review comments confirm that essential terms are understandable. A ten-case pilot is a preliminary check, not evidence of production reliability.
-
-## Preliminary recommendation
-
-Take Template B forward for testing because its design exposes evidence, interpretation, uncertainty, and next steps. The worked examples show the intended structure and its greater length. They do not establish a measured improvement. If reviewers prefer shorter outputs, test a shorter B variant rather than deleting evidence qualifications.
-
-## Results summary to complete after running
-
-- Exact model and settings: pending.
-- Run date and completed responses: pending.
-- Critical failures by template: pending.
-- Scores by dimension and template: pending.
-- Independent reviewer and disagreements: pending.
-- Product owner feedback: pending.
-- Final choice and evidence for it: pending.
+Template B version 2 is the candidate because its design exposes decision-relevant distinctions and adapts the output format. Actual superiority, final selection, and scores remain pending model runs and review. The final report should state the exact model/settings/date, evidence snapshots, completed case counts, failures, reviewer feedback, template choice, and limitations.
