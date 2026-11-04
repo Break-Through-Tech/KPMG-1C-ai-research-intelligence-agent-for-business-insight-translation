@@ -52,7 +52,7 @@ git clone https://github.com/Break-Through-Tech/KPMG-1C-ai-research-intelligence
 cd KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install -r evaluation/requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 To run the notebook, also install its exploration and Jupyter dependencies:
@@ -83,8 +83,17 @@ The first manually reviewed Ollama answer run on the 23 answerable arXiv questio
 For the exact commands, result files, review rubric, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/findings.md](evaluation/results/findings.md). From the repository root, run the existing tests with:
 
 ```bash
+PYTHONUTF8=1 python -m pytest -q
+```
+
+On Windows PowerShell, activate the environment with `.\.venv\Scripts\Activate.ps1`, then run:
+
+```powershell
+$env:PYTHONUTF8=1
 python -m pytest -q
 ```
+
+The root requirements include the evaluation, Streamlit and notebook dependencies; Gemini remains optional via `notebooks/requirements-gemini.txt`. GitHub Actions runs the tests on Windows and Linux with UTF-8 mode enabled. The dependency list follows the project's unpinned evaluation requirements; it is not an exact environment lockfile.
 
 ## Next steps
 

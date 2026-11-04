@@ -1,1 +1,15 @@
-
+pytest
+pypdf
+langchain-chroma
+langchain-core
+langchain-text-splitters
+langchain-huggingface
+sentence-transformers
+streamlit
+pandas
+numpy
+matplotlib
+seaborn
+requests
+arxiv
+jupyterlab
