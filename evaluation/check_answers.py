@@ -18,9 +18,9 @@ CITATION = re.compile(r"\[(\d+)\]")
 
 
 def main(args):
-    data = json.loads(args.answers.read_text())
+    data = json.loads(args.answers.read_text(encoding="utf-8"))
     benchmark = {q["id"]: q for q in json.loads(
-        (ROOT / "evaluation/benchmark.json").read_text())["queries"]}
+        (ROOT / "evaluation/benchmark.json").read_text(encoding="utf-8"))["queries"]}
     rows = []
     for item in data["answers"]:
         allowed = set(CITATION.findall(item["source_list"]))

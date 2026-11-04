@@ -16,7 +16,7 @@ from answer_validation import answer_issues, attach_evidence  # noqa: E402
 
 
 def notebook_prompt():
-    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text())
+    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text(encoding="utf-8"))
     for cell in notebook["cells"]:
         if cell["cell_type"] != "code":
             continue
@@ -47,8 +47,8 @@ def ask_ollama(prompt, model, host):
 def main(args):
     from langchain_huggingface import HuggingFaceEmbeddings
 
-    benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text())
-    retrieval = json.loads(args.retrieval.read_text())
+    benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text(encoding="utf-8"))
+    retrieval = json.loads(args.retrieval.read_text(encoding="utf-8"))
     embeddings = HuggingFaceEmbeddings(
         model_name=retrieval["model"], encode_kwargs={"normalize_embeddings": True})
     retriever = ResearchRetriever.from_persisted(
@@ -67,7 +67,7 @@ def main(args):
                          if m["name"] in {args.model, f"{args.model}:latest"}), None)
     completed = {}
     if args.output.exists():
-        previous = json.loads(args.output.read_text())
+        previous = json.loads(args.output.read_text(encoding="utf-8"))
         completed = {row["id"]: row for row in previous["answers"]}
     for item in benchmark["queries"]:
         if args.limit and len(completed) >= args.limit:
