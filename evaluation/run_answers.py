@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
 from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
 from answer_validation import answer_issues, attach_evidence  # noqa: E402
+from confidence import add_confidence_instructions, split_confidence  # noqa: E402
 
 
 def notebook_prompt():
@@ -61,6 +62,8 @@ def main(args):
         order_by_vector=retrieval.get("order_by_vector", False),
     )
     template = notebook_prompt()
+    if args.confidence:
+        template = add_confidence_instructions(template)
     with urllib.request.urlopen(f"{args.host.rstrip('/')}/api/tags", timeout=30) as response:
         models = json.load(response)["models"]
     model_digest = next((m["digest"] for m in models
@@ -83,11 +86,14 @@ def main(args):
         start = time.monotonic()
         response = ask_ollama(prompt, args.model, args.host)
         draft = response["response"].strip()
-        answer = attach_evidence(draft, chunks, item["query"])
+        # Remove the confidence line first so citation checks never see "80%".
+        body, confidence = split_confidence(draft) if args.confidence else (draft, None)
+        answer = attach_evidence(body, chunks, item["query"])
         completed[item["id"]] = {
             "id": item["id"], "query": item["query"],
             "answer": answer,
             "draft": draft,
+            **({"confidence": confidence} if args.confidence else {}),
             "remaining_issues": answer_issues(answer, chunks),
             "source_list": retriever.format_sources(chunks),
             "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
@@ -124,4 +130,6 @@ if __name__ == "__main__":
                         default=ROOT / "evaluation/results/retrieval.json")
     parser.add_argument("--limit", type=int, default=0,
                         help="Run only the first N questions (0 = all)")
+    parser.add_argument("--confidence", action="store_true",
+                        help="Ask the model for a 0-100%% confidence line and save it")
     main(parser.parse_args())
