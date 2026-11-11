@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "run_config": {
+    "model": "qwen2.5:latest",
+    "model_digest": "845dbda0ea48ed749caafd9e6037047aa19acfcfd82e704d7ca97d631a0b697e",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 16384,
+      "num_predict": 3072
+    },
+    "answers_sha256": "0359eebaa15b1f76d71fab55bcdae0acf100136d416f9097278017f4bd4599be",
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "rubric_sha256": "33e91cfe514875f2de877a9155aee331e8a01987d5202bf7618829acb1edd2d7",
+    "code_sha256": "15769df00fb2beb085125a1feae946cc1fd69ddacd0503b538ef3cf41671a06a"
+  },
+  "run_fingerprint": "5fa1ff09a52ba7b18ebe46b49b442567afdaa2041e3207045d890b5786ba1017",
+  "source_answers": "/Users/alexnguyen/Documents/GitHub/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/evaluation/results/answers_ordered_frozen.json",
+  "reviews": [
+    {
+      "status": "judge_error",
+      "error": "abstention requires an assessment",
+      "attempts": [
+        {
+          "raw_response": "{\n  \"content_verdict\": \"full\",\n  \"context_sufficiency\": \"sufficient\",\n  \"answer_relevance\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer directly addresses how Pandora's Router decides when to pay for expensive specialist estimates, without repetition or irrelevant details.\"\n  },\n  \"faithfulness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer accurately reflects the passages and does not contain unsupported claims.\"\n  },\n  \"completeness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer covers all aspects of the question, including the use of value-of-information reasoning and the trade-off between cheap screening and costly reasoning.\"\n  },\n  \"citation_support\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer cites the relevant passages and evidence.\"\n  },\n  \"abstention\": {\n    \"rating\": \"not_applicable\",\n    \"reason\": \"The question is answerable.\"\n  },\n  \"passages\": [\n    {\n      \"passage_id\": 1,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Directly explains the decision-making process.\"\n    },\n    {\n      \"passage_id\": 3,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Describes the decentralized setting and the strategic specialist's decision.\"\n    },\n    {\n      \"passage_id\": 4,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Summarizes the key contributions and the overall approach.\"\n    }\n  ],\n  \"findings\": [\n    {\n      \"issue\": \"The answer provides a detailed explanation of the decision-making process.\",\n      \"answer_excerpt\": \"\",\n      \"explanation\": \"The answer accurately describes how Pandora's Router uses value-of-information reasoning to decide when to pay for expensive specialist estimates.\",\n      \"evidence\": [\n        {\n          \"passage_id\": 1,\n          \"quote\": \"The system computes reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate.\"\n        },\n        {\n          \"passage_id\": 3,\n          \"quote\": \"The strategic specialist must apply the same value-of-information (VoI) reasoning from Pandora’s Router to decide whether this price is worth accepting, and whether or not to pay to observe a refined estimate before making this decision.\"\n        }\n      ]\n    }\n  ],\n  \"improved_answer\": \"Pandora's Router decides when an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate. This decision is based on the strategic specialist's application of value-of-information reasoning to determine whether the posted price is worth accepting. [3]\"\n}",
+          "done_reason": "stop",
+          "prompt_tokens": 3598,
+          "output_tokens": 569,
+          "validation_error": "Review each supplied passage exactly once using its original number"
+        },
+        {
+          "raw_response": "{\n  \"content_verdict\": \"full\",\n  \"context_sufficiency\": \"sufficient\",\n  \"answer_relevance\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer directly addresses how Pandora's Router decides when to pay for expensive specialist estimates, without repetition or irrelevant details.\"\n  },\n  \"faithfulness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer accurately reflects the passages and does not contain unsupported claims.\"\n  },\n  \"completeness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer covers all aspects of the question, including the use of value-of-information reasoning and the trade-off between cheap screening and costly reasoning.\"\n  },\n  \"citation_support\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer cites the relevant passages and evidence.\"\n  },\n  \"abstention\": {\n    \"rating\": \"not_applicable\",\n    \"reason\": \"The question is answerable.\"\n  },\n  \"passages\": [\n    {\n      \"passage_id\": 1,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Directly explains the decision-making process.\"\n    },\n    {\n      \"passage_id\": 2,\n      \"relevance\": \"not_relevant\",\n      \"reason\": \"Does not directly answer the question.\"\n    },\n    {\n      \"passage_id\": 3,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Describes the decentralized setting and the strategic specialist's decision.\"\n    },\n    {\n      \"passage_id\": 4,\n      \"relevance\": \"relevant\",\n      \"reason\": \"Summarizes the key contributions and the overall approach.\"\n    }\n  ],\n  \"findings\": [\n    {\n      \"issue\": \"Passage 2 is not relevant to the question.\",\n      \"answer_excerpt\": \"\",\n      \"explanation\": \"Passage 2 discusses benchmark results and does not provide information on how Pandora's Router decides when to pay for expensive specialist estimates.\",\n      \"evidence\": []\n    }\n  ],\n  \"improved_answer\": \"Pandora's Router decides when an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate. This decision is based on the strategic specialist's application of value-of-information reasoning to determine whether the posted price is worth accepting. [3]\"\n}",
+          "done_reason": "stop",
+          "prompt_tokens": 4194,
+          "output_tokens": 502,
+          "validation_error": "abstention requires an assessment"
+        }
+      ],
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "mechanical_issues": [],
+      "seconds": 70.9
+    },
+    {
+      "status": "reviewed",
+      "review": {
+        "content_verdict": "full",
+        "context_sufficiency": "sufficient",
+        "answer_relevance": {
+          "rating": "pass",
+          "reason": "The answer directly addresses the question by explaining the differences between Pandora's Router and Pandora's Bidder."
+        },
+        "faithfulness": {
+          "rating": "pass",
+          "reason": "The answer accurately reflects the provided passages and does not introduce any factual errors."
+        },
+        "completeness": {
+          "rating": "pass",
+          "reason": "The answer covers all aspects of the question, explaining the conditions under which each method queries the expensive estimate."
+        },
+        "citation_support": {
+          "rating": "pass",
+          "reason": "The answer cites the relevant passages."
+        },
+        "abstention": {
+          "rating": "pass",
+          "reason": "The question is answerable, and the answer is provided."
+        },
+        "passages": [
+          {
+            "passage_id": 1,
+            "relevance": "relevant",
+            "reason": "This passage explains the policies of Pandora's Router and Pandora's Bidder."
+          },
+          {
+            "passage_id": 2,
+            "relevance": "partial",
+            "reason": "This passage provides additional context on the cost-performance tradeoff but does not directly explain the differences in querying behavior."
+          },
+          {
+            "passage_id": 3,
+            "relevance": "relevant",
+            "reason": "This passage further elaborates on the querying behavior of Pandora's Bidder."
+          },
+          {
+            "passage_id": 4,
+            "relevance": "not_relevant",
+            "reason": "This passage introduces the overall context and contributions of the paper but does not directly explain the differences in querying behavior."
+          }
+        ],
+        "findings": [
+          {
+            "issue": "Passage 2 provides additional context but does not directly explain the differences in querying behavior.",
+            "answer_excerpt": "",
+            "explanation": "Passage 2 discusses the cost-performance tradeoff but does not directly address the querying behavior of Pandora's Router and Pandora's Bidder.",
+            "evidence": []
+          }
+        ],
+        "improved_answer": "Pandora's Router queries the expensive estimate only when the value of information exceeds the cost, whereas Pandora's Bidder queries the expensive estimate when it holds a true advantage and the cost is low, and declines the price when the cost is high. [1][3]"
+      },
+      "attempts": [
+        {
+          "raw_response": "{\n  \"content_verdict\": \"full\",\n  \"context_sufficiency\": \"sufficient\",\n  \"answer_relevance\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer directly addresses the question by explaining the differences between Pandora's Router and Pandora's Bidder.\"\n  },\n  \"faithfulness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer accurately reflects the provided passages and does not introduce any factual errors.\"\n  },\n  \"completeness\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer covers all aspects of the question, explaining the conditions under which each method queries the expensive estimate.\"\n  },\n  \"citation_support\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The answer cites the relevant passages.\"\n  },\n  \"abstention\": {\n    \"rating\": \"pass\",\n    \"reason\": \"The question is answerable, and the answer is provided.\"\n  },\n  \"passages\": [\n    {\n      \"passage_id\": 1,\n      \"relevance\": \"relevant\",\n      \"reason\": \"This passage explains the policies of Pandora's Router and Pandora's Bidder.\"\n    },\n    {\n      \"passage_id\": 2,\n      \"relevance\": \"partial\",\n      \"reason\": \"This passage provides additional context on the cost-performance tradeoff but does not directly explain the differences in querying behavior.\"\n    },\n    {\n      \"passage_id\": 3,\n      \"relevance\": \"relevant\",\n      \"reason\": \"This passage further elaborates on the querying behavior of Pandora's Bidder.\"\n    },\n    {\n      \"passage_id\": 4,\n      \"relevance\": \"not_relevant\",\n      \"reason\": \"This passage introduces the overall context and contributions of the paper but does not directly explain the differences in querying behavior.\"\n    }\n  ],\n  \"findings\": [\n    {\n      \"issue\": \"Passage 2 provides additional context but does not directly explain the differences in querying behavior.\",\n      \"answer_excerpt\": \"\",\n      \"explanation\": \"Passage 2 discusses the cost-performance tradeoff but does not directly address the querying behavior of Pandora's Router and Pandora's Bidder.\",\n      \"evidence\": []\n    }\n  ],\n  \"improved_answer\": \"Pandora's Router queries the expensive estimate only when the value of information exceeds the cost, whereas Pandora's Bidder queries the expensive estimate when it holds a true advantage and the cost is low, and declines the price when the cost is high. [1][3]\"\n}",
+          "done_reason": "stop",
+          "prompt_tokens": 3444,
+          "output_tokens": 532
+        }
+      ],
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "mechanical_issues": [],
+      "seconds": 35.8
+    }
+  ]
+}

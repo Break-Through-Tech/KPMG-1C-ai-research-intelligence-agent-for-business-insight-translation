@@ -1,0 +1,274 @@
+{
+  "assessment_type": "assistant review against saved passages, not independent human labels",
+  "counts": {
+    "Partial": 4,
+    "Complete": 19,
+    "Correct abstention": 2
+  },
+  "baseline_counts": {
+    "Partial": 3,
+    "Complete": 19,
+    "Major issue": 1,
+    "Correct abstention": 2
+  },
+  "long_candidate_counts": {
+    "Partial": 6,
+    "Complete": 17,
+    "Correct abstention": 2
+  },
+  "metrics": {
+    "before": {
+      "answerable_questions": 23,
+      "average_words": 47.5,
+      "median_words": 27,
+      "over_70_words": 6,
+      "answers_with_citations": 21,
+      "generation_seconds": 240.6
+    },
+    "long_candidate": {
+      "answerable_questions": 23,
+      "average_words": 66.7,
+      "median_words": 53,
+      "over_70_words": 8,
+      "answers_with_citations": 23,
+      "generation_seconds": 305.7
+    },
+    "selected_short_candidate": {
+      "answerable_questions": 23,
+      "average_words": 39.0,
+      "median_words": 29,
+      "over_70_words": 3,
+      "answers_with_citations": 22,
+      "generation_seconds": 355.1
+    }
+  },
+  "run_config": {
+    "model": "llama3.1:8b",
+    "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+    "notebook_prompt_sha256": "2586fb1fdda3799f98ea0a364dce8c16e05aa719919934b55a25c13d19672653",
+    "generation_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 550
+    },
+    "retrieval_sha256": "72582295d429476c975fc824b884814d1da4f6bfd8e3ceb5e3850a7ea81a643b",
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "answer_pipeline_sha256": "8a55afb194cf05c1da3c0e65895b2e357a5afd34b6900e53e3c7dfa6120381fa",
+    "context_presentation": {
+      "group_by_paper": true,
+      "selection_order": false
+    }
+  },
+  "input_sha256": {
+    "answers_context_grouped_full.json": "aead4b05accfe53721378c350e48ac25edde79422a2e051a0eb211405a3bc071",
+    "answers_grouped_compliance_aborted.json": "2ef72e318a424c5f4e510077b2788f56ae70a897ff83ca32c41cfea0818e8aef",
+    "answers_grouped_compliance_full.json": "086bb095da6fb5dbc48e371c9c1d5283da7a5f3a4509fad395e225d1aad2e9b0",
+    "answers_grouped_concise_full.json": "01ad351d48d6bb92c86e386b219fbec4550931a9e453fedf7ea1073ba7c8536f",
+    "prompt_grouped_compliance_aborted.txt": "7e30cc46dd13a95c3dd64279261b510493197d3410895640ad1082031e478052",
+    "prompt_grouped_compliance.txt": "ac1fc75e335dd1220ce3b2e3d80fc61fc61a8d7331a72f87db0eff851be15b07",
+    "prompt_grouped_concise.txt": "c87ffc374fdfdd72f7d63ddf9e47d81bf0a33abe814f1a42f431a414be8c1b1f"
+  },
+  "assessments": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "before": "Partial",
+      "after": "Partial",
+      "explanation": "Correct value-of-information principle and final selection, but still omits reservation-price inspection order and the explicit stopping rule. First factual sentence has no adjacent citation.",
+      "answer": "Pandora's Router decides when an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate. This is done by running the specialist for a few reasoning tokens and checking if it is on the right track [1]. The system then chooses the maximizer of the observed value estimate [1]."
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "before": "Partial",
+      "after": "Partial",
+      "explanation": "Correct centralized versus decentralized distinction, but omits the Router’s global-welfare objective and local-surplus trade-off. Concise but less complete.",
+      "answer": "Pandora's Router is a centralized policy that queries the more accurate value estimate 𝑔𝑚(𝑥) when the value of information exceeds the cost, while Pandora's Bidder is a decentralized policy where specialists use value-of-information reasoning to decide whether to refine their self-assessments before accepting a posted price. [1][3]"
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct three domains; citations appear on a separate line after the list instead of each bullet.",
+      "answer": "The costly-value-estimation routing policy was evaluated in the following three domains:\n\n• Multi-LLM routing benchmark (EmbedLLM)\n• Retrieval-augmented specialists for factoid QA\n• Inference-time computation for mathematical reasoning\n\n[3][4]"
+    },
+    {
+      "id": "q04",
+      "query": "What limitation appears when competing specialists' estimates are noisy?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct possible harm from noisy competing estimates, without the longer candidate’s categorical claim. Second sentence repeats the point and citation follows only the second sentence.",
+      "answer": "When competing estimates are noisy, value-of-information reasoning can increase the strategic specialist's utility at the expense of others. This is because the noisy estimates can lead to incorrect decisions, benefiting the strategic specialist but harming others. [1]"
+    },
+    {
+      "id": "q05",
+      "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Directly gives ten repositories and ten algorithm families as two cited bullets.",
+      "answer": "• 10 frozen repositories [2]\n• 10 distinct families of training algorithm [1]"
+    },
+    {
+      "id": "q06",
+      "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct four-hour agent budget and twelve-hour replay budget, with sentence-level citations.",
+      "answer": "The AI4AI-Bench time budget for an agent is 4 hours on one B300 GPU [2]. The time budget for the replay is 12 hours [3]."
+    },
+    {
+      "id": "q07",
+      "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct 0, 0.1 and 1.0 normalization anchors, with a supporting citation.",
+      "answer": "The incommensurable AI4AI-Bench task metrics are normalized to a scale where 0 is an uninformative model, 0.1 is the algorithm the repository ships, and 1.0 is the task optimum. [2]"
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "before": "Major issue",
+      "after": "Partial",
+      "explanation": "Now gives the key 0.226 versus 0.126 scores without calling them statistically significant. However, the caveat says submissions were stronger to begin with; source [3] says the systems producing them were stronger. Adds unrequested reasoning-effort statistics. This is a substantial improvement over missing the scores, but not a fully precise comparison.",
+      "answer": "• Submissions that change the learning algorithm average 0.226 against 0.126 for those that do not. [2]\n• The share of submissions that touch the learning algorithm rises from 8.0% to 64.0% when reasoning effort is increased. [4]\n• Submissions that change the learning algorithm are stronger to begin with, but the gap is the difference between those that go there and those that do not. [3]"
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct objective hierarchy and procedure/control-flow explanation. Citation remains at paragraph end rather than after each factual sentence.",
+      "answer": "TMI recovers two kinds of task structure: objective models and procedure models. Objective models are hierarchical decompositions of the objective of a task into subobjectives, while procedure models are trace-grounded compositions of control-flow operators specifying how the execution of a task is organized. [3]"
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct 0.974 grouping agreement without unrelated metric comparisons. Still copies first-person wording from the paper.",
+      "answer": "Our method recovers interleaved tasks with 0.974 agreement against ground-truth task groupings [2]."
+    },
+    {
+      "id": "q11",
+      "query": "How much of observed execution does TMI reconstruct?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct 74.9% result, now includes its metric label and citation.",
+      "answer": "TMI reconstructs 74.9% of observed execution steps. [4]"
+    },
+    {
+      "id": "q12",
+      "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Concise correct 30% relative accuracy gain from 14.29 to 18.57, with citation.",
+      "answer": "The held-out task accuracy gain from skills derived from TMI was 30% relative accuracy gain, from 14.29 to 18.57. [1]"
+    },
+    {
+      "id": "q13",
+      "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct 92 commuters and 454 observations, but citations still follow both sentences together.",
+      "answer": "The survey collected 92 McGill student commuters. The final processed dataset contained 454 valid respondent–scenario observations. [2][3]"
+    },
+    {
+      "id": "q14",
+      "query": "Which travel modes responded most clearly to adverse weather and snow?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct cycling and transit findings in one cited sentence.",
+      "answer": "Cycling was particularly sensitive to adverse weather, while public transit use increased substantially under the Snowy scenario [4]."
+    },
+    {
+      "id": "q15",
+      "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Concise comparison with correctly assigned 69.6% and 69.9% five-class accuracies, plus the supported no-task-specific-fitting qualification.",
+      "answer": "Random forest achieved a 69.6% five-class accuracy, while the best text-only zero-shot LLM reached 69.9% without task-specific fitting. [4]"
+    },
+    {
+      "id": "q16",
+      "query": "What was the best vision-based travel mode prediction accuracy?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct 71.5% accuracy with supporting citations. Extra image-context sentence is supported but not required.",
+      "answer": "The best vision-based travel mode prediction accuracy was 71.5% [2]. This was achieved by the best vision-based configuration, which used the same generated weather images shown to respondents [3]."
+    },
+    {
+      "id": "q17",
+      "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Core PMRI definition is supported, but repeats it as three uncited bullets after two cited sentences. Fails the intended brevity and per-bullet citation format.",
+      "answer": "The patient-oriented medical report interpretation task, PMRI, is a novel open-ended multimodal generation task that requires models to explain medical reports in accurate and accessible language based on a user's query and dialogue history. [3] This task differs from existing medical vision-language tasks in that it requires both evidence-grounded medical factuality and context-dependent patient communication. [2]\n\nKey properties of PMRI:\n- Requires models to explain medical reports in accurate and accessible language\n- Based on a user's query and dialogue history\n- Combines evidence-grounded medical factuality and context-dependent patient communication"
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "before": "Partial",
+      "after": "Partial",
+      "explanation": "Correct atomic claim verification and case-specific checklist supervision. Still omits explicit multi-source datastore support and does not spell out the weighted checklist construction; citations are present per sentence.",
+      "answer": "G-CARL supervises factuality through a retrieval-grounded claim reward that provides fine-grained supervision for medical factuality through atomic claim verification [1]. It supervises response coverage through a case-specific checklist reward that explicitly supervises demand satisfaction and expression quality without relying on a single reference response [1]. This reward is constructed through MLLM generation followed by clinician-guided refinement [4]."
+    },
+    {
+      "id": "q19",
+      "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correct benchmark names and evaluation dimensions, and shorter than before. Still contains no passage citations; the citation-compliance goal is not met here.",
+      "answer": "The benchmark accompanying G-CARL is MMedReport, a real-world multimodal PMRI benchmark, and CMB, an external benchmark that evaluates both medical QA accuracy and the professionalism of open-ended clinical interpretation. The evaluation dimensions for PMRI responses include Medical Accuracy, Demand Satisfaction, and Expression Quality."
+    },
+    {
+      "id": "q20",
+      "query": "What did clinician pairwise preferences find about G-CARL?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Concise supported clinician preference finding with correct 136:85 and 106:64 margins and citation.",
+      "answer": "G-CARL was consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction, with preference margins of 136:85 and 106:64, respectively. [1]"
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Both relevant papers are correctly identified with cited descriptions. Still adds a third bullet repeating the survey framework and exceeds the 70-word target.",
+      "answer": "• Inducing Task Models from Computer-Use Traces introduces TASKMODELINDUCTION(TMI), which induces task models from computer-use traces, producing auditable and reusable models of how everyday work is done. [1]\n• An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction proposes a multi-agent framework that integrates data collection, data processing, and behavioral modeling, producing structured and auditable outputs. [2]\n• The framework in An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction connects AI-assisted behavioral data collection with travel-choice modeling and LLM-based prediction, providing a reproducible basis for exploring AI-assisted travel-behavior research. [4]"
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Both benchmark papers and their roles are correct, and citations return. Citations are embedded near titles instead of ending the claims; the explicit evaluation of both Router and Bidder is in source [5], while the first bullet cites [4]. Still exceeds the length target.",
+      "answer": "• Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation [4] evaluates both Pandora’s Router and Pandora’s Bidder across three domains, including a multi-LLM routing benchmark and retrieval-augmented specialists for factoid QA.\n• AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement [2] presents a benchmark that isolates the ability of an agent to design training algorithms, and [3] describes the benchmark's evaluation process, where agents rewrite training algorithms and their code is rerun from scratch for up to 12 hours."
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "before": "Complete",
+      "after": "Complete",
+      "explanation": "Correctly identifies TMI and G-CARL without the longer candidate’s false claim that G-CARL induces auditable task models. Repeats TMI in two bullets; [2] would support its auditability more directly than [1].",
+      "answer": "• Inducing Task Models from Computer-Use Traces discusses auditable task models [1].\n• Inducing Task Models from Computer-Use Traces also discusses evidence-grounded explanations [1].\n• G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation discusses evidence-grounded explanations [4]."
+    },
+    {
+      "id": "q24",
+      "query": "What is KPMG's 2026 revenue forecast?",
+      "before": "Correct abstention",
+      "after": "Correct abstention",
+      "explanation": "Correctly declines the unsupported KPMG forecast using the required exact sentence.",
+      "answer": "The provided papers do not address this question."
+    },
+    {
+      "id": "q25",
+      "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+      "before": "Correct abstention",
+      "after": "Correct abstention",
+      "explanation": "Correctly declines the unsupported NVIDIA stock price using the required exact sentence.",
+      "answer": "The provided papers do not address this question."
+    }
+  ]
+}

@@ -1,0 +1,338 @@
+[
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 8\nTable 3: Non-linear execution in the human sessions\nand its effect on task-model fidelity. Sess. is the share of\nsessions in which the behavior appears and Ep. the num-\nber of episodes. P-Ch., Desc. and Bnd. are parent-child\nconsistency, step description accuracy, and boundary\ngrounding over the nodes each behavior dominates (%,\n↑) under the gpt-5.5 judge, against the clean-span rates\nin the first row. The labeling protocol and full results\nare in Appendix D.2.\nClean spans: Sess.=N/A; Ep.=N/A; P-Ch.=92.2; Desc.=79.9; Bnd.=79.0\nError correction: Sess.=89; Ep.=143; P-Ch.=94.5; Desc.=66.7; Bnd.=59.6\nExploratory search: Sess.=87; Ep.=87; P-Ch.=92.9; Desc.=66.7; Bnd.=60.2",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 8",
+      "section_order": 100000,
+      "chunk_id": "2608.20319_table_29ed2ef4f95e",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 8,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 8\nTable 3: Non-linear execution in the human sessions\nand its effect on task-model fidelity. Sess. is the share of\nsessions in which the behavior appears and Ep. the num-\nber of episodes. P-Ch., Desc. and Bnd. are parent-child\nconsistency, step description accuracy, and boundary\ngrounding over the nodes each behavior dominates (%,\n↑) under the gpt-5.5 judge, against the clean-span rates\nin the first row. The labeling protocol and full results\nare in Appendix D.2.\nRedundant repetition: Sess.=84; Ep.=132; P-Ch.=85.0; Desc.=78.5; Bnd.=55.0\nTrial and error: Sess.=66; Ep.=52; P-Ch.=95.7; Desc.=77.6; Bnd.=65.7\nTask switching: Sess.=61; Ep.=61; P-Ch.=93.0; Desc.=71.1; Bnd.=67.4",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 8",
+      "section_order": 100000,
+      "chunk_id": "2608.20319_table_5f581147f463",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 8,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 8\nTable 3: Non-linear execution in the human sessions\nand its effect on task-model fidelity. Sess. is the share of\nsessions in which the behavior appears and Ep. the num-\nber of episodes. P-Ch., Desc. and Bnd. are parent-child\nconsistency, step description accuracy, and boundary\ngrounding over the nodes each behavior dominates (%,\n↑) under the gpt-5.5 judge, against the clean-span rates\nin the first row. The labeling protocol and full results\nare in Appendix D.2.\nBacktracking or revision: Sess.=53; Ep.=34; P-Ch.=97.0; Desc.=84.8; Bnd.=60.6",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 8",
+      "section_order": 100000,
+      "chunk_id": "2608.20319_table_0eee4600715e",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 8,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 4: Task model fidelity. Task is latent task recovery;\nCov. is objective coverage; Coh. is objective coherence;\nP-Ch. is parent-child consistency; Desc. is step descrip-\ntion accuracy; Op. is operator correctness. Task and\nCov. are 5-point Likert scores (↑); remaining columns\nare binary pass rates (%,↑). Each ablation removes one\ncomponent of our method, the objective model, the pro-\ncedure model, or the reconciliation step where the two\nmodels are induced jointly in a single pass. Best per\njudge in bold.\ngpt-5.5 judge / Workflow summary: Task=2.87; Cov.=3.24; Coh.=65.7; P-Ch.=62.2; Desc.=30.3; Op.=N/A\ngpt-5.5 judge / Direct gen.: Task=3.63; Cov.=4.00; Coh.=87.0; P-Ch.=97.3; Desc.=23.4; Op.=52.7\ngpt-5.5 judge / Ours: Task=3.71; Cov.=4.34; Coh.=85.7; P-Ch.=92.6; Desc.=74.9; Op.=88.5",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100001,
+      "chunk_id": "2608.20319_table_39f456b68155",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 4: Task model fidelity. Task is latent task recovery;\nCov. is objective coverage; Coh. is objective coherence;\nP-Ch. is parent-child consistency; Desc. is step descrip-\ntion accuracy; Op. is operator correctness. Task and\nCov. are 5-point Likert scores (↑); remaining columns\nare binary pass rates (%,↑). Each ablation removes one\ncomponent of our method, the objective model, the pro-\ncedure model, or the reconciliation step where the two\nmodels are induced jointly in a single pass. Best per\njudge in bold.\ngpt-5.5 judge / w/o objective model: Task=3.37; Cov.=3.76; Coh.=77.9; P-Ch.=85.1; Desc.=63.2; Op.=84.1\ngpt-5.5 judge / w/o procedure model: Task=3.74; Cov.=4.34; Coh.=78.9; P-Ch.=96.7; Desc.=N/A; Op.=N/A\ngpt-5.5 judge / w/o reconciliation: Task=3.66; Cov.=4.40; Coh.=99.1; P-Ch.=99.1; Desc.=56.0; Op.=70.3",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100001,
+      "chunk_id": "2608.20319_table_01c210746344",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 4: Task model fidelity. Task is latent task recovery;\nCov. is objective coverage; Coh. is objective coherence;\nP-Ch. is parent-child consistency; Desc. is step descrip-\ntion accuracy; Op. is operator correctness. Task and\nCov. are 5-point Likert scores (↑); remaining columns\nare binary pass rates (%,↑). Each ablation removes one\ncomponent of our method, the objective model, the pro-\ncedure model, or the reconciliation step where the two\nmodels are induced jointly in a single pass. Best per\njudge in bold.\nclaude-sonnet-5 judge / Workflow summary: Task=2.46; Cov.=2.71; Coh.=93.2; P-Ch.=92.8; Desc.=68.6; Op.=N/A\nclaude-sonnet-5 judge / Direct gen.: Task=3.53; Cov.=3.18; Coh.=85.6; P-Ch.=75.3; Desc.=47.8; Op.=78.3\nclaude-sonnet-5 judge / Ours: Task=3.45; Cov.=3.68; Coh.=97.2; P-Ch.=97.2; Desc.=87.8; Op.=91.8",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100001,
+      "chunk_id": "2608.20319_table_defa398b336b",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 4: Task model fidelity. Task is latent task recovery;\nCov. is objective coverage; Coh. is objective coherence;\nP-Ch. is parent-child consistency; Desc. is step descrip-\ntion accuracy; Op. is operator correctness. Task and\nCov. are 5-point Likert scores (↑); remaining columns\nare binary pass rates (%,↑). Each ablation removes one\ncomponent of our method, the objective model, the pro-\ncedure model, or the reconciliation step where the two\nmodels are induced jointly in a single pass. Best per\njudge in bold.\nclaude-sonnet-5 judge / w/o objective model: Task=3.21; Cov.=3.55; Coh.=81.1; P-Ch.=89.7; Desc.=76.6; Op.=80.5\nclaude-sonnet-5 judge / w/o procedure model: Task=3.76; Cov.=3.74; Coh.=90.4; P-Ch.=95.4; Desc.=N/A; Op.=N/A\nclaude-sonnet-5 judge / w/o reconciliation: Task=3.53; Cov.=3.97; Coh.=100.0; P-Ch.=96.9; Desc.=87.3; Op.=87.0",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100001,
+      "chunk_id": "2608.20319_table_c743d16d92d5",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 5: Extrinsic evaluation on SkillLearnBench. Each\nrow is a source of learning fed into the same skill creator.\nCov. is skill coverage; Exec. is executability; Safe. is\nsafety; Align. is agent trajectory alignment; Acc. is\nheld-out task accuracy. All values are percentages (↑).\nNo skill produces no generated artifact, so the skill-\nquality columns are not applicable. Human curated\nbaseline judges the expert-written skills released with\nthe original benchmark.\nNo skill: Cov.=N/A; Exec.=N/A; Safe.=N/A; Align.=59.20; Acc.=8.57\nHuman curated: Cov.=93.59; Exec.=63.80; Safe.=90.50; Align.=56.59; Acc.=10.00\nRaw demonstration: Cov.=52.46; Exec.=53.49; Safe.=92.52; Align.=63.15; Acc.=11.43",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100002,
+      "chunk_id": "2608.20319_table_7c0ffce33e0c",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 9\nTable 5: Extrinsic evaluation on SkillLearnBench. Each\nrow is a source of learning fed into the same skill creator.\nCov. is skill coverage; Exec. is executability; Safe. is\nsafety; Align. is agent trajectory alignment; Acc. is\nheld-out task accuracy. All values are percentages (↑).\nNo skill produces no generated artifact, so the skill-\nquality columns are not applicable. Human curated\nbaseline judges the expert-written skills released with\nthe original benchmark.\nWorkflow summary: Cov.=54.07; Exec.=59.35; Safe.=91.74; Align.=66.18; Acc.=14.29\nOurs: Cov.=54.95; Exec.=67.65; Safe.=90.57; Align.=67.99; Acc.=18.57",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 9",
+      "section_order": 100002,
+      "chunk_id": "2608.20319_table_219b77b84cce",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 9,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 8: Rubric scores for our induced task models over\nthe 20 annotated sessions. Task and Cov. are 5-point\nLikert scores (↑); remaining columns are binary pass\nrates (%, ↑) over the annotated nodes, with both LLM\njudges restricted to the same nodes. Both judges fall\nwithin the range spanned by the annotators on all four\nbinary checks and score both Likert dimensions below\nthe annotator mean, so the automatic evaluation does\nnot inflate the reported levels.\nAnnotator 1: Task=4.20; Cov.=4.85; Coh.=98.0; P-Ch.=100.0; Desc.=93.0; Op.=93.0\nAnnotator 2: Task=3.85; Cov.=4.10; Coh.=87.9; P-Ch.=93.9; Desc.=70.0; Op.=87.0\ngpt-5.5 judge: Task=3.75; Cov.=4.35; Coh.=88.9; P-Ch.=94.9; Desc.=70.0; Op.=91.0",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100003,
+      "chunk_id": "2608.20319_table_a4d6caea70d1",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 8: Rubric scores for our induced task models over\nthe 20 annotated sessions. Task and Cov. are 5-point\nLikert scores (↑); remaining columns are binary pass\nrates (%, ↑) over the annotated nodes, with both LLM\njudges restricted to the same nodes. Both judges fall\nwithin the range spanned by the annotators on all four\nbinary checks and score both Likert dimensions below\nthe annotator mean, so the automatic evaluation does\nnot inflate the reported levels.\nclaude-sonnet-5 judge: Task=3.35; Cov.=3.55; Coh.=98.0; P-Ch.=97.0; Desc.=84.0; Op.=90.0",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100003,
+      "chunk_id": "2608.20319_table_953aea9d0a43",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 9: Statistics on occurrence of non-linear execution\nbehavior observed in the human sessions.\nError correction: Episodes=143; Sessions Median=89%; length=9\nRedundant repetition: Episodes=132; Sessions Median=84%; length=13\nExploratory search: Episodes=87; Sessions Median=87%; length=12",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100004,
+      "chunk_id": "2608.20319_table_e184da4a8eef",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 9: Statistics on occurrence of non-linear execution\nbehavior observed in the human sessions.\nTask switching: Episodes=61; Sessions Median=61%; length=5\nTrial and error: Episodes=52; Sessions Median=66%; length=15\nBacktracking or revision: Episodes=34; Sessions Median=53%; length=14.5",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100004,
+      "chunk_id": "2608.20319_table_be3c73f7576f",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 4.\nAll nodes: Coherent=85.7; P-Ch.=92.6; Boundary=66.7\nClean spans: Coherent=87.4; P-Ch.=92.2; Boundary=79.0\nError correction: Coherent=82.6; P-Ch.=94.5; Boundary=59.6",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100005,
+      "chunk_id": "2608.20319_table_f1a8c71654ed",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 4.\nExploratory search: Coherent=78.6; P-Ch.=92.9; Boundary=60.2\nRedundant repetition: Coherent=86.0; P-Ch.=85.0; Boundary=55.0\nTrial and error: Coherent=88.6; P-Ch.=95.7; Boundary=65.7",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100005,
+      "chunk_id": "2608.20319_table_0368a44e98d5",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "Inducing Task Models from Computer-Use Traces — page 16\nTable 4.\nTask switching: Coherent=79.1; P-Ch.=93.0; Boundary=67.4\nBacktracking or revision: Coherent=97.0; P-Ch.=97.0; Boundary=60.6",
+    "metadata": {
+      "paper_id": "2608.20319",
+      "title": "Inducing Task Models from Computer-Use Traces",
+      "section": "Table on page 16",
+      "section_order": 100005,
+      "chunk_id": "2608.20319_table_6a6667b17c40",
+      "source_url": "https://arxiv.org/abs/2608.20319",
+      "content_kind": "table",
+      "page": 16,
+      "pdf_sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 6\nTable 2: Evaluation results on the CMB dataset.\nBase: Train=74.85; Val=71.42; Professionalism=3.58\nSFT: Train=75.00; Val=71.43; Professionalism=3.48\nMLLM-as-a-Judge: Train=74.96; Val=70.36; Professionalism=3.51",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 6",
+      "section_order": 100000,
+      "chunk_id": "2608.20331_table_58e57d638f07",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 6,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 6\nTable 2: Evaluation results on the CMB dataset.\nG-CARL: Train=75.48; Val=72.05; Professionalism=3.61",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 6",
+      "section_order": 100000,
+      "chunk_id": "2608.20331_table_e9d5a6d26194",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 6,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 6\nTable 3: Ablation study of reward designs in G-CARL.\nReward C ombination / Baseline: Overall=1.626; Acc=0.980; Sat=0.388; Exp=0.258; Pre=93.46; Rec=60.68\nReward C ombination / + Rcheck + Rformat: Overall=1.720; Acc=1.046; Sat=0.406; Exp=0.268; Pre=95.36; Rec=64.10\nReward C ombination / + Rfact + Rformat: Overall=1.748; Acc=1.074; Sat=0.404; Exp=0.270; Pre=95.84; Rec=62.81",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 6",
+      "section_order": 100001,
+      "chunk_id": "2608.20331_table_c73d76e44e36",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 6,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 6\nTable 3: Ablation study of reward designs in G-CARL.\nReward C ombination / + Rfact + Rcheck: Overall=1.810; Acc=1.135; Sat=0.411; Exp=0.264; Pre=96.03; Rec=70.09\nReward C ombination / + Rfact + Rcheck + Rformat: Overall=1.829; Acc=1.141; Sat=0.411; Exp=0.277; Pre=96.62; Rec=72.18\nReward D esign / Rcheck : w/ static rubric: Overall=1.786; Acc=1.100; Sat=0.412; Exp=0.274; Pre=94.83; Rec=66.09",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 6",
+      "section_order": 100001,
+      "chunk_id": "2608.20331_table_b289bc03ade3",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 6,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 6\nTable 3: Ablation study of reward designs in G-CARL.\nReward D esign / Rfact : w/o retrieval: Overall=1.734; Acc=1.057; Sat=0.406; Exp=0.271; Pre=94.26; Rec=63.81",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 6",
+      "section_order": 100001,
+      "chunk_id": "2608.20331_table_c2156bb0e83e",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 6,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 7\nTable 4: Comparison with existing RL methods.\nDPO (Rafailov et al. 2023): Overall=1.032; Acc=0.438; Sat=0.332; Exp=0.262\n+ PROMETHEUS (Kim et al. 2024): Overall=1.132; Acc=0.530; Sat=0.347; Exp=0.255\n+ RAR (Gunjal et al. 2025): Overall=1.683; Acc=1.016; Sat=0.398; Exp=0.269",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 7",
+      "section_order": 100002,
+      "chunk_id": "2608.20331_table_6e08d5b2f2f1",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 7,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 7\nTable 4: Comparison with existing RL methods.\n+ MedRepBench (Shang et al. 2025): Overall=1.722; Acc=1.048; Sat=0.406; Exp=0.268\n+ CapRL (Xing et al. 2025): Overall=1.729; Acc=1.050; Sat=0.410; Exp=0.269\n+ FactScore (Min et al. 2023b): Overall=1.776; Acc=1.100; Sat=0.408; Exp=0.268",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 7",
+      "section_order": 100002,
+      "chunk_id": "2608.20331_table_da2bad5438b1",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 7,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  },
+  {
+    "text": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation — page 7\nTable 4: Comparison with existing RL methods.\n+ Ours: Overall=1.829; Acc=1.141; Sat=0.411; Exp=0.277",
+    "metadata": {
+      "paper_id": "2608.20331",
+      "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+      "section": "Table on page 7",
+      "section_order": 100002,
+      "chunk_id": "2608.20331_table_a5b01ca1ca12",
+      "source_url": "https://arxiv.org/abs/2608.20331",
+      "content_kind": "table",
+      "page": 7,
+      "pdf_sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+    }
+  }
+]

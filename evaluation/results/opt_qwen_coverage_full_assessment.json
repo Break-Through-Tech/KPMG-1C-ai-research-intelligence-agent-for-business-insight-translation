@@ -1,0 +1,187 @@
+{
+  "assessment_type": "Assistant source review; not independent human labels. Complete assesses content; citation concerns tracked separately.",
+  "counts": {
+    "Partial": 3,
+    "Complete": 18,
+    "Major issue": 2,
+    "Correct abstention": 2
+  },
+  "input_sha256": "3514e7371abecf893df829829d9a8375c32379f5fbce3f53b2254da992f1d71c",
+  "assessments": [
+    {
+      "id": "q01",
+      "status": "Partial",
+      "explanation": "Includes value/cost, reservation-price order, stopping and selection, but incorrectly describes running specialist reasoning as how reservation prices themselves are computed. Repetitive ten-claim answer.",
+      "citation_concern": "The first claim cites [2][4] rather than the explicit mechanism in [1].",
+      "answer": "- Pandora's Router decides that an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more accurate estimate, minus total estimation cost. [2][4]\n- The system stops querying expensive estimates when no remaining query is worth its cost, effectively choosing the maximizer of the observed value estimate. [1]\n- The router computes reservation prices by running a specialist for a few reasoning tokens to check if it is on the right track, thereby quantifying the expected value-of-information before committing to a costly and accurate estimate. [1]\n- The decision mechanism balances cheap screening and costly reasoning by deciding which expensive estimates are worth computing based on the cost-adjusted reward, which may combine graded output quality with production costs such as inference cost or API fees. [1]\n- Under a Gaussian signal model, the reservation-price-based policy has a closed form that is straightforward to compute, allowing the system to efficiently determine when an expensive inspection is justified. [4]\n- The centralized policy inspects specialists in reservation price order, stopping the process when no remaining query is worth its cost, while selecting the maximizer of the observed value estimate. [1]\n- The unified principle supporting allocation by centralized routing involves computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate, such as by running the specialist for a few reasoning tokens. [1]\n- The system receives a concrete prompt, generates cheap noisy value estimates from multiple specialists, and then computes reservation prices to decide whether to proceed with expensive estimates. [1]\n- Pandora's Router formalizes model routing with costly value estimation as an instance of Pandora's Box with non-obligatory inspection, yielding a reservation-price-based policy that determines when expensive estimates are worth paying for. [4]\n- The reward function used in the decision process may combine the graded quality of the output with the cost of producing it, which could include inference cost or API fees for tools called. [1]"
+    },
+    {
+      "id": "q02",
+      "status": "Complete",
+      "explanation": "Explains centralized Router versus decentralized Bidder and global welfare versus local surplus, without turning high costs into automatic refusal.",
+      "citation_concern": "",
+      "answer": "- Pandora's Router operates as a centralized policy that computes reservation prices to decide when querying a more accurate value estimate is worthwhile, interpolating between baselines by querying only when the value of information exceeds the cost. [2][3]\n- Pandora's Bidder operates as a decentralized policy where the high bidder is selected in an auction, and each specialist refines its own value estimate only when the market price makes inspection worthwhile. [1][3]\n- In the decentralized setting of Pandora's Bidder, maximizing local surplus does not always lead to better overall allocative efficiency, particularly when prices are inaccurate or queries are overpriced. [3]\n- The tension between protecting a bidder's surplus by declining overpriced queries and assigning inputs to less capable specialists is absent in the centralized setting of Pandora's Router, where the router internalizes all costs and optimizes global welfare directly. [3]\n- Pandora's Bidder corresponds to a single stage of an ascending-price mechanism with costly preference elicitation, isolating core components of decentralized prompt allocation under private value estimation with profit incentives. [4]\n- Both Pandora's Router and Pandora's Bidder are derived from the same principle of balancing cheap screening and costly reasoning for routing, supporting allocation by either centralized routing or decentralized auctions. [1]"
+    },
+    {
+      "id": "q03",
+      "status": "Complete",
+      "explanation": "Names all three evaluation domains.",
+      "citation_concern": "",
+      "answer": "- The costly-value-estimation routing policy was evaluated in three domains: a multi-LLM routing benchmark (EmbedLLM), retrieval-augmented specialists for factoid QA, and inference-time computation for mathematical reasoning. [2][3]"
+    },
+    {
+      "id": "q04",
+      "status": "Complete",
+      "explanation": "Correctly states that noisy competing estimates can benefit the strategic specialist at others' expense.",
+      "citation_concern": "The statement is supported by passage [1], but cites [2].",
+      "answer": "- When competing estimates are noisy, value-of-information reasoning can increase the strategic specialist's utility at the expense of others. [2]"
+    },
+    {
+      "id": "q05",
+      "status": "Complete",
+      "explanation": "Correct ten repositories and ten algorithm families.",
+      "citation_concern": "",
+      "answer": "- AI4AI-Bench contains ten frozen research repositories that collectively cover ten distinct families of training algorithms. [2][3]"
+    },
+    {
+      "id": "q06",
+      "status": "Complete",
+      "explanation": "Correct four-hour agent budget on one B300 and twelve-hour clean replay.",
+      "citation_concern": "",
+      "answer": "- The agent is given a time budget of four hours on one B300 GPU to rewrite the training algorithm. [2][4]\n- The submitted repository is then run from scratch under a fixed budget of twelve hours. [2][4]"
+    },
+    {
+      "id": "q07",
+      "status": "Complete",
+      "explanation": "Correct normalized anchors: 0 uninformative, 0.1 shipped algorithm, 1.0 optimum.",
+      "citation_concern": "",
+      "answer": "- The incommensurable AI4AI-Bench task metrics are normalized onto a single scale where 0 represents an uninformative model, 0.1 represents the algorithm the repository ships, and 1.0 represents the task optimum. [2][5]\n- The ten metrics are incommensurable and cannot be averaged as they stand; every per-task number is reported in its own units against its own baseline. [1]"
+    },
+    {
+      "id": "q08",
+      "status": "Complete",
+      "explanation": "Correct 0.226 versus 0.126 and the stronger-systems/noncausal caveat; extra group shares are correct.",
+      "citation_concern": "46.4% and 53.6% cite [2], but are supported in [3].",
+      "answer": "- Submissions that change the learning algorithm achieve a mean score of 0.226, whereas submissions that do not change the learning procedure achieve a mean score of 0.126. [2][3]\n- The gap between submissions that reach the learning algorithm layer and those that do not represents the difference between the two groups rather than an effect caused by reaching that layer, as the systems that reach it more often are stronger to begin with. [3]\n- Submissions that change the learning algorithm represent 46.4% of the submissions that change anything, while those that do not change the learning procedure but modify other aspects like budgets or hyperparameters represent 53.6%. [2]\n- Submissions that change the learning algorithm focus on the objective, supervision signal, learning rule, and data, whereas submissions that do not change the learning procedure move budgets, checkpointing, hyperparameters, and capacity. [2]\n- Submissions that reach the learning algorithm layer are where the distance to a better algorithm is closed, while most submissions never go there. [3]"
+    },
+    {
+      "id": "q09",
+      "status": "Complete",
+      "explanation": "Correct hierarchical objectives and execution control flow; repeats their definitions.",
+      "citation_concern": "",
+      "answer": "- TMI recovers task models that unify two complementary axes: an objective model representing a hierarchical decomposition of the task's goal into subobjectives, and a procedure model representing a trace-grounded composition of control-flow operators specifying how execution is organized through sequencing and iteration. [2][3]\n- The task model construction stage builds complementary objective and procedure models for each task, where every node in the resulting tree structure pairs an objective with a control-flow operator over its children. [1]\n- The procedure model is defined as a trace-grounded composition of control-flow operators that specify how the execution of a task is organized through sequencing and iteration. [3]\n- The objective model is defined as a hierarchical decomposition of the objective of a task into the subobjectives that the user pursues. [3]"
+    },
+    {
+      "id": "q10",
+      "status": "Complete",
+      "explanation": "Correct 0.974 agreement with task groupings, without confusing this with execution or task success.",
+      "citation_concern": "",
+      "answer": "- The method recovers interleaved tasks with 0.974 agreement against ground-truth task groupings. [2][3]"
+    },
+    {
+      "id": "q11",
+      "status": "Complete",
+      "explanation": "Correct 74.9% of observed execution steps.",
+      "citation_concern": "",
+      "answer": "- TMI reconstructs 74.9% of the observed execution steps. [2][4]"
+    },
+    {
+      "id": "q12",
+      "status": "Major issue",
+      "explanation": "Starts correctly with 14.29% to 18.57% (30% relative gain), then mislabels multiple other table cells as held-out accuracy and incorrectly calls Human curated the strongest baseline. This is a factual regression despite covering the requested number.",
+      "citation_concern": "All erroneous claims cite [1]; numeric-presence checks miss wrong metric/row attribution.",
+      "answer": "- The held-out task accuracy gain from skills derived from TMI was an increase from 14.29% to 18.57%, representing a 30% relative accuracy gain over the strongest baseline. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 10.00% for the strongest baseline (Human curated). [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 56.59% for Raw demonstration and 63.80% for Workflow summary. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 90.50% for No skill. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to N/A for No skill. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 93.59% for Human curated. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 59.20% for No skill. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 63.80% for Human curated. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 90.50% for No skill. [1]\n- The held-out task accuracy for skills derived from TMI was 18.57%, compared to 56.59% for Raw demonstration. [1]"
+    },
+    {
+      "id": "q13",
+      "status": "Complete",
+      "explanation": "Correct 92 commuters and 454 observations; six excluded records are supported.",
+      "citation_concern": "",
+      "answer": "- The weather travel survey collected data from 92 student commuters. [2][4]\n- The survey yielded a total of 454 valid respondent-scenario observations after excluding six records with missing or unparseable mode choices. [3][4]"
+    },
+    {
+      "id": "q14",
+      "status": "Complete",
+      "explanation": "Correct cycling sensitivity and shift toward transit in snow, with supported descriptive context.",
+      "citation_concern": "",
+      "answer": "- Cycling was particularly sensitive to adverse weather, while public transit use increased substantially under the Snowy scenario. [2][3]\n- Snowy and Rainy scenarios are generally easier to predict because they produce stronger and more consistent shifts toward public transit and away from cycling. [2][3]\n- The MNL estimates were consistent with these descriptive patterns, showing lower relative utility for cycling-related modes and higher relative utility for transit and driving under adverse scenarios. [2][3]"
+    },
+    {
+      "id": "q15",
+      "status": "Complete",
+      "explanation": "Correct 69.6% random forest versus 69.9% text-only zero-shot LLM, and does not claim statistical superiority. Adds unnecessary but supported vision/context details.",
+      "citation_concern": "",
+      "answer": "- Random forest achieved the highest trained-model accuracy, while the best zero-shot LLM produced a comparable five-class point estimate without task-specific fitting to the survey records. [2][3]\n- Random forest achieved 69.6% five-class accuracy, while the best text-only zero-shot LLM reached 69.9% without task-specific fitting. [4]\n- The best vision-based configuration achieved a five-class accuracy point estimate of 71.5%, compared with 69.9% for the highest text-only zero-shot LLM result and 69.6% for random forest. [1]\n- The conventional and LLM-based models therefore play complementary roles, with the MNL providing behavioral interpretation, while logistic regression and random forest offering data-trained predictive benchmarks. [2]\n- The comparison of MNL, random forest, and LLM-based predictors highlighted their complementary roles, where random forest offered a strong trained predictive benchmark. [3]\n- These small differences should be interpreted as descriptive point-estimate differences rather than evidence of statistical superiority. [1]"
+    },
+    {
+      "id": "q16",
+      "status": "Complete",
+      "explanation": "Correct best observed vision-based five-class accuracy of 71.5%.",
+      "citation_concern": "",
+      "answer": "- The best vision-based configuration achieved a five-class accuracy point estimate of 71.5%. [2][3]"
+    },
+    {
+      "id": "q17",
+      "status": "Complete",
+      "explanation": "Correct patient-facing, accurate and accessible multimodal report interpretation grounded in the user query and dialogue history.",
+      "citation_concern": "",
+      "answer": "- Patient-oriented Medical Report Interpretation (PMRI) is a novel open-ended multimodal generation task that requires models to explain medical reports in accurate and accessible language based on a user's query and dialogue history. [2][3]\n- PMRI addresses the need for both evidence-grounded medical factuality and context-dependent patient communication, which existing medical vision-language tasks do not adequately capture. [3]\n- PMRI is designed to bridge the gap where medical reports present abnormal values and descriptive findings without explaining their implications for non-expert readers, particularly in online healthcare scenarios. [4]\n- Beyond simply recognizing report findings, PMRI must align professional medical knowledge with patient-centered communication by transforming report evidence into accessible explanations, addressing user-specific concerns, and offering clinically cautious guidance. [4]\n- Unlike the short, deterministic outputs of medical VQA or conventional report generation tasks, PMRI produces long-form, patient-facing explanations grounded in multimodal reports and extended patient-doctor dialogue. [4]"
+    },
+    {
+      "id": "q18",
+      "status": "Complete",
+      "explanation": "Covers multi-source atomic claim verification and instance-specific weighted checklists, including generation/refinement and coverage rewards. Repeats both mechanisms.",
+      "citation_concern": "",
+      "answer": "- G-CARL supervises factuality through retrieval-grounded claim verification that decomposes reward supervision by verifying atomic claims against evidence retrieved from a multi-source medical datastore. [2][3]\n- G-CARL supervises response coverage by constructing instance-specific weighted checklists through MLLM generation followed by clinician refinement to explicitly supervise demand satisfaction and expression quality. [1][3]\n- The retrieval-grounded branch supervises medical factuality by verifying report-grounded medical claims against evidence retrieved from a multi-source medical datastore to produce the factuality reward Rfact. [4]\n- The case-specific checklist branch optimizes demand satisfaction and expression quality by constructing a weighted checklist through MLLM generation followed by clinician-guided refinement, and evaluating the checklist coverage of the generated response to produce the checklist reward Rcheck. [4]\n- Each checklist item is assigned an automatically generated weight, allowing the reward to emphasize the aspects most relevant to the current report and user question. [1]"
+    },
+    {
+      "id": "q19",
+      "status": "Complete",
+      "explanation": "Correct MMedReport and all three evaluation dimensions; adds supported objective metrics and CMB evaluation.",
+      "citation_concern": "The 2,450-instance claim cites [2][3] but is supported by [1].",
+      "answer": "- G-CARL is evaluated on the MMedReport benchmark, which contains 2,450 instances of real-world multimodal patient-oriented medical report interpretation tasks. [2][3]\n- The evaluation on MMedReport utilizes three clinician-defined subjective dimensions: Medical Accuracy, Demand Satisfaction, and Expression Quality. [1]\n- In addition to holistic subjective assessment, G-CARL is evaluated using two objective metrics: claim-level Precision and checklist-level Recall. [2]\n- G-CARL is also evaluated on an external benchmark called CMB, which assesses medical QA accuracy and the professionalism of open-ended clinical interpretation under an LLM-as-a-judge protocol. [1]\n- On the external CMB benchmark, G-CARL is evaluated for QA accuracy and professionalism scores in open-ended generation. [3]"
+    },
+    {
+      "id": "q20",
+      "status": "Major issue",
+      "explanation": "Correct preference direction, but assigns 136:85 to SFT and 106:64 to MLLM-as-a-Judge, then also assigns the same numbers to evaluation dimensions. The source passage does not support that baseline-specific mapping; PDF Figure 4 presents these as metric-specific comparisons. Repeats the result ten times.",
+      "citation_concern": "Existing numbers and a valid source ID do not validate which comparison each number describes.",
+      "answer": "- Clinician pairwise preferences found that G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge baselines, particularly in medical accuracy and demand satisfaction. [2][1]\n- In the human preference study involving three professional clinicians comparing anonymized responses from G-CARL and baselines across three evaluation dimensions, majority voting was used for the final decision. [1]\n- The clinician pairwise preference study included 250 held-out cases where G-CARL achieved preference margins of 136:85 over SFT and 106:64 over MLLM-as-a-Judge. [1]\n- Clinician pairwise preferences indicated that G-CARL is preferred over baselines in medical accuracy and demand satisfaction, with specific preference margins of 136:85 and 106:64 respectively. [1]\n- The clinician pairwise preference evaluation showed that G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction. [1]\n- In the clinician pairwise preference study, G-CARL was consistently preferred over both SFT and MLLM-as-a-Judge baselines, particularly in medical accuracy and demand satisfaction. [1]\n- Clinician pairwise preferences found that G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction. [1]\n- The clinician pairwise preference study found that G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction. [1]\n- Clinician pairwise preferences found that G-CARL is consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction. [1]\n- In the clinician pairwise preference study, G-CARL was consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction. [1]"
+    },
+    {
+      "id": "q21",
+      "status": "Partial",
+      "explanation": "Correctly associates the two arXiv paper IDs with activity-derived task models and survey workflows, but gives only numeric IDs rather than the requested recognizable paper names.",
+      "citation_concern": "The numeric warnings concern paper IDs in metadata, not invented numerical results.",
+      "answer": "- Paper ID 2608.20320 addresses auditable AI workflows derived from survey responses by defining agents as software components that produce structured and auditable outputs. [2][3]\n- Paper ID 2608.20319 addresses auditable AI workflows derived from user activity by deriving symbolic, auditable, and reusable models of how everyday work is done from naturalistic computer-use traces. [1]"
+    },
+    {
+      "id": "q22",
+      "status": "Complete",
+      "explanation": "Identifies AI4AI-Bench and Pandora, and explains benchmark tasks and compute/estimation costs.",
+      "citation_concern": "",
+      "answer": "- The paper AI4AI-Bench evaluates AI agents using benchmark tasks that involve rewriting training algorithms within frozen research repositories, where the agent is given 4 hours on one B300 to rewrite the algorithm and its code is rerun from scratch for up to 12 hours against a fixed evaluator. [2][3]\n- The paper Pandora's AI Model Routing Box evaluates model specialists using benchmark tasks that involve routing queries to heterogeneous model families with varying costs and capabilities, where the routing decision involves a cost-accuracy tradeoff between cheap but noisy estimators and accurate but expensive ones. [5]"
+    },
+    {
+      "id": "q23",
+      "status": "Partial",
+      "explanation": "Repeats TMI ten times and omits G-CARL despite its evidence being present. Also emits a confusing no-unanswered-parts note.",
+      "citation_concern": "",
+      "answer": "- The paper titled Inducing Task Models from Computer-Use Traces discusses auditable task models derived from naturalistic computer-use traces. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing symbolic, auditable, and reusable models of how everyday work is done. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are auditable and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic and auditable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are auditable and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic, auditable, and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic, auditable, and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic, auditable, and reusable. [2][1]\n- The paper titled Inducing Task Models from Computer-Use Traces discusses inducing task models that are symbolic, auditable, and reusable. [2][1]\nNot established by the supplied passages: No unanswered parts were identified as all requested information was supported by the passages."
+    },
+    {
+      "id": "q24",
+      "status": "Correct abstention",
+      "explanation": "Does not invent a KPMG revenue forecast.",
+      "citation_concern": "",
+      "answer": "The provided papers do not address this question."
+    },
+    {
+      "id": "q25",
+      "status": "Correct abstention",
+      "explanation": "Does not invent a historical NVIDIA stock price.",
+      "citation_concern": "",
+      "answer": "The provided papers do not address this question."
+    }
+  ]
+}

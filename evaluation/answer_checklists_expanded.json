@@ -1,0 +1,927 @@
+{
+  "version": 1,
+  "review_status": "assistant_prepared_pending_human_approval",
+  "provenance": "Prepared against the repository benchmark and local PDF abstracts, with additional method sections for q01/q02 and evaluation dimensions for q19. This is not an independently human-reviewed gold standard. Numbers are surface checks; semantic attribution is assessed separately. Fifteen additional questions were labeled from local PDFs before inspecting any generated answers; same corpus, not an independent external test.",
+  "queries": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "required_checks": [
+        {
+          "id": "q01.1",
+          "label": "Value versus cost",
+          "requirement": "Explains that reservation prices/value of information determine whether a more accurate estimate is worth its cost."
+        },
+        {
+          "id": "q01.2",
+          "label": "Inspection and stopping rule",
+          "requirement": "Explains inspection in reservation-price order, stopping when no remaining inspection is worthwhile, then selecting the best observed estimate."
+        },
+        {
+          "id": "q01.3",
+          "label": "Keep the methods distinct",
+          "requirement": "Answers about the centralized Router without attributing decentralized posted-price acceptance or specialist bidding to it."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "required_checks": [
+        {
+          "id": "q02.1",
+          "label": "Who decides",
+          "requirement": "Explicitly contrasts the centralized Router with decentralized specialists using Bidder."
+        },
+        {
+          "id": "q02.2",
+          "label": "Whose objective matters",
+          "requirement": "Explains that Router accounts for overall costs/global welfare, whereas a bidder optimizes its own surplus, which can conflict with overall efficiency."
+        },
+        {
+          "id": "q02.3",
+          "label": "Bidder options",
+          "requirement": "If discussing high inspection costs, preserves the option to use a cheap estimate OR decline a posted price; does not state that high costs always cause refusal."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        },
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 12,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "required_checks": [
+        {
+          "id": "q03.1",
+          "label": "Multi-model benchmark",
+          "requirement": "Names the standard multi-LLM routing benchmark, such as EmbedLLM."
+        },
+        {
+          "id": "q03.2",
+          "label": "Retrieval-based specialists",
+          "requirement": "Names retrieval-augmented specialists for factoid question answering."
+        },
+        {
+          "id": "q03.3",
+          "label": "Reasoning effort",
+          "requirement": "Names variable inference-time computation/reasoning, including mathematical reasoning."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q04",
+      "query": "What limitation appears when competing specialists' estimates are noisy?",
+      "required_checks": [
+        {
+          "id": "q04.1",
+          "label": "Noisy competition",
+          "requirement": "States that noisy competing estimates can increase the strategic specialist’s own utility at the expense of others/overall allocation efficiency, rather than benefiting everyone."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q05",
+      "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+      "required_checks": [
+        {
+          "id": "q05.1",
+          "label": "Repository count",
+          "requirement": "Reports 10 frozen research repositories."
+        },
+        {
+          "id": "q05.2",
+          "label": "Algorithm families",
+          "requirement": "Reports 10 training algorithm families."
+        }
+      ],
+      "expected_numbers": [
+        "10"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q06",
+      "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+      "required_checks": [
+        {
+          "id": "q06.1",
+          "label": "Agent budget",
+          "requirement": "Reports 4 hours on one B300 for the agent."
+        },
+        {
+          "id": "q06.2",
+          "label": "Replay budget",
+          "requirement": "Reports a fresh replay from scratch for up to 12 hours."
+        }
+      ],
+      "expected_numbers": [
+        "4",
+        "12"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q07",
+      "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+      "required_checks": [
+        {
+          "id": "q07.1",
+          "label": "Zero anchor",
+          "requirement": "States that 0 represents an uninformative model."
+        },
+        {
+          "id": "q07.2",
+          "label": "Baseline anchor",
+          "requirement": "States that 0.1 represents the original algorithm shipped with the repository."
+        },
+        {
+          "id": "q07.3",
+          "label": "Optimum anchor",
+          "requirement": "States that 1.0 represents the task optimum on the common normalized scale."
+        }
+      ],
+      "expected_numbers": [
+        "0",
+        "0.1",
+        "1.0"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "required_checks": [
+        {
+          "id": "q08.1",
+          "label": "Algorithm-changing submissions",
+          "requirement": "Reports a mean normalized score of 0.226 for submissions that change the learning algorithm."
+        },
+        {
+          "id": "q08.2",
+          "label": "Other submissions",
+          "requirement": "Reports 0.126 for the rest and correctly identifies the former as higher, without claiming a causal effect."
+        }
+      ],
+      "expected_numbers": [
+        "0.226",
+        "0.126"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "required_checks": [
+        {
+          "id": "q09.1",
+          "label": "Goals",
+          "requirement": "Identifies a hierarchical objective model of recursive goal decomposition."
+        },
+        {
+          "id": "q09.2",
+          "label": "Procedure",
+          "requirement": "Identifies a procedure model representing execution control flow."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "required_checks": [
+        {
+          "id": "q10.1",
+          "label": "Task grouping agreement",
+          "requirement": "Reports 0.974 agreement with ground-truth interleaved-task groupings; does not describe this as general task success accuracy."
+        }
+      ],
+      "expected_numbers": [
+        "0.974"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q11",
+      "query": "How much of observed execution does TMI reconstruct?",
+      "required_checks": [
+        {
+          "id": "q11.1",
+          "label": "Execution reconstruction",
+          "requirement": "Reports reconstruction of 74.9% of observed execution steps, not 74.9% of tasks."
+        }
+      ],
+      "expected_numbers": [
+        "74.9%"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q12",
+      "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+      "required_checks": [
+        {
+          "id": "q12.1",
+          "label": "Held-out improvement",
+          "requirement": "Reports a 30.0% improvement in held-out task accuracy over the strongest baseline; does not relabel it as a 30-percentage-point gain."
+        }
+      ],
+      "expected_numbers": [
+        "30.0%"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q13",
+      "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+      "required_checks": [
+        {
+          "id": "q13.1",
+          "label": "Participants",
+          "requirement": "Reports 92 student commuters."
+        },
+        {
+          "id": "q13.2",
+          "label": "Observations",
+          "requirement": "Reports 454 respondent–scenario observations, keeping this distinct from participant count."
+        }
+      ],
+      "expected_numbers": [
+        "92",
+        "454"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q14",
+      "query": "Which travel modes responded most clearly to adverse weather and snow?",
+      "required_checks": [
+        {
+          "id": "q14.1",
+          "label": "Cycling",
+          "requirement": "States that cycling was particularly sensitive to adverse weather."
+        },
+        {
+          "id": "q14.2",
+          "label": "Transit",
+          "requirement": "States that public-transit use increased under the Snowy scenario."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q15",
+      "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+      "required_checks": [
+        {
+          "id": "q15.1",
+          "label": "Random forest",
+          "requirement": "Reports 69.6% five-class accuracy for random forest."
+        },
+        {
+          "id": "q15.2",
+          "label": "Text-only model",
+          "requirement": "Reports 69.9% for the best text-only zero-shot LLM without task-specific fitting, slightly higher than random forest."
+        }
+      ],
+      "expected_numbers": [
+        "69.6%",
+        "69.9%"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q16",
+      "query": "What was the best vision-based travel mode prediction accuracy?",
+      "required_checks": [
+        {
+          "id": "q16.1",
+          "label": "Vision result",
+          "requirement": "Reports 71.5% as the best observed vision-based five-class travel-mode prediction accuracy, not a guaranteed general result."
+        }
+      ],
+      "expected_numbers": [
+        "71.5%"
+      ],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q17",
+      "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+      "required_checks": [
+        {
+          "id": "q17.1",
+          "label": "Task purpose",
+          "requirement": "Describes PMRI as explaining medical reports accurately in accessible language for patients."
+        },
+        {
+          "id": "q17.2",
+          "label": "Personal context",
+          "requirement": "Explains that the interpretation responds to the user query and dialogue history using multimodal report information."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 1,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "required_checks": [
+        {
+          "id": "q18.1",
+          "label": "Factual support",
+          "requirement": "Explains multi-source retrieval for verifying atomic claims."
+        },
+        {
+          "id": "q18.2",
+          "label": "Coverage",
+          "requirement": "Explains context-aware, instance-specific weighted checklists for covering user needs/response content."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 1,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q19",
+      "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+      "required_checks": [
+        {
+          "id": "q19.1",
+          "label": "Benchmark",
+          "requirement": "Names MMedReport as the PMRI benchmark."
+        },
+        {
+          "id": "q19.2",
+          "label": "Evaluation dimensions",
+          "requirement": "Names medical accuracy, demand satisfaction, and expression quality as the three evaluation dimensions."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 1,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q20",
+      "query": "What did clinician pairwise preferences find about G-CARL?",
+      "required_checks": [
+        {
+          "id": "q20.1",
+          "label": "Clinician preference",
+          "requirement": "Reports that clinicians preferred G-CARL interpretations as more accurate and better aligned with patient needs; does not turn preference into a claim of proven clinical outcomes."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 1,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "required_checks": [
+        {
+          "id": "q21.1",
+          "label": "Activity traces",
+          "requirement": "Identifies Inducing Task Models from Computer-Use Traces/TMI and connects it to auditable task models derived from user activity."
+        },
+        {
+          "id": "q21.2",
+          "label": "Survey workflow",
+          "requirement": "Identifies the agentic travel-behavior paper and connects it to an auditable workflow integrating survey collection, processing, and prediction."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        },
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "required_checks": [
+        {
+          "id": "q22.1",
+          "label": "Model routing",
+          "requirement": "Identifies Pandora’s AI Model Routing Box and connects its specialist routing evaluation to estimation costs and benchmark tasks."
+        },
+        {
+          "id": "q22.2",
+          "label": "Agent algorithms",
+          "requirement": "Identifies AI4AI-Bench and connects its algorithm-design agent evaluation to benchmark tasks and fixed compute/time budgets."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        },
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "required_checks": [
+        {
+          "id": "q23.1",
+          "label": "Grounded explanations",
+          "requirement": "Identifies G-CARL and connects it to evidence-grounded patient-facing interpretations."
+        },
+        {
+          "id": "q23.2",
+          "label": "Auditable task models",
+          "requirement": "Identifies TMI/Inducing Task Models from Computer-Use Traces and connects it to auditable models of user activity."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 1,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        },
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 1,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q24",
+      "query": "What is KPMG's 2026 revenue forecast?",
+      "required_checks": [
+        {
+          "id": "q24.1",
+          "label": "Decline unsupported forecast",
+          "requirement": "Clearly states that these papers do not provide KPMG’s 2026 revenue forecast, without inventing a forecast."
+        }
+      ],
+      "expected_numbers": [],
+      "references": []
+    },
+    {
+      "id": "q25",
+      "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+      "required_checks": [
+        {
+          "id": "q25.1",
+          "label": "Decline unsupported price",
+          "requirement": "Clearly states that none of these papers supplies NVIDIA’s stock price on October 14, 2026, without inventing a price."
+        }
+      ],
+      "expected_numbers": [],
+      "references": []
+    },
+    {
+      "id": "q26",
+      "query": "What distributional assumption gives Pandora closed-form value-of-information expressions, and is it exact?",
+      "required_checks": [
+        {
+          "id": "q26.1",
+          "label": "Required coverage",
+          "requirement": "Names a Gaussian signal model and explains that real value distributions need not be Gaussian; it is an approximation."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 1,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q27",
+      "query": "At high inspection costs, what alternatives does Pandora’s Bidder have to refining its estimate?",
+      "required_checks": [
+        {
+          "id": "q27.1",
+          "label": "Required coverage",
+          "requirement": "Gives both options: use the cheap estimate or decline the price; does not say high cost always forces refusal."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20316",
+          "file": "data/2608.20316v1_Pandora's AI Model Routing Box Efficient Allocation with Costly Value Estimation.pdf",
+          "page": 11,
+          "sha256": "c311eeb4801ab29f80e111d732483e5eadc22eb4603dab0c614b1bdba691629c"
+        }
+      ]
+    },
+    {
+      "id": "q28",
+      "query": "Why did the 19 zero-score AI4AI-Bench runs fail?",
+      "required_checks": [
+        {
+          "id": "q28.1",
+          "label": "Required coverage",
+          "requirement": "Distinguishes 8 runs without a usable patch from 11 with a complete patch but no output satisfying the contract; all terminated normally."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 10,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q29",
+      "query": "How did the lowest versus highest reasoning effort change AI4AI-Bench algorithm-editing share and mean score?",
+      "required_checks": [
+        {
+          "id": "q29.1",
+          "label": "Required coverage",
+          "requirement": "Correctly reports share rising from 8% to 64% and mean normalized score from 0.094 to 0.196."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q30",
+      "query": "What were the overall mean and best-system normalized scores in AI4AI-Bench?",
+      "required_checks": [
+        {
+          "id": "q30.1",
+          "label": "Required coverage",
+          "requirement": "Overall mean is 0.166 and best system is 0.250, with correct attribution."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20318",
+          "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+          "page": 1,
+          "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+        }
+      ]
+    },
+    {
+      "id": "q31",
+      "query": "Does TMI require the task set to be specified in advance, and how does it handle interleaved activity?",
+      "required_checks": [
+        {
+          "id": "q31.1",
+          "label": "Required coverage",
+          "requirement": "No predefined task set is required; it discovers latent tasks and assigns potentially non-contiguous activities to separate interleaved tasks."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 2,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q32",
+      "query": "Which operators are allowed in TMI procedure models, and why is selection excluded?",
+      "required_checks": [
+        {
+          "id": "q32.1",
+          "label": "Required coverage",
+          "requirement": "Names SEQ, FOR, WHILE; explains that observed traces show only enacted paths, not alternatives, so selection is excluded."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20319",
+          "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+          "page": 23,
+          "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+        }
+      ]
+    },
+    {
+      "id": "q33",
+      "query": "Does active data collection in the travel survey mean active learning or adaptive sampling?",
+      "required_checks": [
+        {
+          "id": "q33.1",
+          "label": "Required coverage",
+          "requirement": "No; it means stateful conversational survey administration with predefined interaction logic and structured response capture."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 7,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q34",
+      "query": "When did persona information help travel-mode prediction most, and which information gave the most consistent improvement?",
+      "required_checks": [
+        {
+          "id": "q34.1",
+          "label": "Required coverage",
+          "requirement": "Persona helped most when habitual travel information was unavailable; habitual travel information gave the most consistent gains."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 1,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q35",
+      "query": "Must agents in the travel research framework be LLM-only, and who retains control of research decisions?",
+      "required_checks": [
+        {
+          "id": "q35.1",
+          "label": "Required coverage",
+          "requirement": "Agents can combine LLMs with deterministic/statistical/database/ML tools; researchers retain control of survey constructs, processing, model specifications and interpretation."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20320",
+          "file": "data/2608.20320v1_An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and We.pdf",
+          "page": 6,
+          "sha256": "558cdae525c97f01e5b50000a3b9e307cae227f37f67d7aa7491a58507845872"
+        }
+      ]
+    },
+    {
+      "id": "q36",
+      "query": "How many MMedReport instances are used for training and evaluation?",
+      "required_checks": [
+        {
+          "id": "q36.1",
+          "label": "Required coverage",
+          "requirement": "2,200 training and 250 evaluation, out of 2,450 total."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 5,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q37",
+      "query": "What training hardware, epoch count, batch size and reward weights are reported for G-CARL?",
+      "required_checks": [
+        {
+          "id": "q37.1",
+          "label": "Required coverage",
+          "requirement": "Three epochs, eight NVIDIA H100 GPUs, batch size 192; factuality weight 0.4, checklist 0.3, format 0.3."
+        }
+      ],
+      "expected_numbers": [],
+      "references": [
+        {
+          "paper_id": "2608.20331",
+          "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+          "page": 5,
+          "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+        }
+      ]
+    },
+    {
+      "id": "q38",
+      "query": "Which paper proves in a randomized clinical trial that G-CARL reduces patient mortality?",
+      "required_checks": [
+        {
+          "id": "q38.1",
+          "label": "Required coverage",
+          "requirement": "Declines the unsupported clinical-trial mortality claim; does not confuse preference studies with clinical outcomes."
+        }
+      ],
+      "expected_numbers": [],
+      "references": []
+    },
+    {
+      "id": "q39",
+      "query": "What subscription price does the Pandora paper announce for a commercial routing product?",
+      "required_checks": [
+        {
+          "id": "q39.1",
+          "label": "Required coverage",
+          "requirement": "Declines: experimental/API cost figures are not a commercial subscription price."
+        }
+      ],
+      "expected_numbers": [],
+      "references": []
+    },
+    {
+      "id": "q40",
+      "query": "How much did the travel survey reduce actual citywide traffic emissions?",
+      "required_checks": [
+        {
+          "id": "q40.1",
+          "label": "Required coverage",
+          "requirement": "Declines: stated-choice prediction findings do not measure an intervention’s actual emissions reduction."
+        }
+      ],
+      "expected_numbers": [],
+      "references": []
+    }
+  ]
+}

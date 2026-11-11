@@ -1,0 +1,208 @@
+{
+  "base": {
+    "dev": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 867
+    },
+    "holdout": {
+      "evidence_hits": 24,
+      "evidence_total": 28,
+      "context_words": 847
+    },
+    "changed_contexts": 0,
+    "gained": [],
+    "lost": []
+  },
+  "cap_single": {
+    "dev": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 1007
+    },
+    "holdout": {
+      "evidence_hits": 24,
+      "evidence_total": 28,
+      "context_words": 983
+    },
+    "changed_contexts": 33,
+    "gained": [],
+    "lost": []
+  },
+  "k6": {
+    "dev": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 1062
+    },
+    "holdout": {
+      "evidence_hits": 24,
+      "evidence_total": 28,
+      "context_words": 1031
+    },
+    "changed_contexts": 38,
+    "gained": [],
+    "lost": []
+  },
+  "wide": {
+    "dev": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 1452
+    },
+    "holdout": {
+      "evidence_hits": 27,
+      "evidence_total": 28,
+      "context_words": 1451
+    },
+    "changed_contexts": 40,
+    "gained": [
+      "q28"
+    ],
+    "lost": []
+  },
+  "rrf_rerank": {
+    "dev": {
+      "evidence_hits": 20,
+      "evidence_total": 28,
+      "context_words": 992
+    },
+    "holdout": {
+      "evidence_hits": 26,
+      "evidence_total": 28,
+      "context_words": 1036
+    },
+    "changed_contexts": 39,
+    "gained": [
+      "q28",
+      "q32"
+    ],
+    "lost": [
+      "q03",
+      "q05",
+      "q12",
+      "q19",
+      "q20",
+      "q27",
+      "q31"
+    ]
+  },
+  "header_rerank": {
+    "dev": {
+      "evidence_hits": 19,
+      "evidence_total": 28,
+      "context_words": 862
+    },
+    "holdout": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 840
+    },
+    "changed_contexts": 34,
+    "gained": [
+      "q28"
+    ],
+    "lost": [
+      "q06",
+      "q09",
+      "q18",
+      "q19",
+      "q27",
+      "q33"
+    ]
+  },
+  "neighbours": {
+    "dev": {
+      "evidence_hits": 26,
+      "evidence_total": 28,
+      "context_words": 1611
+    },
+    "holdout": {
+      "evidence_hits": 24,
+      "evidence_total": 28,
+      "context_words": 1749
+    },
+    "changed_contexts": 39,
+    "gained": [
+      "q01"
+    ],
+    "lost": []
+  },
+  "rrf_cap_single": {
+    "dev": {
+      "evidence_hits": 20,
+      "evidence_total": 28,
+      "context_words": 994
+    },
+    "holdout": {
+      "evidence_hits": 28,
+      "evidence_total": 28,
+      "context_words": 1045
+    },
+    "changed_contexts": 39,
+    "gained": [
+      "q28",
+      "q32"
+    ],
+    "lost": [
+      "q03",
+      "q05",
+      "q12",
+      "q19",
+      "q20"
+    ]
+  },
+  "rrf_header": {
+    "dev": {
+      "evidence_hits": 17,
+      "evidence_total": 28,
+      "context_words": 1019
+    },
+    "holdout": {
+      "evidence_hits": 25,
+      "evidence_total": 28,
+      "context_words": 1075
+    },
+    "changed_contexts": 40,
+    "gained": [
+      "q28",
+      "q32"
+    ],
+    "lost": [
+      "q03",
+      "q05",
+      "q06",
+      "q12",
+      "q14",
+      "q19",
+      "q20",
+      "q27",
+      "q31",
+      "q33"
+    ]
+  },
+  "rrf_header_cap_single": {
+    "dev": {
+      "evidence_hits": 19,
+      "evidence_total": 28,
+      "context_words": 1017
+    },
+    "holdout": {
+      "evidence_hits": 28,
+      "evidence_total": 28,
+      "context_words": 1072
+    },
+    "changed_contexts": 40,
+    "gained": [
+      "q28",
+      "q32"
+    ],
+    "lost": [
+      "q06",
+      "q12",
+      "q14",
+      "q19",
+      "q20"
+    ]
+  }
+}

@@ -1,0 +1,165 @@
+{
+  "papers": {
+    "2608.20316": "Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation",
+    "2608.20318": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+    "2608.20319": "Inducing Task Models from Computer-Use Traces",
+    "2608.20320": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+    "2608.20331": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation"
+  },
+  "queries": [
+    {
+      "id": "q26",
+      "query": "What distributional assumption gives Pandora closed-form value-of-information expressions, and is it exact?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "evidence": [
+        "Gaussian signal model",
+        "only an approximation"
+      ]
+    },
+    {
+      "id": "q27",
+      "query": "At high inspection costs, what alternatives does Pandora’s Bidder have to refining its estimate?",
+      "relevant_papers": [
+        "2608.20316"
+      ],
+      "evidence": [
+        "defaults to the cheap estimate or declines the price"
+      ]
+    },
+    {
+      "id": "q28",
+      "query": "Why did the 19 zero-score AI4AI-Bench runs fail?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "evidence": [
+        "Of the 19 cells that score zero",
+        "8 ended their four hours",
+        "11 submitted a complete patch"
+      ]
+    },
+    {
+      "id": "q29",
+      "query": "How did the lowest versus highest reasoning effort change AI4AI-Bench algorithm-editing share and mean score?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "evidence": [
+        "0.094",
+        "0.196",
+        "64%"
+      ]
+    },
+    {
+      "id": "q30",
+      "query": "What were the overall mean and best-system normalized scores in AI4AI-Bench?",
+      "relevant_papers": [
+        "2608.20318"
+      ],
+      "evidence": [
+        "mean score is 0.166",
+        "best system reaches0.250"
+      ]
+    },
+    {
+      "id": "q31",
+      "query": "Does TMI require the task set to be specified in advance, and how does it handle interleaved activity?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "evidence": [
+        "without a pre-specified task set",
+        "possibly non-contiguous activities"
+      ]
+    },
+    {
+      "id": "q32",
+      "query": "Which operators are allowed in TMI procedure models, and why is selection excluded?",
+      "relevant_papers": [
+        "2608.20319"
+      ],
+      "evidence": [
+        "selection is not represented",
+        "FOR",
+        "WHILE"
+      ]
+    },
+    {
+      "id": "q33",
+      "query": "Does active data collection in the travel survey mean active learning or adaptive sampling?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "evidence": [
+        "does not refer to active learning or adaptive sampling",
+        "stateful conversational survey administration"
+      ]
+    },
+    {
+      "id": "q34",
+      "query": "When did persona information help travel-mode prediction most, and which information gave the most consistent improvement?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "evidence": [
+        "persona information was most beneficial when habitual travel information was unavailable",
+        "Habitual travel information produced the most consistent improvement"
+      ]
+    },
+    {
+      "id": "q35",
+      "query": "Must agents in the travel research framework be LLM-only, and who retains control of research decisions?",
+      "relevant_papers": [
+        "2608.20320"
+      ],
+      "evidence": [
+        "rather than an LLM-only pipeline",
+        "researchers retain control"
+      ]
+    },
+    {
+      "id": "q36",
+      "query": "How many MMedReport instances are used for training and evaluation?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "evidence": [
+        "2,200 instances",
+        "250 for evaluation"
+      ]
+    },
+    {
+      "id": "q37",
+      "query": "What training hardware, epoch count, batch size and reward weights are reported for G-CARL?",
+      "relevant_papers": [
+        "2608.20331"
+      ],
+      "evidence": [
+        "three epochs on 8 NVIDIAH100GPUs",
+        "batchsizeof192",
+        "0.4",
+        "0.3"
+      ]
+    },
+    {
+      "id": "q38",
+      "query": "Which paper proves in a randomized clinical trial that G-CARL reduces patient mortality?",
+      "relevant_papers": [],
+      "evidence": []
+    },
+    {
+      "id": "q39",
+      "query": "What subscription price does the Pandora paper announce for a commercial routing product?",
+      "relevant_papers": [],
+      "evidence": []
+    },
+    {
+      "id": "q40",
+      "query": "How much did the travel survey reduce actual citywide traffic emissions?",
+      "relevant_papers": [],
+      "evidence": []
+    }
+  ]
+}

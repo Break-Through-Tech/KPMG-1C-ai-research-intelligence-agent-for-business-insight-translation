@@ -28,6 +28,8 @@ Usage from `notebooks/` (after the Chroma collection has been built):
 """
 
 import json
+import math
+from collections import Counter
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -122,6 +124,7 @@ class ResearchRetriever:
         rerank_model: str | None = None,
         max_rerank_gap: float | None = None,
         order_by_vector: bool = False,
+        hybrid: bool = False,
     ):
         self.vector_store = vector_store
         self.paper_metadata = paper_metadata or {}
@@ -132,7 +135,47 @@ class ResearchRetriever:
         self.rerank_model = rerank_model
         self.max_rerank_gap = max_rerank_gap
         self.order_by_vector = order_by_vector
+        self.hybrid = hybrid
+        self._lexical_documents = None
+        if hybrid and min_score is not None:
+            raise ValueError("min_score is not calibrated for hybrid fusion")
         self._reranker = None
+
+    def _hybrid_candidates(self, query, dense, fetch_k, paper_ids=None):
+        """Fuse dense retrieval and corpus BM25 by reciprocal rank (k=60).
+
+        Uses only query/text/metadata; no benchmark labels or expected answers.
+        The per-instance lexical cache must be rebuilt if the corpus changes.
+        """
+        from langchain_core.documents import Document
+        if self._lexical_documents is None:
+            stored = self.vector_store.get(include=['documents', 'metadatas'])
+            self._lexical_documents = [Document(page_content=text, metadata=meta or {}, id=key)
+                for key, text, meta in zip(stored['ids'], stored['documents'], stored['metadatas'])]
+        docs = [d for d in self._lexical_documents
+                if not paper_ids or d.metadata.get('paper_id') in paper_ids]
+        tokens = [Counter(re.findall(r"[a-z0-9]+", d.page_content.lower())) for d in docs]
+        terms = set(re.findall(r"[a-z0-9]+", query.lower())) - {
+            'the','a','an','of','to','in','and','or','is','are','does','do','what','which','how'}
+        avg = sum(sum(t.values()) for t in tokens) / max(1,len(tokens))
+        df = {term: sum(term in t for t in tokens) for term in terms}
+        scores = []
+        for doc, tf in zip(docs,tokens):
+            size = sum(tf.values());score = 0.0
+            for term in terms:
+                freq = tf[term]
+                idf = math.log(1 + (len(docs)-df[term]+0.5)/(df[term]+0.5))
+                score += idf * freq * 2.5 / (freq + 1.5*(0.25+0.75*size/max(avg,1)))
+            if score > 0:
+                scores.append((doc,score))
+        lexical = sorted(scores,key=lambda pair:pair[1],reverse=True)[:fetch_k]
+        fused = {};by_key = {}
+        for ranking in (dense, lexical):
+            for rank,(doc,_) in enumerate(ranking,1):
+                key = doc.metadata.get('chunk_id') or doc.id or (doc.metadata.get('paper_id'),doc.page_content)
+                by_key.setdefault(key,doc)
+                fused[key] = fused.get(key,0) + 1/(60+rank)
+        return [(by_key[key],score) for key,score in sorted(fused.items(),key=lambda pair:pair[1],reverse=True)[:fetch_k]]
 
     def _rerank(self, query, candidates):
         """Score only the small candidate pool with a query/passage cross-encoder."""
@@ -199,6 +242,9 @@ class ResearchRetriever:
         candidates = self.vector_store.similarity_search_with_relevance_scores(
             query, k=max(fetch_k, k), filter=where
         )
+
+        if self.hybrid:
+            candidates = self._hybrid_candidates(query, candidates, max(fetch_k, k), paper_ids)
 
         eligible = []
         for doc, score in candidates:
@@ -270,14 +316,41 @@ class ResearchRetriever:
         """Map passage rank -> citation number."""
         return {chunk.rank: chunk.rank for chunk in results}
 
-    def format_context(self, results: list[RetrievedChunk]) -> str:
-        """Numbered passages with a stable chunk ID for traceable citations."""
-        blocks = [
-            f"[{chunk.rank}] {chunk.title} — {chunk.section} "
-            f"(chunk {chunk.chunk_id})\n{chunk.text}"
-            for chunk in results
-        ]
-        return "\n\n".join(blocks)
+    def format_context(
+        self,
+        results: list[RetrievedChunk],
+        *,
+        group_by_paper: bool = False,
+    ) -> str:
+        """Format evidence while preserving original citation numbers."""
+        def passage(chunk):
+            return (
+                f"[{chunk.rank}] {chunk.title} — {chunk.section} "
+                f"(chunk {chunk.chunk_id})\n{chunk.text}"
+            )
+
+        if not group_by_paper:
+            return "\n\n".join(passage(chunk) for chunk in results)
+
+        papers = {}
+        for chunk in results:
+            # Avoid merging unknown papers into one group.
+            key = chunk.paper_id or chunk.source_url or chunk.title
+            if not key:
+                key = f"unknown-passage-{chunk.rank}"
+            papers.setdefault(key, []).append(chunk)
+
+        blocks = []
+        for chunks in papers.values():
+            first = chunks[0]
+            heading = (
+                f"Paper: {first.title or 'Unknown title'}\n"
+                f"Paper ID: {first.paper_id or 'Unknown'}"
+            )
+            excerpts = "\n\n".join(passage(chunk) for chunk in chunks)
+            blocks.append(f"{heading}\n\n{excerpts}")
+
+        return "\n\n---\n\n".join(blocks)
 
     def format_sources(self, results: list[RetrievedChunk]) -> str:
         """Source list matching each passage number in `format_context`."""

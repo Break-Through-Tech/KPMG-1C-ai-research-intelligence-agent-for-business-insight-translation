@@ -1,0 +1,538 @@
+{
+  "schema_version": 2,
+  "run_config": {
+    "model": "llama3.1:8b",
+    "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+    "notebook_prompt_sha256": "b548945b6fb4517fa64c5edf6266d850451fc837ae38435c2910ab9f93de4002",
+    "generation_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 550
+    },
+    "retrieval_sha256": "72582295d429476c975fc824b884814d1da4f6bfd8e3ceb5e3850a7ea81a643b",
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "answer_pipeline_sha256": "8a55afb194cf05c1da3c0e65895b2e357a5afd34b6900e53e3c7dfa6120381fa",
+    "context_presentation": {
+      "group_by_paper": true,
+      "selection_order": false
+    },
+    "selected_question_ids": [
+      "q08",
+      "q21",
+      "q23"
+    ]
+  },
+  "run_fingerprint": "f265233e26bd1474c984b92ad115a7081fc2f242a58ddb119719b450cad4409f",
+  "model": "llama3.1:8b",
+  "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+  "notebook_prompt_sha256": "b548945b6fb4517fa64c5edf6266d850451fc837ae38435c2910ab9f93de4002",
+  "retrieval_result": "/Users/alexnguyen/Documents/GitHub/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/evaluation/results/retrieval_ordered_frozen.json",
+  "benchmark": {
+    "papers": {
+      "2608.20316": "Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation",
+      "2608.20318": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+      "2608.20319": "Inducing Task Models from Computer-Use Traces",
+      "2608.20320": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+      "2608.20331": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation"
+    },
+    "queries": [
+      {
+        "id": "q01",
+        "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+        "relevant_papers": [
+          "2608.20316"
+        ],
+        "evidence": [
+          "closed-form value-of-information expressions"
+        ]
+      },
+      {
+        "id": "q02",
+        "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+        "relevant_papers": [
+          "2608.20316"
+        ],
+        "evidence": [
+          "decentralized setting, Pandora\u2019s Bidder"
+        ]
+      },
+      {
+        "id": "q03",
+        "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+        "relevant_papers": [
+          "2608.20316"
+        ],
+        "evidence": [
+          "a standard multi-LLM benchmark, retrieval-augmented specialists, and LLMs with variable inference-time reasoning"
+        ]
+      },
+      {
+        "id": "q04",
+        "query": "What limitation appears when competing specialists' estimates are noisy?",
+        "relevant_papers": [
+          "2608.20316"
+        ],
+        "evidence": [
+          "increase the strategic specialist\u2019s utility at the expense of others"
+        ]
+      },
+      {
+        "id": "q05",
+        "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+        "relevant_papers": [
+          "2608.20318"
+        ],
+        "evidence": [
+          "10 frozen research repositories spanning 10 training algorithm families"
+        ]
+      },
+      {
+        "id": "q06",
+        "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+        "relevant_papers": [
+          "2608.20318"
+        ],
+        "evidence": [
+          "4 hours on one B300",
+          "rerun from scratch for up to 12 hours"
+        ]
+      },
+      {
+        "id": "q07",
+        "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+        "relevant_papers": [
+          "2608.20318"
+        ],
+        "evidence": [
+          "0 is an uninformative model",
+          "0.1 is the algorithm the repository ships"
+        ]
+      },
+      {
+        "id": "q08",
+        "query": "How do submissions that change the learning algorithm compare with those that do not?",
+        "relevant_papers": [
+          "2608.20318"
+        ],
+        "evidence": [
+          "0.226 against 0.126 for the rest"
+        ]
+      },
+      {
+        "id": "q09",
+        "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+        "relevant_papers": [
+          "2608.20319"
+        ],
+        "evidence": [
+          "hierarchical objective model",
+          "procedure model of the control flow"
+        ]
+      },
+      {
+        "id": "q10",
+        "query": "How well does task model induction group interleaved tasks?",
+        "relevant_papers": [
+          "2608.20319"
+        ],
+        "evidence": [
+          "0.974 agreement against ground-truth groupings"
+        ]
+      },
+      {
+        "id": "q11",
+        "query": "How much of observed execution does TMI reconstruct?",
+        "relevant_papers": [
+          "2608.20319"
+        ],
+        "evidence": [
+          "74.9% of the observed execution steps"
+        ]
+      },
+      {
+        "id": "q12",
+        "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+        "relevant_papers": [
+          "2608.20319"
+        ],
+        "evidence": [
+          "improve held-out task accuracy by 30.0%"
+        ]
+      },
+      {
+        "id": "q13",
+        "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+        "relevant_papers": [
+          "2608.20320"
+        ],
+        "evidence": [
+          "92 student commuters",
+          "454 respondent\u2013scenario observations"
+        ]
+      },
+      {
+        "id": "q14",
+        "query": "Which travel modes responded most clearly to adverse weather and snow?",
+        "relevant_papers": [
+          "2608.20320"
+        ],
+        "evidence": [
+          "Cycling was particularly sensitive to adverse weather",
+          "public transit use increased substantially under the Snowy scenario"
+        ]
+      },
+      {
+        "id": "q15",
+        "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+        "relevant_papers": [
+          "2608.20320"
+        ],
+        "evidence": [
+          "69.6% five-class accuracy",
+          "69.9% without task-specific fitting"
+        ]
+      },
+      {
+        "id": "q16",
+        "query": "What was the best vision-based travel mode prediction accuracy?",
+        "relevant_papers": [
+          "2608.20320"
+        ],
+        "evidence": [
+          "highest observed five-class accuracy of 71.5%"
+        ]
+      },
+      {
+        "id": "q17",
+        "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+        "relevant_papers": [
+          "2608.20331"
+        ],
+        "evidence": [
+          "Patient-oriented Medical Report Interpretation"
+        ]
+      },
+      {
+        "id": "q18",
+        "query": "How does G-CARL supervise factuality and response coverage?",
+        "relevant_papers": [
+          "2608.20331"
+        ],
+        "evidence": [
+          "multi-source retrieval for atomic claim verification",
+          "instance-specific weighted checklists for response coverage"
+        ]
+      },
+      {
+        "id": "q19",
+        "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+        "relevant_papers": [
+          "2608.20331"
+        ],
+        "evidence": [
+          "MMedReport",
+          "three-dimensional evaluation protocol"
+        ]
+      },
+      {
+        "id": "q20",
+        "query": "What did clinician pairwise preferences find about G-CARL?",
+        "relevant_papers": [
+          "2608.20331"
+        ],
+        "evidence": [
+          "more accurate and better aligned with patient needs"
+        ]
+      },
+      {
+        "id": "q21",
+        "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+        "relevant_papers": [
+          "2608.20319",
+          "2608.20320"
+        ],
+        "evidence": []
+      },
+      {
+        "id": "q22",
+        "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+        "relevant_papers": [
+          "2608.20316",
+          "2608.20318"
+        ],
+        "evidence": []
+      },
+      {
+        "id": "q23",
+        "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+        "relevant_papers": [
+          "2608.20319",
+          "2608.20331"
+        ],
+        "evidence": []
+      },
+      {
+        "id": "q24",
+        "query": "What is KPMG's 2026 revenue forecast?",
+        "relevant_papers": [],
+        "evidence": []
+      },
+      {
+        "id": "q25",
+        "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+        "relevant_papers": [],
+        "evidence": []
+      }
+    ]
+  },
+  "answers": [
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "answer": "Submissions that change the learning algorithm (46.4% of 263 submissions) are compared to those that do not (53.6% of 263 submissions). The comparison is limited by the fact that the systems that reach the learning procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there [3].\n\nEvidence:\n- \"any learning family 122 46.4% run side only141 53.6% reaching the learning sidenone low medium high xhigh max share of submissions 8% 39% 33%\" [3]",
+      "draft": "Submissions that change the learning algorithm (46.4% of 263 submissions) are compared to those that do not (53.6% of 263 submissions). The comparison is limited by the fact that the systems that reach the learning procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there [3].",
+      "generation_context": "Paper: AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement\nPaper ID: 2608.20318\n\n[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 4.1 Most submissions change how the run goes, not how the model learns (chunk 2608.20318_9_1)\nEverything so far has been a score, and a score says only whether a submission worked. It does not say whether the agent designed an algorithm or tuned one that was already there, and those are the two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line diff can replace a learning rule, and a thousand-line refactor can leave the training procedure exactly as it was. The distinction has to be read off the submitted code, by asking which part of the training procedure it modifies. We group every change into eight families on two sides of that line (Table 4). The grouping is assigned by a separate language model reading each submitted diff against the definitions that follow. Four changehow this run goes: how long it trains and how often it saves; the training hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to keep; and how much trainable capacity to attach and where, such as the rank and placement of an adapter. Four changehow the model learns: the loss it optimizes, by adding, removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure did not have before; the update rule itself, replaced by a different one; and the data the procedure trains on. The families are not exclusive \u2014 a submission matches3.13of them on average, since changing a loss usually drags a hyperparameter along with it \u2014 so we report how many submissions reach a side rather than assigning each to a single family. Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay entirely on the run\n\n[2] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 1 Introduction (chunk 2608.20318_1_7)\noptimum. The submissions say where the remaining distance went. Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it \u2014 the objective, the supervision signal, the learning rule, the data \u2014 average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes that mechanism; few of these submissions do. In summary, we make the following contributions: \u2022 A benchmark that isolates the algorithmic level.Ten research repositories spanning ten families of training algorithms, evaluated under a unified protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring. \u2022 A measurement of what agentsdo, not only whether they win.Every submission is classified by what it changes, which is what turns \u201cthe agent improved the training algorithm\u201d into a checkable statement rather than a restatement of the score. \u2022 Revealing a gap between algorithmic exploration and actual improvement.The algorithmic design level is where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it.\n\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 4.1 Most submissions change how the run goes, not how the model learns (chunk 2608.20318_9_10)\nhow much trainable capacity, and where 73 27.8% learning the loss it optimizes 87 33.1% the supervision it learns from 66 25.1% the update rule itself 23 8.7% the data it trains on 21 8.0% any learning family 122 46.4% run side only141 53.6% reaching the learning sidenone low medium high xhigh max share of submissions 8% 39% 33% 49% 65% 64% ordering holds within four of the five models in this corpus. It is also not a randomized comparison: the systems that reach the learning procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there. Read together, the two numbers say that the algorithmic layer is where the distance actually gets closed, and that most submissions never go to it. What separates a submission that reaches that layer from one that does not is not effort spent but a step taken first: reading the training dynamics as a specific failure mechanism, and then addressing that mechanism.\n\n[4] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 4.2 Reasoning effort buys nerve, and nerve is what pays (chunk 2608.20318_10_1)\nIs there anything that pushes agents down to that layer? The setup has exactly one knob that can be turned on its own, the reasoning-effort level, and taking it from the lowest setting to the highest shows clearly what it buys and what it does not. It buys nerve. The share of submissions that touch the learning algorithm rises from8.0%to64 .0%. At low effort the submissions move budgets, logging and optimization knobs; at high effort they operate on objectives, replace learning rules, and add supervision to the procedure. It buys attempts. Within the Codex grid, the only one that exposes the lowest setting, the median configuration goes from 4 evaluations inside its four hours to 16, from 18 edited lines to 246, and from11k output tokens to 109k. Cost follows: the median exploration cost per task rises from $1.69 to $34.60. The exploration stage of the whole evaluation consumed $5,334 of API calls, with Kimi K3 converted from Chinese yuan and with neither the GPU hours of the twelve-hour runs nor the evaluator\u2019s compute included. It buys completion. Of the 19 cells that score zero, 8 ended their four hours without a usable patch \u2014 four of them workspaces the host found empty after the agent exited early \u2014 and 11 submitted a complete patch that started its twelve-hour run but finished with nothing satisfying the contract, most often no loadable merged model written to disk. All 19 terminated normally: the failure is in what the agent submitted. They concentrate at low effort, with 12 of the 19 at the two lowest levels and one each at the two highest. And it does buy a result, though a small one",
+      "remaining_issues": [
+        "Check numbers absent from cited passages: ['263']"
+      ],
+      "claim_support_status": "not_evaluated",
+      "source_list": "[1] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318 \u2014 chunk 2608.20318_9_1\n[2] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318 \u2014 chunk 2608.20318_1_7\n[3] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318 \u2014 chunk 2608.20318_9_10\n[4] AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement \u2014 https://arxiv.org/abs/2608.20318 \u2014 chunk 2608.20318_10_1",
+      "passages": [
+        {
+          "rank": 1,
+          "score": 4.009890556335449,
+          "text": "Everything so far has been a score, and a score says only whether a submission worked. It does not say whether the agent designed an algorithm or tuned one that was already there, and those are the two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line diff can replace a learning rule, and a thousand-line refactor can leave the training procedure exactly as it was. The distinction has to be read off the submitted code, by asking which part of the training procedure it modifies. We group every change into eight families on two sides of that line (Table 4). The grouping is assigned by a separate language model reading each submitted diff against the definitions that follow. Four changehow this run goes: how long it trains and how often it saves; the training hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to keep; and how much trainable capacity to attach and where, such as the rank and placement of an adapter. Four changehow the model learns: the loss it optimizes, by adding, removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure did not have before; the update rule itself, replaced by a different one; and the data the procedure trains on. The families are not exclusive \u2014 a submission matches3.13of them on average, since changing a loss usually drags a hyperparameter along with it \u2014 so we report how many submissions reach a side rather than assigning each to a single family. Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay entirely on the run",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_9_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": 4.64284086227417,
+          "text": "optimum. The submissions say where the remaining distance went. Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it \u2014 the objective, the supervision signal, the learning rule, the data \u2014 average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes that mechanism; few of these submissions do. In summary, we make the following contributions: \u2022 A benchmark that isolates the algorithmic level.Ten research repositories spanning ten families of training algorithms, evaluated under a unified protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring. \u2022 A measurement of what agentsdo, not only whether they win.Every submission is classified by what it changes, which is what turns \u201cthe agent improved the training algorithm\u201d into a checkable statement rather than a restatement of the score. \u2022 Revealing a gap between algorithmic exploration and actual improvement.The algorithmic design level is where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it.",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "1 Introduction",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_1_7",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": 3.8266804218292236,
+          "text": "how much trainable capacity, and where 73 27.8% learning the loss it optimizes 87 33.1% the supervision it learns from 66 25.1% the update rule itself 23 8.7% the data it trains on 21 8.0% any learning family 122 46.4% run side only141 53.6% reaching the learning sidenone low medium high xhigh max share of submissions 8% 39% 33% 49% 65% 64% ordering holds within four of the five models in this corpus. It is also not a randomized comparison: the systems that reach the learning procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there. Read together, the two numbers say that the algorithmic layer is where the distance actually gets closed, and that most submissions never go to it. What separates a submission that reaches that layer from one that does not is not effort spent but a step taken first: reading the training dynamics as a specific failure mechanism, and then addressing that mechanism.",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_9_10",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": 2.864039897918701,
+          "text": "Is there anything that pushes agents down to that layer? The setup has exactly one knob that can be turned on its own, the reasoning-effort level, and taking it from the lowest setting to the highest shows clearly what it buys and what it does not. It buys nerve. The share of submissions that touch the learning algorithm rises from8.0%to64 .0%. At low effort the submissions move budgets, logging and optimization knobs; at high effort they operate on objectives, replace learning rules, and add supervision to the procedure. It buys attempts. Within the Codex grid, the only one that exposes the lowest setting, the median configuration goes from 4 evaluations inside its four hours to 16, from 18 edited lines to 246, and from11k output tokens to 109k. Cost follows: the median exploration cost per task rises from $1.69 to $34.60. The exploration stage of the whole evaluation consumed $5,334 of API calls, with Kimi K3 converted from Chinese yuan and with neither the GPU hours of the twelve-hour runs nor the evaluator\u2019s compute included. It buys completion. Of the 19 cells that score zero, 8 ended their four hours without a usable patch \u2014 four of them workspaces the host found empty after the agent exited early \u2014 and 11 submitted a complete patch that started its twelve-hour run but finished with nothing satisfying the contract, most often no loadable merged model written to disk. All 19 terminated normally: the failure is in what the agent submitted. They concentrate at low effort, with 12 of the 19 at the two lowest levels and one each at the two highest. And it does buy a result, though a small one",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.2 Reasoning effort buys nerve, and nerve is what pays",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_10_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "seconds": 16.5,
+      "prompt_tokens": 1847,
+      "answer_tokens": 89
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "answer": "The provided papers address auditable AI workflows derived from user activity or survey responses.\n\n* Inducing Task Models from Computer-Use Traces (Paper ID: 2608.20319) introduces TASKMODELINDUCTION (TMI), which induces task models from computer-use traces, allowing for the recovery of interleaved tasks with 0.974 agreement against ground-truth groupings and the reconstruction of 74.9% of observed execution steps. [1]\n* An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction (Paper ID: 2608.20320) proposes a multi-agent framework that integrates data collection, data processing, and behavioral modeling, producing structured and auditable outputs. [2] The framework consists of three specialized agents: a Data Collection Agent, a Data Processing Agent, and a Data Modeling Agent, which exchange information through standardized data objects and explicit input\u2013output interfaces. [3]\n\nEvidence:\n- \"procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement\" [1]\n- \"survey logic implementation, procedural question answering, response validation, clarification, deployment, and response aggregation Deployable survey interface, distribution link or QR code, raw responses, interaction\" [3]",
+      "draft": "The provided papers address auditable AI workflows derived from user activity or survey responses.\n\n* Inducing Task Models from Computer-Use Traces (Paper ID: 2608.20319) introduces TASKMODELINDUCTION (TMI), which induces task models from computer-use traces, allowing for the recovery of interleaved tasks with 0.974 agreement against ground-truth groupings and the reconstruction of 74.9% of observed execution steps. [1]\n* An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction (Paper ID: 2608.20320) proposes a multi-agent framework that integrates data collection, data processing, and behavioral modeling, producing structured and auditable outputs. [2] The framework consists of three specialized agents: a Data Collection Agent, a Data Processing Agent, and a Data Modeling Agent, which exchange information through standardized data objects and explicit input\u2013output interfaces. [3]",
+      "generation_context": "Paper: Inducing Task Models from Computer-Use Traces\nPaper ID: 2608.20319\n\n[1] Inducing Task Models from Computer-Use Traces \u2014 Abstract (chunk 2608.20319_1_1)\nNaturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI\u2019s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1\n\n---\n\nPaper: An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction\nPaper ID: 2608.20320\n\n[2] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 3.1 Framework Overview (chunk 2608.20320_8_1)\nWe propose a multi-agent framework that integrates data collection, data processing, and behavioral modeling for commuter mode-choice research. The framework consists of three specialized agents: a Data Collection Agent, a Data Processing Agent, and a Data Modeling Agent. The agents perform distinct research functions and exchange information through standardized data objects and explicit input\u2013output interfaces. Data transfer, version control, and execution records are organized through a shared workspace and predefined workflow rules. These supporting functions are system infrastructure rather than additional agents. Figure 1 illustrates the forward workflow and the associated refinement paths. In this study, an agent is defined as a goal-directed and researcher-supervised software component that can interpret user instructions, maintain task state, select from an authorized set of tools, and produce structured and auditable outputs. An agent is therefore not restricted to an LLM. Depending on the task, it may combine an LLM with deterministic rules, database operations, statistical software, machine-learning algorithms, or general-purpose programming tools. The proposed framework is consequently a multi-agent research workflow rather than an LLM-only pipeline. The termagentin this framework refers to a software agent that supports the research process and should not be confused with a traveler agent in conventional agent-based transport simulation. Human respondents remain the source of stated survey choices, while researchers retain control over the survey constructs, data-processing requirements, model specifications, and interpretation of results. Throughout this paper,active data collectionrefers to stateful conversational survey administration with predefined interaction logic and structured response Table 1: Roles, interfaces, and supported functions of the three agents. Agent Main inputs Authorized functions Main outputs Data Collection\n\n[3] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 3.1 Framework Overview (chunk 2608.20320_8_2)\nThroughout this paper,active data collectionrefers to stateful conversational survey administration with predefined interaction logic and structured response Table 1: Roles, interfaces, and supported functions of the three agents. Agent Main inputs Authorized functions Main outputs Data Collection Agent Survey specification and collection instructions Chatbot construction, survey logic implementation, procedural question answering, response validation, clarification, deployment, and response aggregation Deployable survey interface, distribution link or QR code, raw responses, interaction logs, and collection metadata Data Processing Agent Raw survey data, optional external data, codebook, and processing instructions De-identification, validation, recoding, missing-data handling, text coding, data integration, feature construction, and quality assessment Processed dataset, quality flags, derived variables, supplementary data, and processing records Data Modeling Agent Processed data, modeling instructions, candidate model library, and evaluation requirements Model specification, code generation, statistical estimation, machine-learning training, LLM-based choice prediction, validation, and result organization Fitted model, parameter estimates, predictions, uncertainty measures, diagnostics, evaluation metrics, and structured\n\n[4] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 1 Introduction (chunk 2608.20320_2_5)\na commonmulti-agent workflowremains largely unexplored for travel behavior and individual mode-choice modeling. This study addresses these gaps through a multi-agent workflow that connects AI-assisted behavioral data collection with travel-choice modeling and LLM-based prediction. The paper makes four main contributions. First, it develops a conversational, image-augmented SP survey in which an AI-based chatbot collects traveler characteristics and repeated mode choices across predefined weather scenarios, providing a structured dataset specifically designed for downstream behavioral prediction. Second, it provides empirical evidence on weather-related variation in commuter mode choice by examining how the same individuals change their stated choices across systematically varied weather scenarios. Third, it systematically evaluates LLMs as mode-choice predictors under multiple prediction configurations, including zero-shot, few-shot, persona- and travel-history-enhanced prompting, as well as vision-based prediction using the same weather images presented to respondents, and benchmarks their performance against conventional DCM and ML approaches. Fourth, it demonstrates amulti-agent workflowthat links conversational survey administration, structured data processing, and parallel discrete-choice, machine-learning, and LLM-based modeling within an integrated data-collection-to-prediction process, providing a reproducible basis for exploring AI-assisted travel-behavior research. The remainder of the paper is organized as follows. Section 2 reviews related work on travelbehavior data collection and conversational agents, mode-choice modeling, LLM-based choice prediction, and multi-agent applications. Section 3 presents the proposed multi-agent methodology. Section 4 describes the case-study implementation, and Section 5 reports the descriptive and\n\n[5] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 results (chunk 2608.20320_7_1)\nIterative feedback Survey refinement Processing refinement Modeling refinement Figure 1: Multi-agent framework for commuter travel-behavior research. Solid arrows denote forward data and artifact flows, whereas dashed arrows denote refinements implemented in a subsequent workflow iteration. from survey design through data processing to behavioral prediction on a common empirical dataset. The present paper addresses this gap by instantiating the three stages as specialized agents and applying them to the same commuter mode-choice dataset. Note:The table summarizes functions supported by the general framework. The subset implemented in the present case study is described in Section 4. capture; it does not refer to active learning or adaptive sampling. Weather-sensitive demand prediction refers to individual mode-choice prediction across the five predefined weather scenarios. The framework follows the information flow: Q Acol(\u00b7;ucol)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Draw,B col) Apro(\u00b7,E;u pro)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Dpro,Z pro) Amod(\u00b7;umod)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192\u0010 cM,R mod\u0011 (1) whereQdenotes the researcher-defined survey specification;u col,u pro, andu mod denote the user instructions provided to the three agents;Draw is the collected raw dataset;Bcol is the survey deployment package; E represents optional external data; Dpro is the processed dataset; Zpro contains supplementary processing outputs; cM is the fitted model or set of models; andRmod contains model estimates, predictions, diagnostics, and evaluation results. Equation (1) represents one forward execution pass. The dashed arrows in Figure",
+      "remaining_issues": [
+        "Check numbers absent from cited passages: ['2608.20319', '2608.20320']"
+      ],
+      "claim_support_status": "not_evaluated",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319 \u2014 chunk 2608.20319_1_1\n[2] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320 \u2014 chunk 2608.20320_8_1\n[3] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320 \u2014 chunk 2608.20320_8_2\n[4] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320 \u2014 chunk 2608.20320_2_5\n[5] An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction \u2014 https://arxiv.org/abs/2608.20320 \u2014 chunk 2608.20320_7_1",
+      "passages": [
+        {
+          "rank": 1,
+          "score": -2.4743752479553223,
+          "text": "Naturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI\u2019s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "Abstract",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_1_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": -0.6834893226623535,
+          "text": "We propose a multi-agent framework that integrates data collection, data processing, and behavioral modeling for commuter mode-choice research. The framework consists of three specialized agents: a Data Collection Agent, a Data Processing Agent, and a Data Modeling Agent. The agents perform distinct research functions and exchange information through standardized data objects and explicit input\u2013output interfaces. Data transfer, version control, and execution records are organized through a shared workspace and predefined workflow rules. These supporting functions are system infrastructure rather than additional agents. Figure 1 illustrates the forward workflow and the associated refinement paths. In this study, an agent is defined as a goal-directed and researcher-supervised software component that can interpret user instructions, maintain task state, select from an authorized set of tools, and produce structured and auditable outputs. An agent is therefore not restricted to an LLM. Depending on the task, it may combine an LLM with deterministic rules, database operations, statistical software, machine-learning algorithms, or general-purpose programming tools. The proposed framework is consequently a multi-agent research workflow rather than an LLM-only pipeline. The termagentin this framework refers to a software agent that supports the research process and should not be confused with a traveler agent in conventional agent-based transport simulation. Human respondents remain the source of stated survey choices, while researchers retain control over the survey constructs, data-processing requirements, model specifications, and interpretation of results. Throughout this paper,active data collectionrefers to stateful conversational survey administration with predefined interaction logic and structured response Table 1: Roles, interfaces, and supported functions of the three agents. Agent Main inputs Authorized functions Main outputs Data Collection",
+          "paper_id": "2608.20320",
+          "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+          "section": "3.1 Framework Overview",
+          "source_url": "https://arxiv.org/abs/2608.20320",
+          "chunk_id": "2608.20320_8_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": -1.8108651638031006,
+          "text": "Throughout this paper,active data collectionrefers to stateful conversational survey administration with predefined interaction logic and structured response Table 1: Roles, interfaces, and supported functions of the three agents. Agent Main inputs Authorized functions Main outputs Data Collection Agent Survey specification and collection instructions Chatbot construction, survey logic implementation, procedural question answering, response validation, clarification, deployment, and response aggregation Deployable survey interface, distribution link or QR code, raw responses, interaction logs, and collection metadata Data Processing Agent Raw survey data, optional external data, codebook, and processing instructions De-identification, validation, recoding, missing-data handling, text coding, data integration, feature construction, and quality assessment Processed dataset, quality flags, derived variables, supplementary data, and processing records Data Modeling Agent Processed data, modeling instructions, candidate model library, and evaluation requirements Model specification, code generation, statistical estimation, machine-learning training, LLM-based choice prediction, validation, and result organization Fitted model, parameter estimates, predictions, uncertainty measures, diagnostics, evaluation metrics, and structured",
+          "paper_id": "2608.20320",
+          "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+          "section": "3.1 Framework Overview",
+          "source_url": "https://arxiv.org/abs/2608.20320",
+          "chunk_id": "2608.20320_8_2",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": -0.5555328726768494,
+          "text": "a commonmulti-agent workflowremains largely unexplored for travel behavior and individual mode-choice modeling. This study addresses these gaps through a multi-agent workflow that connects AI-assisted behavioral data collection with travel-choice modeling and LLM-based prediction. The paper makes four main contributions. First, it develops a conversational, image-augmented SP survey in which an AI-based chatbot collects traveler characteristics and repeated mode choices across predefined weather scenarios, providing a structured dataset specifically designed for downstream behavioral prediction. Second, it provides empirical evidence on weather-related variation in commuter mode choice by examining how the same individuals change their stated choices across systematically varied weather scenarios. Third, it systematically evaluates LLMs as mode-choice predictors under multiple prediction configurations, including zero-shot, few-shot, persona- and travel-history-enhanced prompting, as well as vision-based prediction using the same weather images presented to respondents, and benchmarks their performance against conventional DCM and ML approaches. Fourth, it demonstrates amulti-agent workflowthat links conversational survey administration, structured data processing, and parallel discrete-choice, machine-learning, and LLM-based modeling within an integrated data-collection-to-prediction process, providing a reproducible basis for exploring AI-assisted travel-behavior research. The remainder of the paper is organized as follows. Section 2 reviews related work on travelbehavior data collection and conversational agents, mode-choice modeling, LLM-based choice prediction, and multi-agent applications. Section 3 presents the proposed multi-agent methodology. Section 4 describes the case-study implementation, and Section 5 reports the descriptive and",
+          "paper_id": "2608.20320",
+          "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+          "section": "1 Introduction",
+          "source_url": "https://arxiv.org/abs/2608.20320",
+          "chunk_id": "2608.20320_2_5",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 5,
+          "score": -1.240410327911377,
+          "text": "Iterative feedback Survey refinement Processing refinement Modeling refinement Figure 1: Multi-agent framework for commuter travel-behavior research. Solid arrows denote forward data and artifact flows, whereas dashed arrows denote refinements implemented in a subsequent workflow iteration. from survey design through data processing to behavioral prediction on a common empirical dataset. The present paper addresses this gap by instantiating the three stages as specialized agents and applying them to the same commuter mode-choice dataset. Note:The table summarizes functions supported by the general framework. The subset implemented in the present case study is described in Section 4. capture; it does not refer to active learning or adaptive sampling. Weather-sensitive demand prediction refers to individual mode-choice prediction across the five predefined weather scenarios. The framework follows the information flow: Q Acol(\u00b7;ucol)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Draw,B col) Apro(\u00b7,E;u pro)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192(Dpro,Z pro) Amod(\u00b7;umod)\u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2212 \u2192\u0010 cM,R mod\u0011 (1) whereQdenotes the researcher-defined survey specification;u col,u pro, andu mod denote the user instructions provided to the three agents;Draw is the collected raw dataset;Bcol is the survey deployment package; E represents optional external data; Dpro is the processed dataset; Zpro contains supplementary processing outputs; cM is the fitted model or set of models; andRmod contains model estimates, predictions, diagnostics, and evaluation results. Equation (1) represents one forward execution pass. The dashed arrows in Figure",
+          "paper_id": "2608.20320",
+          "title": "An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction",
+          "section": "results",
+          "source_url": "https://arxiv.org/abs/2608.20320",
+          "chunk_id": "2608.20320_7_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "seconds": 17.9,
+      "prompt_tokens": 2061,
+      "answer_tokens": 194
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "answer": "The provided papers discuss evidence-grounded explanations and auditable task models.\n\n* Inducing Task Models from Computer-Use Traces (Paper ID: 2608.20319) discusses auditable task models, specifically objective models that explain why observed activities were performed, and procedure models that capture how the execution of the task was organized in time. [1]\n* G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation (Paper ID: 2608.20331) discusses evidence-grounded explanations, specifically transforming report evidence into accessible explanations that address user-specific concerns and offer clinically cautious guidance. [4]\n\nEvidence:\n- \"Modeling a task t requires understanding the two types of evidence it carries, procedure and objective. Constructing a task model thus means inducing an\" [1]\n- \"In this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework\" [3]",
+      "draft": "The provided papers discuss evidence-grounded explanations and auditable task models.\n\n* Inducing Task Models from Computer-Use Traces (Paper ID: 2608.20319) discusses auditable task models, specifically objective models that explain why observed activities were performed, and procedure models that capture how the execution of the task was organized in time. [1]\n* G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation (Paper ID: 2608.20331) discusses evidence-grounded explanations, specifically transforming report evidence into accessible explanations that address user-specific concerns and offer clinically cautious guidance. [4]",
+      "generation_context": "Paper: Inducing Task Models from Computer-Use Traces\nPaper ID: 2608.20319\n\n[1] Inducing Task Models from Computer-Use Traces \u2014 3.3 Task Model Construction (chunk 2608.20319_8_1)\nModeling a task t requires understanding the two types of evidence it carries, procedure and objective. Constructing a task model thus means inducing an objective model Ot and a procedure model Pt from the activities Et of each discovered task t, then reconciling them into the task model Mt (Figure 2(c)). Each is induced independently, so that its structure is resolved under its own evidence before being constrained by the other. Objective model.The objective model is the hierarchy that explains why the observed activities were performed. Its root is the task objective, its leaves are the activities Et, and its internal nodes are latent sub-objectives that jointly explain their descendants. A language model induces Ot from the task objective and Et by recursive decomposition (Wing, 2006), breaking a goal that cannot be pursued directly into sub-goals whose union covers the relevant evidence. Each node denotes the outcome to be achieved, abstracting over the particular strategy used to reach it (e.g.,provision reviewer accountsinstead ofset up each account and verify its sign-in). The children of a node are necessary components or preconditions of their parent and jointly account for its observed activities. A node spanning many activities is refined further (e.g.,iterate on the design decomposes intoimplement changesandvalidate the fix), whereas a node grounded in a single activity has reached the level of a local objective and remains a leaf. The resulting hierarchy is abstract enough to transfer across executions yet grounded enough that every leaf stays tied to an observed activity. Objective-side validity constraints are detailed in Appendix A. Procedure model.The procedure model captures how the execution of the task was organized in time.\n\n[2] Inducing Task Models from Computer-Use Traces \u2014 Abstract (chunk 2608.20319_1_1)\nNaturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI\u2019s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1\n\n[5] Inducing Task Models from Computer-Use Traces \u2014 F Implementation Details and Pipeline (chunk 2608.20319_30_11)\nevidence-grounded summary; may reference specific tools, files, or actions observed>\", \"subgoal_segments\": [\"<single integer id such as 16 or closed integer range string such as 16-23>\"], \"decomposition\": [<child nodes with the same schema> or <empty list if no further decomposition is needed>] } \"\"\" Figure 9: Objective-model induction prompt. PROCEDURE_GENERATION_PROMPT_TEXT = \"\"\" You induce a procedure model from a task-thread objective JSON by applying the Structured Programming Theorem (Bohm-Jacopini, 1966). Return only a valid JSON object. The Structured Programming Theorem motivates three control constructs: 1. Sequence -- steps executed one after another in order. 2. Selection -- a choice between mutually exclusive alternative paths. 3. Iteration -- a body repeated either over a named collection (for-each) or until a condition holds (while). The trace records only the path enacted, not unchosen alternatives, so selection is not represented in the output. Decompose the observed activity trace into a tree using the three observable operators below. The three operators are the complete and closed vocabulary: -`SEQ`: steps in fixed order with no repetition and no branching. -`FOR`: the same procedure body is applied to each member of a named, enumerable collection. -`WHILE`: a body is repeated until an observable objective-state condition is satisfied. FOR and WHILE bodies are ABSTRACT TEMPLATES -- they describe what happens per item / per pass using named steps with`name`,` description`,\n\n---\n\nPaper: G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation\nPaper ID: 2608.20331\n\n[3] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 5 Conclusion (chunk 2608.20331_11_1)\nIn this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework that decomposes reward supervision through retrieval-grounded claim verification and case-specific checklist guidance. ExtensiveexperimentsonthenewlyconstructedMMedReport benchmark, together with clinician-authored evaluation and human preference studies, show that G-CARL consistently improves the quality of patient-oriented medical report interpretation.Wehopethisworklaysthefoundationformore reliable and patient-centered multimodal medical assistants.\n\n[4] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 1 Introduction (chunk 2608.20331_2_2)\nexplanations grounded inmultimodalreportsandextendedpatient\u2013doctordialogue. cation by transforming report evidence into accessible explanations, addressing user-specific concerns, and offering clinically cautious guidance. As illustrated in Fig. 1, PMRI differs from conventional medical visual question answering (VQA) (Lu et al. 2025; Jiang et al. 2025a) and report generation (Lin et al. 2026; Li et al. 2025) in two important ways. First, it is anevidenceboundedgenerationtaskwhoseresponsesmustbegrounded not only in the reports but also in reliable clinical knowledge and medically coherent diagnostic reasoning, particularlywhenexplainingabnormalitiesorsuggestingfollow-up actions. This requirement is essential for patient safety because unsupported interpretations and inappropriate recommendations may mislead patients or delay necessary care. Second, PMRI is apatient-facingcommunication task that mustgobeyondclinicalcorrectnesstoaddresspatients\u2019individual information needs while clearly explaining potential abnormalities and risks in an emotionally adaptive and reassuring manner. Accordingly, we model PMRI quality along three core dimensions: medical accuracy, demand satisfaction, and expression quality. Giventhe natureof PMRI,astraightforward strategyisto collectlarge-scalephysician-writteninterpretationsandtrain multimodalmodelswithsupervisedfine-tuning(SFT)(Chen et al. 2024b; Rotstein et al. 2024). However, SFT can overfit to the specific wording of the reference interpretation and",
+      "remaining_issues": [
+        "Check numbers absent from cited passages: ['2608.20319', '2608.20331']"
+      ],
+      "claim_support_status": "not_evaluated",
+      "source_list": "[1] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319 \u2014 chunk 2608.20319_8_1\n[2] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319 \u2014 chunk 2608.20319_1_1\n[3] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331 \u2014 chunk 2608.20331_11_1\n[4] G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation \u2014 https://arxiv.org/abs/2608.20331 \u2014 chunk 2608.20331_2_2\n[5] Inducing Task Models from Computer-Use Traces \u2014 https://arxiv.org/abs/2608.20319 \u2014 chunk 2608.20319_30_11",
+      "passages": [
+        {
+          "rank": 1,
+          "score": -1.8984143733978271,
+          "text": "Modeling a task t requires understanding the two types of evidence it carries, procedure and objective. Constructing a task model thus means inducing an objective model Ot and a procedure model Pt from the activities Et of each discovered task t, then reconciling them into the task model Mt (Figure 2(c)). Each is induced independently, so that its structure is resolved under its own evidence before being constrained by the other. Objective model.The objective model is the hierarchy that explains why the observed activities were performed. Its root is the task objective, its leaves are the activities Et, and its internal nodes are latent sub-objectives that jointly explain their descendants. A language model induces Ot from the task objective and Et by recursive decomposition (Wing, 2006), breaking a goal that cannot be pursued directly into sub-goals whose union covers the relevant evidence. Each node denotes the outcome to be achieved, abstracting over the particular strategy used to reach it (e.g.,provision reviewer accountsinstead ofset up each account and verify its sign-in). The children of a node are necessary components or preconditions of their parent and jointly account for its observed activities. A node spanning many activities is refined further (e.g.,iterate on the design decomposes intoimplement changesandvalidate the fix), whereas a node grounded in a single activity has reached the level of a local objective and remains a leaf. The resulting hierarchy is abstract enough to transfer across executions yet grounded enough that every leaf stays tied to an observed activity. Objective-side validity constraints are detailed in Appendix A. Procedure model.The procedure model captures how the execution of the task was organized in time.",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "3.3 Task Model Construction",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_8_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": -2.2224273681640625,
+          "text": "Naturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI\u2019s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "Abstract",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_1_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": -3.007791042327881,
+          "text": "In this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework that decomposes reward supervision through retrieval-grounded claim verification and case-specific checklist guidance. ExtensiveexperimentsonthenewlyconstructedMMedReport benchmark, together with clinician-authored evaluation and human preference studies, show that G-CARL consistently improves the quality of patient-oriented medical report interpretation.Wehopethisworklaysthefoundationformore reliable and patient-centered multimodal medical assistants.",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "5 Conclusion",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_11_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": -1.1889350414276123,
+          "text": "explanations grounded inmultimodalreportsandextendedpatient\u2013doctordialogue. cation by transforming report evidence into accessible explanations, addressing user-specific concerns, and offering clinically cautious guidance. As illustrated in Fig. 1, PMRI differs from conventional medical visual question answering (VQA) (Lu et al. 2025; Jiang et al. 2025a) and report generation (Lin et al. 2026; Li et al. 2025) in two important ways. First, it is anevidenceboundedgenerationtaskwhoseresponsesmustbegrounded not only in the reports but also in reliable clinical knowledge and medically coherent diagnostic reasoning, particularlywhenexplainingabnormalitiesorsuggestingfollow-up actions. This requirement is essential for patient safety because unsupported interpretations and inappropriate recommendations may mislead patients or delay necessary care. Second, PMRI is apatient-facingcommunication task that mustgobeyondclinicalcorrectnesstoaddresspatients\u2019individual information needs while clearly explaining potential abnormalities and risks in an emotionally adaptive and reassuring manner. Accordingly, we model PMRI quality along three core dimensions: medical accuracy, demand satisfaction, and expression quality. Giventhe natureof PMRI,astraightforward strategyisto collectlarge-scalephysician-writteninterpretationsandtrain multimodalmodelswithsupervisedfine-tuning(SFT)(Chen et al. 2024b; Rotstein et al. 2024). However, SFT can overfit to the specific wording of the reference interpretation and",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "1 Introduction",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_2_2",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 5,
+          "score": -1.9017380475997925,
+          "text": "evidence-grounded summary; may reference specific tools, files, or actions observed>\", \"subgoal_segments\": [\"<single integer id such as 16 or closed integer range string such as 16-23>\"], \"decomposition\": [<child nodes with the same schema> or <empty list if no further decomposition is needed>] } \"\"\" Figure 9: Objective-model induction prompt. PROCEDURE_GENERATION_PROMPT_TEXT = \"\"\" You induce a procedure model from a task-thread objective JSON by applying the Structured Programming Theorem (Bohm-Jacopini, 1966). Return only a valid JSON object. The Structured Programming Theorem motivates three control constructs: 1. Sequence -- steps executed one after another in order. 2. Selection -- a choice between mutually exclusive alternative paths. 3. Iteration -- a body repeated either over a named collection (for-each) or until a condition holds (while). The trace records only the path enacted, not unchosen alternatives, so selection is not represented in the output. Decompose the observed activity trace into a tree using the three observable operators below. The three operators are the complete and closed vocabulary: -`SEQ`: steps in fixed order with no repetition and no branching. -`FOR`: the same procedure body is applied to each member of a named, enumerable collection. -`WHILE`: a body is repeated until an observable objective-state condition is satisfied. FOR and WHILE bodies are ABSTRACT TEMPLATES -- they describe what happens per item / per pass using named steps with`name`,` description`,",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "F Implementation Details and Pipeline",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_30_11",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "seconds": 14.2,
+      "prompt_tokens": 1935,
+      "answer_tokens": 133
+    }
+  ]
+}

@@ -5,12 +5,17 @@ the prose accurately interprets the research; that still needs review.
 """
 
 import re
+from decimal import Decimal
 
 ABSTENTION = "The provided papers do not address this question."
 NONANSWER = re.compile(r"\b(?:provided\s+)?papers?\s+(?:do|does)\s+not\s+(?:address|answer)\b", re.I)
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
-NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
+NUMBER = re.compile(
+    r"(?<![\w.])[-+−]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?|\.\d+)"
+    r"(?:[eE][-+]?\d+)?"
+    r"(?:[ \t]*(?:%|percent\b))?(?!\w|\.\d|,\d)", re.I,
+)
 WORDS = re.compile(r"[a-z0-9]+")
 STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what",
              "which", "how", "does", "into", "their", "them", "they", "was", "were",
@@ -19,6 +24,28 @@ STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what"
 
 def compact(text):
     return re.sub(r"[^a-z0-9]", "", text.lower())
+
+
+def numeric_key(token):
+    """Compare whole values, preserving signs and percentage units.
+
+    English thousands separators and trailing decimal zeros are equivalent;
+    92 vs 192, 9.2 vs 92, and 30 vs 30% are not.
+    """
+    token = token.lower().replace("−", "-").replace(",", "")
+    percent = token.endswith(("%", "percent"))
+    value = re.sub(r"(?:%|percent)$", "", token).strip()
+    return Decimal(value), percent
+
+
+def quote_matches(quote, text):
+    """Allow PDF whitespace differences without erasing numeric punctuation."""
+    quote = " ".join(quote.split())
+    if not quote:
+        return False
+    left = r"(?<![\w.+−-])" if quote[0].isdigit() else r"(?<!\w)" if quote[0].isalnum() else ""
+    right = r"(?![\w%]|\.\d|,\d)" if quote[-1].isdigit() else r"(?!\w)" if quote[-1].isalnum() else ""
+    return re.search(left + re.escape(quote) + right, " ".join(text.split())) is not None
 
 
 def _best_quote(text, focus):
@@ -99,7 +126,7 @@ def answer_issues(answer, chunks):
         index = int(number) - 1
         if index not in range(len(chunks)):
             continue
-        if len(quote.split()) < 5 or compact(quote) not in compact(chunks[index].text):
+        if len(quote.split()) < 5 or not quote_matches(quote, chunks[index].text):
             issues.append(f"Quoted text for [{number}] is not verbatim in that passage.")
         else:
             verified_papers.add(chunks[index].paper_id)
@@ -109,11 +136,14 @@ def answer_issues(answer, chunks):
 
     # This is a review signal. A number can be supported by a different chunk
     # or be calculated from evidence, so it should not automatically reject text.
-    body = answer.split("Evidence:", 1)[0]
+    body = re.split(r"\bEvidence\s*:", answer, maxsplit=1, flags=re.I)[0]
+    body_cited = {int(n) for n in CITATION.findall(body)} & allowed
     body = CITATION.sub("", body)
-    source = compact(" ".join(chunks[n - 1].text for n in cited & allowed))
+    body = re.sub(r"(?m)^\s*\d+\.[ \t]+", "", body)  # numbered list markers
+    source_numbers = {numeric_key(number)
+                      for n in body_cited for number in NUMBER.findall(chunks[n - 1].text)}
     unsupported = sorted({number for number in NUMBER.findall(body)
-                          if compact(number) not in source})
+                          if numeric_key(number) not in source_numbers})
     if unsupported:
         issues.append(f"Check numbers absent from cited passages: {unsupported}")
     return issues

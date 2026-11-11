@@ -1,0 +1,505 @@
+{
+  "assessment_type": "assistant_source_review_not_independent_human_validation",
+  "input_sha256": {
+    "answers_prompt_polished.json": "117e4a48c149d50f20ffde017591030c72b6cb6258854067b55f8070cf0b8c51",
+    "answers_llama31_8b.json": "a23f6d6de714c80a95acdce10cfa92cd90d1caafa51eecaeb5f2e3c3e3415bc7"
+  },
+  "baseline_config": {
+    "model": "llama3.2",
+    "model_digest": "a80c4f17acd55265feec403c7aef86be0c25983ab279d83f3bcd3abbcb5b8b72",
+    "notebook_prompt_sha256": "b548945b6fb4517fa64c5edf6266d850451fc837ae38435c2910ab9f93de4002",
+    "generation_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 550
+    },
+    "retrieval_sha256": "72582295d429476c975fc824b884814d1da4f6bfd8e3ceb5e3850a7ea81a643b",
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "answer_pipeline_sha256": "c1a88edf49de2a81f04140352899c7e3abf7bfdddf3edb867a39c96a207acdf1",
+    "selected_question_ids": [
+      "q01",
+      "q02",
+      "q03",
+      "q08",
+      "q09",
+      "q18"
+    ]
+  },
+  "candidate_config": {
+    "model": "llama3.1:8b",
+    "model_digest": "46e0c10c039e019119339687c3c1757cc81b9da49709a3b3924863ba87ca666e",
+    "notebook_prompt_sha256": "b548945b6fb4517fa64c5edf6266d850451fc837ae38435c2910ab9f93de4002",
+    "generation_options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 8192,
+      "num_predict": 550
+    },
+    "retrieval_sha256": "72582295d429476c975fc824b884814d1da4f6bfd8e3ceb5e3850a7ea81a643b",
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "answer_pipeline_sha256": "c1a88edf49de2a81f04140352899c7e3abf7bfdddf3edb867a39c96a207acdf1",
+    "selected_question_ids": [
+      "q01",
+      "q02",
+      "q03",
+      "q08",
+      "q09",
+      "q18"
+    ]
+  },
+  "comparisons": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "assessment": "Improved, still incomplete",
+      "explanation": "Adds selection of the best observed estimate and cites each sentence. Preserves the stopping rule and marks the short reasoning run as an example rather than a universal mechanism. Still omits inspection in reservation-price order.",
+      "llama32": "Pandora's Router decides when an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate. This is done by running the specialist for a few reasoning tokens and checking if it is on the right track. The system then stops when no remaining query is worth its cost. [1]",
+      "llama31_8b": "Pandora's Router computes reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate 𝑔𝑚(𝑥), e.g., by running the specialist for a few reasoning tokens and checking if it is on the right track [1]. The system stops when no remaining query is worth its cost [1]. The maximizer of the observed 𝑔𝑚 is chosen [1].",
+      "llama32_seconds": 8.1,
+      "llama31_seconds": 18.0,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 63 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 63,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 61 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 61,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "source_number": 1,
+      "source_excerpt": "Pandora’s Router Centralized policy Inspect specialists𝑔𝑚(𝑥) in reservationprice order, stopping when no remaining query is worth its cost. Choose the maximizer of the observed𝑔𝑚. Pandora’s Bidder Decentralized policy The high bidder is selected in an auction. Each specialist refines its own value estimate only when the market price makes inspection worthwhile. The same principle yields both a centralized and decentralized policy. Figure 1| Overview of thePandoraframework.The system balances cheap screening and costly reasoning for routing.(1)A concrete prompt𝑥 is received.(2)Multiple specialists 𝑚∈{ 1,...,𝑀} generate cheap, noisy value estim"
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "assessment": "Substantially improved",
+      "explanation": "Clearly distinguishes centralized Router and decentralized Bidder, removes the incorrect Router-versus-Margin attribution, and gives a supported local-surplus/overall-efficiency caveat. Still does not explicitly state that Router internalizes all costs and optimizes global welfare. Adds extra performance detail and uses four sentences rather than the requested maximum of three.",
+      "llama32": "1. Pandora's Router queries the expensive estimate 𝑔 only when the value of information exceeds the cost, whereas Pandora's Bidder queries the expensive estimate 𝑔 only when it holds a true advantage.\n2. [1]\n3. Pandora's Router offers a total regret + inspection cost that tracks the lower envelope of the baselines across the full 𝑐𝑔 range, whereas Pandora's Bidder closely tracks the lower envelope of the regret of the two baselines across the full 𝑐𝑔 range.\n4. [2]\n5. The difference in their performance is determined largely by the decision about how many 𝑔 values to query, with two queries both methods always select the 𝑔-maximizer, and with zero queries both methods almost always select the 𝑓-maximizer.\n6. [3]\n7. The 𝑓-only baseline leaves efficiency on the table at low costs by never investing in refinement, whereas Pandora's Bidder selectively defaults to the cheap estimate or declines the price, avoiding the cost collapse of the 𝑔-always baseline.\n8. [3]\n9. With decentralization, however, maximizing local surplus does not always lead to better overall allocative efficiency, as seen in the example where the price is inaccurate.\n10. [3]\n11. Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation offer insufficient expected profit to incentivize the bidder; declining them protects the bidder’s surplus but assigns the input to a less capable specialist.\n12. [3]\n13. The tension is absent in the centralized setting, where the router internalizes all costs and optimizes global welfare directly.\n14. [3]\n15. Extending Pandora's Bidder to multi-round ascending-pricemechanisms may recover some of this efficiency loss.\n16. [3]",
+      "llama31_8b": "Pandora's Router and Pandora's Bidder differ in their approach to allocating queries. Pandora's Router is a centralized policy that inspects specialists' value estimates in reservation price order, stopping when no remaining query is worth its cost [1]. In contrast, Pandora's Bidder is a decentralized policy that uses an auction mechanism to select the high bidder, with each specialist refining its own value estimate only when the market price makes inspection worthwhile [1]. Additionally, Pandora's Bidder measures regret versus an oracle that knows the true value for free, and its performance is affected by the price being inaccurate, leading to a trade-off between local surplus and overall allocative efficiency [3].",
+      "llama32_seconds": 12.8,
+      "llama31_seconds": 13.2,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "attention",
+            "message": "Answer is 239 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 239,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 109 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 109,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "source_number": 3,
+      "source_excerpt": "With decentralization, however, maximizing local surplus does not alwaysleadtobetteroverallallocativeefficiency. Forexample, whenthepriceisinaccurate(setusingthe cheap estimate𝑓 rather than𝑔 for the𝑀− 1competitors) the strategic bidder captures higher surplus at the cost of overall allocative efficiency (see additional results in Appendix D.2). Overpriced queries Pandora’s AI Model Routing Box: Efficient Allocation with Costly Value Estimation offer insufficient expected profit to incentivize the bidder; declining them protects the bidder’s surplus but assigns the input to a less capable specialist. This tension is absent in the centralized s"
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "assessment": "Citation improvement",
+      "explanation": "All three domains remain correct. Now includes source references [3][4], but only after the final list item; the prompt asks for a citation on each factual bullet.",
+      "llama32": "The costly-value-estimation routing policy was evaluated in three domains: \n\n1. EmbedLLM (multi-LLM routing benchmark)\n2. Retrieval-augmented specialists for factoid QA\n3. LLMs with variable inference-time reasoning",
+      "llama31_8b": "The three domains where the costly-value-estimation routing policy was evaluated are: \n1. a multi-LLM routing benchmark (EmbedLLM)\n2. retrieval-augmented specialists for factoid QA\n3. inference-time computation for mathematical reasoning [3][4]",
+      "llama32_seconds": 4.5,
+      "llama31_seconds": 10.8,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "attention",
+            "message": "Add source references to the answer itself."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 23 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 23,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": [
+          "No passage citation appears in the answer.",
+          "Include one verified, verbatim Evidence quote per cited paper."
+        ]
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 26 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20316"
+          ]
+        },
+        "word_count": 26,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "source_number": 3,
+      "source_excerpt": "We evaluate both frameworks (see Figure 1) across three domains: a multi-LLM routing benchmark (EmbedLLM), retrieval-augmented specialists for factoid QA, and inference-time computation for mathematical reasoning. In each setting, both Pandora’s Router and Pandora’s Bidder are able to gracefully trade-off expensive and cheap estimates to achieve strong allocative performance relative to baselines across a range of estimation costs."
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "assessment": "Still inadequate",
+      "explanation": "Drops the false claim that 46.4% is more often than 53.6% and adds a supported non-causal caveat. However, it still substitutes submission shares for performance and omits BOTH mean scores, 0.226 and 0.126, despite source 2 providing them. It cites [3], but the denominator 263 appears explicitly in sources [1]/[2], so the number warning needs citation review rather than being treated as proof of a fabricated value.",
+      "llama32": "Submissions that change the learning algorithm (122 submissions) reach the learning procedure more often (46.4%) than those that do not (141 submissions that stay entirely on the run, 53.6%).",
+      "llama31_8b": "Submissions that change the learning algorithm (46.4% of 263 submissions) are compared to those that do not (53.6% of 263 submissions). The comparison is limited by the fact that the stronger systems are more likely to reach the learning procedure, so the gap is between submissions that go there and those that do not, rather than the effect of going there. [3]",
+      "llama32_seconds": 4.0,
+      "llama31_seconds": 11.6,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "attention",
+            "message": "Add source references to the answer itself."
+          },
+          {
+            "name": "numbers",
+            "status": "attention",
+            "message": "Check figures against their sources."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 29 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20318"
+          ]
+        },
+        "word_count": 29,
+        "numbers_absent_from_cited_sources": [
+          "122",
+          "141",
+          "46.4%",
+          "53.6%"
+        ],
+        "expected_numbers_not_found": [
+          "0.226",
+          "0.126"
+        ],
+        "legacy_mechanical_issues": [
+          "No passage citation appears in the answer.",
+          "Include one verified, verbatim Evidence quote per cited paper.",
+          "Check numbers absent from cited passages: ['122', '141', '46.4%', '53.6%']"
+        ]
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "numbers",
+            "status": "attention",
+            "message": "Check figures against their sources."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 61 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20318"
+          ]
+        },
+        "word_count": 61,
+        "numbers_absent_from_cited_sources": [
+          "263"
+        ],
+        "expected_numbers_not_found": [
+          "0.226",
+          "0.126"
+        ],
+        "legacy_mechanical_issues": [
+          "Check numbers absent from cited passages: ['263']"
+        ]
+      },
+      "source_number": 2,
+      "source_excerpt": "Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it — the objective, the supervision signal, the learning rule, the data — average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes t"
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "assessment": "Content maintained",
+      "explanation": "Both hierarchical objectives and procedure/control-flow models remain correctly described. The single [3] at paragraph end supports the content, but the first factual sentence has no adjacent citation, unlike the previous answer.",
+      "llama32": "TMI recovers two kinds of task structure: objective models and procedure models. [3][1]\n\n• Objective models are hierarchical decompositions of the objective of a task into subobjectives the user pursues. [3]\n• Procedure models are trace-grounded compositions of control-flow operators specifying how the execution of a task is organized through sequencing and iteration. [3]",
+      "llama31_8b": "TMI recovers two kinds of task structure: objective models and procedure models. Objective models are hierarchical decompositions of the objective of a task into subobjectives, while procedure models are trace-grounded compositions of control-flow operators specifying how the execution of a task is organized. [3]",
+      "llama32_seconds": 3.6,
+      "llama31_seconds": 7.9,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 51 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20319"
+          ]
+        },
+        "word_count": 51,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 43 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20319"
+          ]
+        },
+        "word_count": 43,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "source_number": 3,
+      "source_excerpt": "Theobjective model Ot is a hierarchical decomposition of the objective of t into the subobjectives the user pursues. • Theprocedure model Pt is a trace-grounded composition of control-flow operators specifying how the execution of t is organized through sequencing and iteration. The task model Mt is structured as a tree, whose every node pairs an objective with a control-flow operator over its children."
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "assessment": "Citation improvement, detail trade-off",
+      "explanation": "Now cites each factual sentence and correctly explains atomic claim verification and weighted, case-specific checklists. It no longer explicitly mentions the multi-source retrieval/datastore detail included in the previous answer and required by the checklist; the explanation is therefore less specific on that point.",
+      "llama32": "G-CARL supervises factuality through the retrieval-grounded branch, which verifies report-grounded medical claims against evidence retrieved from a multi-source medical datastore, producing the factuality reward Rfact (Sec. 3.2). \n\nThe case-specific checklist branch optimizes response coverage by constructing a weighted checklist through MLLM generation followed by clinician-guided refinement, and evaluating the checklist coverage of the generated response to produce the checklist reward Rcheck (Sec. 3.3).",
+      "llama31_8b": "G-CARL supervises factuality through a retrieval-grounded claim reward that provides fine-grained supervision for medical factuality through atomic claim verification [1]. It also supervises response coverage through a case-specific checklist reward that explicitly supervises demand satisfaction and expression quality without relying on a single reference response [1]. This is achieved by constructing instance-specific weighted checklists through MLLM generation followed by clinician refinement [1].",
+      "llama32_seconds": 4.4,
+      "llama31_seconds": 9.8,
+      "llama32_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "attention",
+            "message": "Add source references to the answer itself."
+          },
+          {
+            "name": "numbers",
+            "status": "attention",
+            "message": "Check figures against their sources."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 63 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20331"
+          ]
+        },
+        "word_count": 63,
+        "numbers_absent_from_cited_sources": [
+          "3.2",
+          "3.3"
+        ],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": [
+          "No passage citation appears in the answer.",
+          "Include one verified, verbatim Evidence quote per cited paper.",
+          "Check numbers absent from cited passages: ['3.2', '3.3']"
+        ]
+      },
+      "llama31_checks": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 62 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20331"
+          ]
+        },
+        "word_count": 62,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "source_number": 3,
+      "source_excerpt": "combinesmulti-source retrieval for atomic claim verification with context-aware, instance-specific weighted checklists for response coverage, providing structured supervision for factuality, user-demand satisfaction, and expression quality without constraining response diversity. We further constructMMedReport, a realworld PMRI benchmark, along with a clinician-designed three-dimensionalevaluationprotocol.Extensiveexperiments demonstrate that G-CARL consistently outperforms existing post-training baselines in overall quality, claim-level precision, and checklist recall. Pairwise preference evaluation by clinicians further confirms that G-CARL"
+    }
+  ]
+}

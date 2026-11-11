@@ -9,13 +9,11 @@ import hashlib
 import json
 import re
 import sys
+from dataclasses import asdict
 from pathlib import Path
-
-from pypdf import PdfReader
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
-from ingest import build_vector_store  # noqa: E402
 from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
 
 
@@ -36,6 +34,8 @@ def notebook_parser():
 
 
 def load_corpus(benchmark, parser):
+    from pypdf import PdfReader
+
     pdfs = sorted((ROOT / "data").glob("*.pdf"))
     if len(pdfs) != len(benchmark["papers"]):
         raise RuntimeError("The PDF count differs from the benchmark catalog")
@@ -63,6 +63,7 @@ def load_corpus(benchmark, parser):
 def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
         max_rerank_gap=None, order_by_vector=False):
     from langchain_huggingface import HuggingFaceEmbeddings
+    from ingest import build_vector_store
 
     benchmark = json.loads(benchmark_path.read_text())
     parser, parser_source = notebook_parser()
@@ -96,11 +97,9 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
                          for phrase in item["evidence"]]
         rows.append({"id": item["id"], "query": item["query"],
                      "relevant_papers": gold, "retrieved_papers": ids,
-                     "retrieved_chunks": [
-                         {"paper_id": c.paper_id, "section": c.section,
-                          "chunk_id": c.chunk_id,
-                          "score": round(c.score, 4), "source_url": c.source_url}
-                         for c in chunks],
+                     "retrieved_chunks": [asdict(c) for c in chunks],
+                     "context": retriever.format_context(chunks),
+                     "source_list": retriever.format_sources(chunks),
                      "recall": len(hits) / len(gold) if gold else None,
                      "reciprocal_rank": 1 / (min(ids.index(p) for p in hits) + 1) if hits else 0,
                      "evidence_hits": evidence_hits})
@@ -119,7 +118,10 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
         "citation_metadata_complete": sum(bool(c["paper_id"] and c["source_url"])
                                           for c in all_chunks) / len(all_chunks),
     }
-    result = {"benchmark": str(benchmark_path.relative_to(ROOT)),
+    result = {"snapshot_version": 1,
+              "benchmark_sha256": hashlib.sha256(
+                  json.dumps(benchmark, sort_keys=True).encode()).hexdigest(),
+              "benchmark": str(benchmark_path.relative_to(ROOT)),
               "corpus_fingerprint": fingerprint,
               "model": "sentence-transformers/all-mpnet-base-v2",
               "k_chunks": k, "fetch_k": fetch_k, "max_chunks_per_paper": per_paper,

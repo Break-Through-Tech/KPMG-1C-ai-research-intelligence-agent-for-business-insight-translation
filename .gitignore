@@ -4,3 +4,4 @@ arxiv_data/
 __pycache__/
 .pytest_cache/
 .env
+private_notes.md

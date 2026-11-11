@@ -1,0 +1,9 @@
+{
+  "hybrid": {
+    "macro_recall": 1.0,
+    "evidence_coverage": 0.8571428571428571,
+    "evidence_hits": 24,
+    "evidence_total": 28,
+    "average_chunks": 4.2
+  }
+}

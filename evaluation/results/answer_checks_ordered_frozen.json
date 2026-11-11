@@ -1,0 +1,62 @@
+{
+  "validation_scope": "Mechanical citation, quote, and numeric checks only; claim support and method/metric associations require separate review.",
+  "summary": {
+    "answer_count": 3,
+    "positive_answers_with_citation": 2,
+    "positive_answers": 3,
+    "answers_with_invalid_citation": 0,
+    "positive_answers_with_verified_direct_quote": 2,
+    "negative_answers_with_abstention_phrase": 0,
+    "negative_answers": 0
+  },
+  "answers": [
+    {
+      "id": "q01",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "claim_support_status": "not_evaluated",
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q02",
+      "cited_numbers": [
+        "1",
+        "2",
+        "3"
+      ],
+      "invalid_citations": [],
+      "has_citation": true,
+      "verified_direct_quote": true,
+      "verified_quote_count": 1,
+      "claim_support_status": "not_evaluated",
+      "issues": [],
+      "is_negative": false,
+      "abstention_phrase": false
+    },
+    {
+      "id": "q03",
+      "cited_numbers": [],
+      "invalid_citations": [],
+      "has_citation": false,
+      "verified_direct_quote": false,
+      "verified_quote_count": 0,
+      "claim_support_status": "not_evaluated",
+      "issues": [
+        "No passage citation appears in the answer.",
+        "Include one verified, verbatim Evidence quote per cited paper."
+      ],
+      "is_negative": false,
+      "abstention_phrase": false
+    }
+  ]
+}

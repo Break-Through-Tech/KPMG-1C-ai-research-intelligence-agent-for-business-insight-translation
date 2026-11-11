@@ -1,0 +1,137 @@
+[
+  {
+    "original_path": "evaluation/judge_answers.py",
+    "archive_path": "judge_answers.py",
+    "sha256": "64f38a92b20f210b93221cdb9ea289b21da2e3141152e92c7fd5f7ad898bc4ad"
+  },
+  {
+    "original_path": "evaluation/review_answers.py",
+    "archive_path": "review_answers.py",
+    "sha256": "fd556400089b79f6e02126910471aa0c2e90c1db8e45e031eeb6243c99a3beef"
+  },
+  {
+    "original_path": "notebooks/judge_answers.ipynb",
+    "archive_path": "notebooks/judge_answers.ipynb",
+    "sha256": "b00a1e202cff87d2977c9a9e7500ebb483d7b0724c613d7c05b956467d853ac6"
+  },
+  {
+    "original_path": "tests/test_judge_answers.py",
+    "archive_path": "tests/historical_test_judge_answers.py",
+    "sha256": "d6646de2e3bddffe2b4b3445a2f1eed1584cff47334018f368116741d656b00e"
+  },
+  {
+    "original_path": "tests/test_checklist_review.py",
+    "archive_path": "tests/historical_test_checklist_review.py",
+    "sha256": "2a76e95f6fcfeeac054d62be781f233547b2279b1704369bdf0e1f030105d80f"
+  },
+  {
+    "original_path": "evaluation/results/checklist_calibration.md",
+    "archive_path": "results/checklist_calibration.md",
+    "sha256": "e2dd9e52b42b90b80e8e01c3bb47b27672eaaa37e9af15ea914dc246e4593104"
+  },
+  {
+    "original_path": "evaluation/results/notebook_judge_pilot.md",
+    "archive_path": "results/notebook_judge_pilot.md",
+    "sha256": "63c1e85fdd35948405630c6703cb2fa0ad9e71a4f465cc3806cb9bd8f05b261d"
+  },
+  {
+    "original_path": "evaluation/results/checklist_checks_only.md",
+    "archive_path": "results/checklist_checks_only.md",
+    "sha256": "4a77325b34563d120be02da94435240a675b727473e3990c1f5f3d6b92f556ff"
+  },
+  {
+    "original_path": "evaluation/results/ai_three_spot_check.md",
+    "archive_path": "results/ai_three_spot_check.md",
+    "sha256": "16cda627005d2267c7e97f1860c0b6d7547cd87eb797927059d251dd996c1bab"
+  },
+  {
+    "original_path": "evaluation/results/checklist_ai_three.md",
+    "archive_path": "results/checklist_ai_three.md",
+    "sha256": "e9675d55653aad146f42bc595356fafc40dfff2831465ad5560af3057459937c"
+  },
+  {
+    "original_path": "evaluation/results/checklist_automatic.json",
+    "archive_path": "results/checklist_automatic.json",
+    "sha256": "aa25de6cea559b4c2e7e19f95e32686aeaba67333d02e0890ae768951139f0d1"
+  },
+  {
+    "original_path": "evaluation/results/checklist_automatic_initial.md",
+    "archive_path": "results/checklist_automatic_initial.md",
+    "sha256": "de787fe684c8efab9e4f6baa42019121233945dbe19be6784f3c97af60a6deea"
+  },
+  {
+    "original_path": "evaluation/results/notebook_judge_pilot.json",
+    "archive_path": "results/notebook_judge_pilot.json",
+    "sha256": "de9a82ca5f354597487aeb2d4feec4657bc7e57b80b9e4cfb1f0b5794a03d20b"
+  },
+  {
+    "original_path": "evaluation/results/checklist_automatic.md",
+    "archive_path": "results/checklist_automatic.md",
+    "sha256": "de787fe684c8efab9e4f6baa42019121233945dbe19be6784f3c97af60a6deea"
+  },
+  {
+    "original_path": "evaluation/results/checklist_review.md",
+    "archive_path": "results/checklist_review.md",
+    "sha256": "8a9bda5082f2e6f63fbae2bc73660fe3d048edfd15c6756c5a5e0ece1e93a5e2"
+  },
+  {
+    "original_path": "evaluation/results/judge_single_attempt.json",
+    "archive_path": "results/judge_single_attempt.json",
+    "sha256": "83f205a22fe6bb2910aef44d50ca02ca24a936d2396a8b8a04521420cec4a1f3"
+  },
+  {
+    "original_path": "evaluation/results/checklist_checks_only.json",
+    "archive_path": "results/checklist_checks_only.json",
+    "sha256": "e15e67a6a30b2135b32c97528caabe02b541877cda0bddafcd7571fda5c1ea7e"
+  },
+  {
+    "original_path": "evaluation/results/answers_ordered_frozen_judge.md",
+    "archive_path": "results/answers_ordered_frozen_judge.md",
+    "sha256": "d7dbcc8287d145c49c88dcd574cbe0aba4e911e2f1cc167ed717cdced1e73917"
+  },
+  {
+    "original_path": "evaluation/results/answers_ordered_frozen_judge.json",
+    "archive_path": "results/answers_ordered_frozen_judge.json",
+    "sha256": "5da3a69c573cc863935b2a57aeb13e9214da6436d300f20774b200c1407f2836"
+  },
+  {
+    "original_path": "evaluation/results/answers_ordered_frozen_judge_qwen35.json",
+    "archive_path": "results/answers_ordered_frozen_judge_qwen35.json",
+    "sha256": "1e71f87a453a886817e2367fbbe544facb05ed7bead4a331d326307fb6bd03cb"
+  },
+  {
+    "original_path": "evaluation/results/judge_single_attempt.md",
+    "archive_path": "results/judge_single_attempt.md",
+    "sha256": "45e13ce819fa81696c27ac3c42ea49641b1281717ea85eecab22666a8b217ce6"
+  },
+  {
+    "original_path": "evaluation/results/checklist_review.json",
+    "archive_path": "results/checklist_review.json",
+    "sha256": "653652ae7dd04597c332bdb31bc69e43be96141cabc75a6dec9bff4383797000"
+  },
+  {
+    "original_path": "evaluation/results/answers_ordered_frozen_judge_qwen35.md",
+    "archive_path": "results/answers_ordered_frozen_judge_qwen35.md",
+    "sha256": "1fb4a1c20807ae1d0b23d2ce3963e4a591a8ec69ee658ad9368ec78125afa926"
+  },
+  {
+    "original_path": "evaluation/results/checklist_automatic_initial.json",
+    "archive_path": "results/checklist_automatic_initial.json",
+    "sha256": "144f3ece95174a0745d53f01effa2cbb47148695f2bcebb240fc79dbaea7125b"
+  },
+  {
+    "original_path": "evaluation/results/checklist_review_initial.json",
+    "archive_path": "results/checklist_review_initial.json",
+    "sha256": "bc2afe8707209ceb3510b0289f1ca46fdb93199179b65bbfb6909eaa0ebe3983"
+  },
+  {
+    "original_path": "evaluation/results/checklist_ai_three.json",
+    "archive_path": "results/checklist_ai_three.json",
+    "sha256": "6b47f0bb79c50810eae9f55b4a96be79263b3169709ea018b72279614f836830"
+  },
+  {
+    "original_path": "evaluation/results/checklist_review_initial.md",
+    "archive_path": "results/checklist_review_initial.md",
+    "sha256": "82db588990780443c31cf82f02a290aaeaa8f23ec0f83c4f0a52ed40d6f8c171"
+  }
+]
