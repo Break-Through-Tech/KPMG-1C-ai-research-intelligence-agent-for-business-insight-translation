@@ -26,3 +26,15 @@ Seven standard-library checks passed: matrix shape and blank scores; fixed evide
 All eight original questions match the supplied Word document exactly. Ten old supplementary fixtures remain. All Python files parse and the whitespace check passes.
 
 Actual retrieval, provider runs, independent scoring, robustness findings, product owner validation, and final selection are pending. No model-performance results have been invented. The Word documents were read without being edited or added to this branch.
+
+## Version 3 of Template B (November 11, 2026)
+
+First real model runs: qwen3.5:9b (temperature 0, seed 42, thinking off) on the repository's frozen hybrid retrieval snapshots. Version 2 findings and version 3 changes:
+
+| Version 2 problem | Version 3 change | Re-test result |
+|---|---|---|
+| Unanswerable question (q24, KPMG revenue forecast) answered "not covered", then added unrelated business suggestions | Reply only with the exact sentence "The provided papers do not address this question." | Fixed in two runs. The app's refusal detection now recognises it. |
+| Called 0.226 vs 0.126 "significantly higher" with no significance test; "driven by" causal wording (q08) | Do not say significant, caused, drove, or led to unless a passage says so | Statistical "significantly higher" gone; "significant" still appears loosely in business sections |
+| Model added 136 + 85 to invent a "221 comparisons" total (q20) | Report numbers exactly; do not calculate new totals, percentages, or ratios | Fixed in re-test |
+
+Not fixed: factual questions still receive all four business headings, even with an explicit question-type rule (tried and removed). Choose the template in application code instead: use the structured factual prompt for research questions and Template B for business questions. Business question A29 kept a grounded four-section brief in every run. This was a 4-question targeted check, not a full evaluation.
