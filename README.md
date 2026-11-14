@@ -73,18 +73,25 @@ To use the browser UI, run `python frontend_server.py --port 8765` and open `htt
 
 ## Evaluation and findings
 
-Kathleen's [evaluation notes](evaluation/results/findings.md) separate two datasets:
+### Five-paper arXiv test
 
-| Dataset | What was tested | Result |
+This project-specific dataset uses the five PDFs committed in [`data/`](data/) and 25 project-drafted questions in [`evaluation/benchmark.json`](evaluation/benchmark.json). The latest run uses local `qwen2.5:7b` after the teammate's PDF parser fix; the index contains 288 chunks.
+
+| Check | Result | What it means |
 | --- | --- | --- |
-| Five committed arXiv PDFs | 25 labeled questions: 23 answerable and two unanswerable | The latest retriever found every labeled relevant paper for **23/23 answerable questions**. Literal labeled fact snippets in selected chunks rose from **7/28** in the baseline to **23/28**. |
-| BEIR SciFact subset | 20 test claims searched against 500 selected article titles and abstracts | The relevant article ranked first for **18/20** claims and appeared in the top five for **20/20**. MRR@10 was **0.950**. |
+| Find the labeled relevant paper | **23/23** answerable questions (100%) | Paper-level retrieval on this small corpus. |
+| Find the exact labeled fact snippets | **23/28** snippets (82%) | Literal presence in selected chunks; some missed snippets may appear in different words. |
+| Cover requested facts in direct answers | **19/20** complete (95%); **1/20** partial | One review against the fixed labels found that q01 omitted the Router's stopping rule. |
+| Pass citation, exact-quote, and number checks | **20/20** direct answers (100%) | Mechanical traceability, not proof that every claim is supported or complete. |
+| Paper-search and abstention cases | **3/3** source lists included both labeled papers; **2/2** unsupported questions were declined | The paper lists and one abstention use rules rather than a Qwen-generated answer. |
 
-The parser fix from the teammate branch removed repeated page headers and table captions mistaken for sections. After integration, the five-paper index has 288 chunks (previously 289); retrieval remains **23/23** relevant papers and **23/28** literal fact snippets. The tiny SciFact rerun remains **18/20** at rank one and **20/20** in the top five. These scores describe retrieval on small test sets, not answer accuracy or business usefulness; the reduced SciFact corpus cannot be compared with published full-corpus BEIR scores.
+The original questions and labels were drafted by Codex and checked against the PDFs, without an independent annotation pass. The content review used one reviewer. These results are useful for diagnosing this prototype; they do not estimate accuracy across a broad research collection or business usefulness for KPMG. See the [question-by-question review](evaluation/results/branch_evaluation.md) and [saved answer checks](evaluation/results/answer_checks_after_parser_integrated.json).
 
-The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. The [new 25-question run](evaluation/results/branch_evaluation.md) uses `qwen2.5:7b`, focused source windows, and stricter citation checks. It gave direct answers to all 20 single-paper questions; **20/20** passed mechanical passage citation, verbatim quote, and numeric source checks. Three cross-paper questions returned the two labeled papers as source lists, and both unsupported questions were declined. One review against the fixed labels found the expected facts in all 20 direct answers. These are small, AI-drafted questions over five papers; source checks and a single review do not establish broader accuracy or business usefulness.
+### Tiny BEIR SciFact retrieval test
 
-The [post-parser answer rerun](evaluation/results/answers_after_parser_integrated.json) kept those mechanical counts: **20/20** direct answers pass source checks, **3/3** paper-list questions return the labeled pair, and **2/2** unsupported questions abstain. In a content review, 19 direct answers covered the requested facts; q01 explained the Router's reservation-price calculation but omitted its explicit stopping rule. A focused-window pilot made that answer worse, so it was not adopted. The [evaluation notes](evaluation/results/branch_evaluation.md) record this remaining completeness gap.
+This subset comes from BEIR's official SciFact test split: 20 claims searched against 500 selected article titles and abstracts, including their labeled relevant articles.
+
+The relevant article ranked first for **18/20** claims (90%) and appeared in the top five for **20/20** (100%). MRR@10 was **0.950** and nDCG@10 was **0.963**. This tests retrieval only. The reduced corpus makes it easier than the full BEIR benchmark, so these scores cannot be compared with published full-corpus results. See the [saved SciFact run](evaluation/results/beir_scifact_after_integration.json).
 
 For the exact commands, result files, question-by-question review, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/branch_evaluation.md](evaluation/results/branch_evaluation.md). From the repository root, run the existing tests with:
 
