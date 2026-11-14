@@ -205,7 +205,8 @@ def render_answer(st, question: str, answer: str, chunks: list[RetrievedChunk], 
     ])
     with business:
         confidence = insight.confidence
-        st.metric("Evidence confidence", confidence.tier)
+        st.metric("Evidence review tier", confidence.tier)
+        st.metric("Heuristic evidence score", f"{confidence.overall_score:.0%}")
         st.caption(confidence.rationale)
         for column, label, value in zip(st.columns(4),
                 ("Retrieval signal", "Citation coverage", "Quote/numeric verification", "Source diversity"),

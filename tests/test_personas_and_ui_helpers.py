@@ -229,7 +229,7 @@ def test_streamlit_confidence_and_export_controls():
     from streamlit.testing.v1 import AppTest
     ui = AppTest.from_file(str(ROOT / "app.py")).run(timeout=15)
     assert not ui.exception
-    assert len(ui.metric) == 5
+    assert len(ui.metric) == 6
     assert any(item.label == "Saved evaluation run" for item in ui.selectbox)
     assert any(item.label == "Download executive brief" for item in ui.get("download_button"))
     next(item for item in ui.selectbox if item.label == "Saved evaluation run").select("answers.json").run()

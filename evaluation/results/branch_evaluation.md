@@ -68,16 +68,22 @@ The final run uses Ollama `qwen2.5:7b` (model digest and prompt hash are saved i
 | q24 | Appropriate abstention | KPMG revenue is absent. |
 | q25 | Appropriate abstention | NVIDIA stock price is absent. |
 
+### Follow-up after the PDF parser fix
+
+The teammate's parser fix removes repeated page headers and table captions that looked like section headings. We rebuilt the five-paper index after merging it. The integrated index has **288 chunks** instead of 289. [`retrieval_after_parser_integrated.json`](retrieval_after_parser_integrated.json) still finds the labeled relevant paper for **23/23** answerable questions and literally includes **23/28** labeled snippets in the selected chunks.
+
+We then reran all 25 questions with the same Qwen model and saved the answers in [`answers_after_parser_integrated.json`](answers_after_parser_integrated.json). The [mechanical checks](answer_checks_after_parser_integrated.json) pass for **20/20 direct answers**; all three paper-list questions return both labeled papers, and both unsupported questions abstain. A reviewer checked the changed answers against the fixed labels and source excerpts: **19/20 direct answers covered the requested facts, while q01 was partial**. The q01 answer explains reservation-price reasoning but omits the explicit rule that the Router stops when no remaining query is worth its cost. A short-window pilot emphasized the wrong Bidder passage, so we did not adopt it. This remains a completeness issue that mechanical citation and quote checks do not catch.
+
 ## Dataset 2: BEIR SciFact subset
 
 This retrieval dataset comes from BEIR's official SciFact test split, sampled here to 20 claims and 500 title-plus-abstract articles, including every judged relevant article for those claims.
 
-The branch rerun in [`beir_scifact_branch_confirmed.json`](beir_scifact_branch_confirmed.json) got the relevant article at rank one for **18/20** claims and in the top five for **20/20**. MRR@10 was **0.950**, and nDCG@10 was **0.963**. These match the prior tiny-subset result. The dataset is mostly scientific and biomedical, and the reduced article pool makes this an easier diagnostic than the full BEIR corpus. It does not test answer writing, citation quality, or KPMG usefulness.
+The integrated rerun in [`beir_scifact_after_integration.json`](beir_scifact_after_integration.json) got the relevant article at rank one for **18/20** claims and in the top five for **20/20**. MRR@10 was **0.950**, and nDCG@10 was **0.963**. These match the prior tiny-subset result. The dataset is mostly scientific and biomedical, and the reduced article pool makes this an easier diagnostic than the full BEIR corpus. It does not test answer writing, citation quality, or KPMG usefulness.
 
 ## What still needs work
 
 1. **Independent labels and broader data.** The five-paper questions were AI drafted. Ask teammates or KPMG reviewers to label new questions without seeing the system answers, and expand beyond five papers and a 500-article retrieval subset.
-2. **Claim support beyond exact matching.** The current checker verifies passage IDs, literal quotes, and exact numeric values. It cannot prove that a cited passage entails the sentence or that every factual sentence has its own citation. A second reviewer or a separately validated claim-level evaluator is needed.
+2. **Claim support and completeness beyond exact matching.** The current checker verifies passage IDs, literal quotes, and exact numeric values. It missed q01's omitted stopping rule and cannot prove that a cited passage entails every sentence. A second reviewer or a separately validated claim-level evaluator is needed.
 3. **Paper-search relevance.** The “which papers” path is deliberately an inspectable search list and uses a conservative keyword gate. It can miss relevant papers that use different vocabulary, and a lexical match alone is not proof of relevance.
 4. **PDF text quality and page tracing.** Extracted text can join words and decimals (`average0.226 against0 .126`), and citations identify chunks rather than exact pages. Improve PDF normalization and page offsets before asking reviewers to rely on quotations at scale.
 5. **Real use and business value.** The notebook handles one question at a time. It has no evaluated conversation memory, deployed answer service, or KPMG reviewer score for usefulness and trust. The business-translation helper is separate from this answer test.

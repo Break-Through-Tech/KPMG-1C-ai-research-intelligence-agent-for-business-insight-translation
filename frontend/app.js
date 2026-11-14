@@ -254,7 +254,7 @@ function renderBrief() {
     )
     .join(
       "",
-    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence checks</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}</div><p>Signals for reviewer inspection</p>${
+    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence checks</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}${c ? `<span>${Math.round(c.overall_score * 100)}/100</span>` : ""}</div><p>Heuristic evidence score for review, not a correctness probability</p>${
     c
       ? [
           ["Citation coverage", c.citation_coverage],

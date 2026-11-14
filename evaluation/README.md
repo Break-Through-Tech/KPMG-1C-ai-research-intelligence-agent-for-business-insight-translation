@@ -18,24 +18,24 @@ From the repository root:
 
 ```bash
 python -m pip install -r evaluation/requirements.txt
-python evaluation/run_retrieval.py --output evaluation/results/retrieval_branch_confirmed.json --per-paper 4 --fetch-k 60 --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
-python evaluation/run_beir_scifact.py --output evaluation/results/beir_scifact_branch_confirmed.json --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
+python evaluation/run_retrieval.py --output evaluation/results/retrieval_after_parser_integrated.json --per-paper 4 --fetch-k 60 --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
+python evaluation/run_beir_scifact.py --output evaluation/results/beir_scifact_after_integration.json --rerank-model cross-encoder/ms-marco-MiniLM-L6-v2 --max-rerank-gap 8 --order-by-vector
 python -m pytest -q
 ```
 
 The arXiv script parses the five PDFs with the notebook's `process_paper` function, uses `notebooks/ingest.py` to make MPNet embeddings in cosine Chroma, and runs `notebooks/retrieval.py`. The cached index lives under `.evaluation_cache/`; its fingerprint changes when the parser, ingestion code, or PDFs change. The BEIR script verifies the downloaded archive's published MD5 checksum and uses the same ingestion and retrieval code on the sampled titles and abstracts.
 
-On the five PDFs, the current retriever finds all labeled relevant papers for **23/23 answerable questions**, and **23/28** labeled fact snippets appear literally in selected chunks. `evidence_coverage` is an exact wording check, not answer accuracy. On the tiny SciFact subset, the relevant article ranks first for **18/20** claims and appears in the first five for **20/20**; MRR@10 is **0.950** and nDCG@10 is **0.963**. These retrieval numbers did not change in this branch's rerun.
+On the five PDFs, the current retriever finds all labeled relevant papers for **23/23 answerable questions**, and **23/28** labeled fact snippets appear literally in selected chunks. `evidence_coverage` is an exact wording check, not answer accuracy. The teammate's PDF parser fix removed repeated page headers and false table-caption headings; the integrated index has 288 chunks, one fewer than before. On the tiny SciFact subset, the relevant article ranks first for **18/20** claims and appears in the first five for **20/20**; MRR@10 is **0.950** and nDCG@10 is **0.963**. SciFact does not use the PDF parser, so the parser fix did not change its results.
 
 ## Reproduce answer checks
 
 With Ollama running and `qwen2.5:7b` installed:
 
 ```bash
-python evaluation/run_answers.py --retrieval evaluation/results/retrieval_branch_confirmed.json --output evaluation/results/answers_qwen_branch_final.json
-python evaluation/check_answers.py --answers evaluation/results/answers_qwen_branch_final.json --output evaluation/results/answer_checks_qwen_branch_final.json
+python evaluation/run_answers.py --retrieval evaluation/results/retrieval_after_parser_integrated.json --output evaluation/results/answers_after_parser_integrated.json
+python evaluation/check_answers.py --answers evaluation/results/answers_after_parser_integrated.json --output evaluation/results/answer_checks_after_parser_integrated.json
 ```
 
 `run_answers.py` resumes finished questions in its output file. The output records the raw model draft, final response, retrieved passages, generation time, and whether the response is a direct answer, source-only paper list, source review, or abstention. `check_answers.py` checks citation numbers, verbatim quotes in their cited passages, numbers absent from cited passages, and the fixed abstention phrase. It counts direct answers separately from source-only results. It cannot verify semantic support, factual accuracy, or completeness by itself.
 
-For a content review, compare every material claim with its cited passage and check all parts of the question. The [original manual review](results/answer_review.md) records early failures. The [branch evaluation](results/branch_evaluation.md) compares the fresh baseline with the updated notebook and documents remaining risks. [`notebooks/evaluation.ipynb`](../notebooks/evaluation.ipynb) displays the earlier runs and source passages.
+For a content review, compare every material claim with its cited passage and check all parts of the question. The [original manual review](results/answer_review.md) records early failures. The [branch evaluation](results/branch_evaluation.md) compares the fresh baseline, the updated notebook, and the parser follow-up. In the post-parser run, all 20 direct answers passed the mechanical source checks, but q01 omitted the Router's explicit stopping rule. [`notebooks/evaluation.ipynb`](../notebooks/evaluation.ipynb) displays the earlier runs and source passages.

@@ -958,9 +958,18 @@ main {
 }
 .evidence-tier {
   font-size: 25px;
-  font-weight: 400;
+  font-weight: 600;
   color: var(--blue);
   margin: 16px 0 5px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.evidence-tier span {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 500;
 }
 .evidence-panel > p {
   font-size: 11px;
