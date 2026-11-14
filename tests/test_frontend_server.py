@@ -35,8 +35,16 @@ def test_all_saved_answers_preserve_sources_checks_and_exports(run):
         assert result["checks"] == frontend.app.answer_issues(record["answer"], chunks)
         assert record["query"] in result["markdown"]
         if result["insight"]["validation_warnings"]:
-            assert result["insight"]["confidence"]["tier"] == "Abstained"
+            assert result["insight"]["confidence"]["tier"] in {"Review needed", "Abstained"}
         json.dumps(result, allow_nan=False)
+
+
+def test_review_warning_keeps_study_answer_visible():
+    result = frontend.make_insight({"id": "q02", "run": "answers_qwen_branch_final.json"})
+    assert result["answer"] == result["insight"]["what_study_found"]
+    assert result["insight"]["validation_warnings"]
+    assert "No business action recommended" in result["insight"]["what_kpmg_could_consider"]
+    assert "Business action withheld" in result["markdown"]
 
 
 @pytest.mark.parametrize("payload", [[], None, {"id": "missing"}, {"id":"q01", "persona":"jordan"},

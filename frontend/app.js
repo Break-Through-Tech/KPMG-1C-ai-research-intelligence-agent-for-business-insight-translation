@@ -48,6 +48,11 @@ const labels = {
   saved: "Saved brief",
   live: "Live research",
 };
+const runLabel = (name) => ({
+  "answers_after_parser_integrated.json": "Current Qwen evaluation",
+  "answers_qwen_branch_final.json": "Earlier Qwen evaluation",
+  "answers_grounded.json": "Earlier Llama evaluation",
+})[name] || name;
 const state = {
   data: null,
   persona: "allison",
@@ -93,7 +98,7 @@ function perspectiveSelect() {
   return `<label class="select-field">${icon("user")}<span>Review perspective</span><select id="persona" aria-label="Review perspective">${state.data.personas.map((p) => `<option value="${esc(p.id)}" ${p.id === state.persona ? "selected" : ""}>${esc(p.role)}</option>`).join("")}</select></label>`;
 }
 function heading(title, subtitle, extra = "") {
-  return `<div class="page-heading"><div><div class="eyebrow">RESEARCH INTELLIGENCE</div><h1>${title}</h1><p>${subtitle}</p></div>${extra}</div>`;
+  return `<div class="page-heading"><div><div class="eyebrow">KPMG × BREAK THROUGH TECH</div><h1>${title}</h1><p>${subtitle}</p></div>${extra}</div>`;
 }
 function status(message, warning = false) {
   return `<div class="status-bar ${warning ? "warning" : ""}">${icon(warning ? "info" : "shield")}<span>${message}</span></div>`;
@@ -104,28 +109,27 @@ function questionButton(id, label) {
 function composer() {
   const live = state.mode === "live";
   return `<section class="composer" aria-label="Research query">
-  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Start the server with --live-root . to ask new questions"'}>Ask a question</button></div><span class="tag ${live ? "amber" : "blue"}">${icon(live ? "info" : "book")}${live ? "Local model · on demand" : "Saved benchmark collection"}</span></div>
+  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Start the server with --live-root . to ask new questions"'}>Ask a question</button></div></div>
   <form id="research-form"><label class="prompt-label" for="research-query">${live ? "What would you like to understand?" : "What are you exploring today?"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask a question about the indexed research…" : "Search model routing, AI agents, workflow automation…"}" aria-describedby="query-help" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Generate insight" : "Explore research"}${icon("arrow")}</button></div></form>
   ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Local model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions"><span>START WITH</span>${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
-  <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Uses your existing index and local model." : "Browse 25 fixed questions. No new answer is generated."}</small></div></section>`;
+  <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Answers use the five local papers and show source checks." : state.data.live_configured ? "Browse saved answers, or ask your own question." : "To ask new questions, start the server with --live-root ."}</small></div></section>`;
 }
 function paperRow(paper, index, library = false) {
-  return `<article class="paper-row"><div class="paper-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div><div><span class="tag blue">${esc(areaLabel(paper.area))}</span><h3><button data-action="paper" data-id="${esc(paper.id)}">${esc(paper.title)}</button></h3><div class="paper-meta"><span>arXiv · ${esc(paper.id)}</span><span>${paper.questions.length} benchmark questions</span><span>Preprint</span></div></div>${library ? `<div class="paper-actions"><button class="button secondary compact" data-action="paper" data-id="${esc(paper.id)}">Explore questions ${icon("arrow")}</button><a class="button text compact" href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer">Original paper ${icon("external")}</a></div>` : `<button class="paper-open" data-action="paper" data-id="${esc(paper.id)}" aria-label="Explore ${esc(paper.title)}">${icon("arrow")}</button>`}</article>`;
+  return `<article class="paper-row"><div class="paper-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div><div><span class="tag blue">${esc(areaLabel(paper.area))}</span><h3><button data-action="paper" data-id="${esc(paper.id)}">${esc(paper.title)}</button></h3><div class="paper-meta"><span>arXiv · ${esc(paper.id)}</span><span>${paper.questions.length} benchmark questions</span></div></div>${library ? `<div class="paper-actions"><button class="button secondary compact" data-action="paper" data-id="${esc(paper.id)}">Explore questions ${icon("arrow")}</button><a class="button text compact" href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer">Original paper ${icon("external")}</a></div>` : `<button class="paper-open" data-action="paper" data-id="${esc(paper.id)}" aria-label="Explore ${esc(paper.title)}">${icon("arrow")}</button>`}</article>`;
 }
 function workspace() {
   main.innerHTML =
     heading(
-      "Research into perspective.",
-      "Explore emerging AI. Understand the evidence. Shape your next decision.",
-      `<div class="heading-meta">${icon("book")}Public research collection</div>`,
+      "Research, with evidence.",
+      "Find a paper, inspect the answer, and trace every source.",
     ) +
     composer() +
-    `<div id="workspace-results"><div class="home-grid"><section><div class="section-heading"><div><h2>Inside the research</h2><p>A starting point for your next business question.</p></div><a href="#library">View library ${icon("arrow")}</a></div><div class="paper-list">${state.data.papers
+    `<div id="workspace-results"><div class="home-grid"><section><div class="section-heading"><div><h2>Research library</h2><p>Start with a paper or search the benchmark questions.</p></div><a href="#library">View all ${icon("arrow")}</a></div><div class="paper-list">${state.data.papers
       .slice(0, 3)
       .map((p, i) => paperRow(p, i))
       .join(
         "",
-      )}</div></section><aside class="corpus-panel"><div class="corpus-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div><div class="corpus-body"><div class="eyebrow">YOUR EVIDENCE BASE</div><h3>Small corpus.<br>Transparent foundations.</h3><p>Explore the public papers behind this research prototype.</p><div class="corpus-stats"><div><strong>${state.data.papers.length.toString().padStart(2, "0")}</strong><small>Research papers</small></div><div><strong>${state.data.questions.length}</strong><small>Benchmark questions</small></div></div><div class="corpus-note">${icon("shield")}<span>Source passages travel with every brief. Mechanical checks support review; they do not establish accuracy.</span></div><a class="button text" href="#evaluation">Explore the evaluation ${icon("arrow")}</a></div></aside></div></div>`;
+    )}</div></section><aside class="corpus-panel"><div class="corpus-body"><div class="eyebrow">THE EVIDENCE BASE</div><h3>What you can inspect</h3><div class="corpus-stats"><div><strong>${state.data.papers.length}</strong><small>Public papers</small></div><div><strong>${state.data.questions.length}</strong><small>Test questions</small></div></div><p>Read the cited passages and check where an answer came from.</p><a class="button text" href="#evaluation">See evaluation ${icon("arrow")}</a></div></aside></div></div>`;
 }
 function questionList(questions) {
   return questions.length
@@ -239,7 +243,7 @@ function renderBrief() {
   const r = state.current;
   const c = r.insight.confidence;
   const unique = [...new Map(r.sources.map((s) => [s.paper_id, s])).values()];
-  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back to workspace</a><div class="eyebrow">RESEARCH BRIEF · ${r.mode === "saved" ? "SAVED BENCHMARK" : "LIVE LOCAL MODEL"}</div><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${esc(r.insight.kpmg_service_area)}</span><span class="tag amber">Human review required</span><span>${unique.length} source paper${unique.length === 1 ? "" : "s"}</span></div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save brief</button><button class="button" data-action="export">${icon("download")}Export brief</button></div></div>${status(r.mode === "saved" ? "Saved benchmark answer · The answer and source order are preserved. Business framing is a proposed application, not a finding from the paper." : "Generated with the existing local research pipeline. Inspect citations and limitations before stakeholder use.")}<div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${[
+  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back to workspace</a><div class="eyebrow">RESEARCH BRIEF · ${r.mode === "saved" ? "SAVED BENCHMARK" : "LIVE LOCAL MODEL"}</div><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${esc(r.insight.kpmg_service_area)}</span><span class="tag amber">Human review required</span><span>${unique.length} source paper${unique.length === 1 ? "" : "s"}</span></div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save brief</button><button class="button" data-action="export">${icon("download")}Export brief</button></div></div>${status(r.mode === "saved" ? "Saved answer with its source passages. Business applications are suggestions for review." : "New answer from the five-paper local corpus. Review the sources before using it.")}<div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${[
     ["business", "Business perspective"],
     ["technical", "Technical answer"],
     ["sources", `Sources (${r.sources.length})`],
@@ -250,7 +254,7 @@ function renderBrief() {
     )
     .join(
       "",
-    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence assessment</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}</div><p>Mechanical evidence signal</p>${
+    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence checks</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}</div><p>Signals for reviewer inspection</p>${
     c
       ? [
           ["Citation coverage", c.citation_coverage],
@@ -263,7 +267,7 @@ function renderBrief() {
           )
           .join("")
       : ""
-  }<p class="method-note">${esc(c?.rationale || "No confidence breakdown supplied.")}<br><br>This score is not a probability of correctness.</p></div><div class="source-panel"><h3>Source papers <span class="muted">(${unique.length})</span></h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}"><span>${icon("file")}</span><span><strong>${esc(s.title)}</strong><small>arXiv · ${esc(s.paper_id)}</small></span></button>`).join("") || '<p class="muted">No retrieved sources.</p>'}</div><div class="source-panel"><h3>Review perspective</h3><p class="muted evaluation-note">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</p><p class="method-note">Illustrative stakeholder lens. This is not an approval or review by a named person.</p></div></aside></div>`;
+  }<p class="method-note">${esc(c?.rationale || "No confidence breakdown supplied.")}<br><br>This signal is not a probability of correctness.</p></div><div class="source-panel"><h3>Source papers <span class="muted">(${unique.length})</span></h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}"><span>${icon("file")}</span><span><strong>${esc(s.title)}</strong><small>arXiv · ${esc(s.paper_id)}</small></span></button>`).join("") || '<p class="muted">No retrieved sources.</p>'}</div><div class="source-panel"><h3>Review perspective</h3><p class="muted evaluation-note">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</p><p class="method-note">Illustrative stakeholder lens. This is not an approval or review by a named person.</p></div></aside></div>`;
 }
 async function requestInsight(payload) {
   const token = ++state.request;
@@ -318,14 +322,11 @@ function evaluation() {
     (q) => q.relevant_papers.length,
   ).length;
   main.innerHTML =
-    heading(
-      "Evidence, with context.",
-      "Understand what this prototype measures—and what remains to be reviewed.",
-    ) +
+    heading("Evaluation", "What the benchmark checks, and where human review still matters.") +
     status(
       "The figures below describe the committed benchmark. They are not live performance, answer accuracy, or validated business value.",
     ) +
-    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PUBLIC CORPUS</span><strong>${data.papers.length.toString().padStart(2, "0")}</strong><p>Committed arXiv preprints used for project-specific evaluation.</p></div><div class="summary-card"><span class="small-label">BENCHMARK COVERAGE</span><strong>${answerable} <span class="muted">/ ${data.questions.length}</span></strong><p>Questions labeled answerable; ${data.questions.length - answerable} intentionally test out-of-corpus abstention.</p></div><div class="summary-card"><span class="small-label">SAVED ANSWER RUNS</span><strong>${data.runs.length.toString().padStart(2, "0")}</strong><p>Recorded model runs available for inspecting answers and their source passages.</p></div></div><div class="section-heading"><div><h2>Inspect the benchmark</h2><p>Each question opens its preserved answer and mechanical evidence checks.</p></div><label class="select-field">Answer run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(r)}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">QUESTION</th><th scope="col">RESEARCH QUESTION</th><th scope="col">EXPECTED COVERAGE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Abstention"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Citation validity, literal quote matching and numeric checks are useful review signals. They do not prove semantic correctness, completeness or applicability to a client. Broader corpus evaluation and stakeholder review remain necessary.</p>`;
+    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PUBLIC CORPUS</span><strong>${data.papers.length}</strong><p>Committed arXiv papers.</p></div><div class="summary-card"><span class="small-label">ANSWERABLE QUESTIONS</span><strong>${answerable} <span class="muted">/ ${data.questions.length}</span></strong><p>${data.questions.length - answerable} questions test when to abstain.</p></div><div class="summary-card"><span class="small-label">SAVED RUNS</span><strong>${data.runs.length}</strong><p>Compare recorded answers and sources.</p></div></div><div class="section-heading"><div><h2>Inspect the benchmark</h2><p>Each question opens its saved answer and source checks.</p></div><label class="select-field">Answer run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(runLabel(r))}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">QUESTION</th><th scope="col">RESEARCH QUESTION</th><th scope="col">EXPECTED COVERAGE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Abstention"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Citation IDs, literal quotes, and numeric checks help review an answer. They do not prove every claim or business application.</p>`;
 }
 function route() {
   if (!state.data) return;

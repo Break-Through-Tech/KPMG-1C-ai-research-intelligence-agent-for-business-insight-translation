@@ -300,14 +300,17 @@ must assess interpretation even when all mechanical checks pass.
     if re.search(r"(?:ignore|omit|remove|without|skip).{0,40}(?:citations?|evidence|limitations?|guardrails?)|guarantee(?:d)?\s+(?:ROI|returns?)", question, re.I):
         warnings.append("Declined request to bypass evidence or uncertainty guardrails.")
     if NONANSWER.search(grounded_answer) or warnings or not results or not grounded_answer.strip():
-        return BusinessInsight(question, ABSTENTION,
+        has_answer = bool(grounded_answer.strip() and not NONANSWER.search(grounded_answer)
+                          and not any("Declined request" in warning for warning in warnings))
+        return BusinessInsight(question, grounded_answer if has_answer else ABSTENTION,
                                "Business relevance cannot be established from this answer.",
                                "No business action recommended; review evidence and limitations first.",
                                "Unassigned", print_sources(results), warnings,
-                               ConfidenceBreakdown(0.0, "Abstained", confidence.retrieval_signal,
+                               ConfidenceBreakdown(0.0, "Review needed" if has_answer else "Abstained",
+                                                   confidence.retrieval_signal,
                                                    confidence.citation_coverage, confidence.quote_verification,
                                                    confidence.source_diversity,
-                                                   "Abstained: business action withheld. " + confidence.rationale))
+                                                   "Business action withheld. " + confidence.rationale))
     area = infer_collection_area(question)
     service = "Advisory"
     if area == "finance_risk_analytics":
@@ -352,7 +355,7 @@ def translate_to_business_insight(
 def export_executive_brief_markdown(insight: BusinessInsight, persona_name: str = "KPMG Consultant") -> str:
     """Export the same evidence, warnings and conditional framing shown in the UI."""
     confidence = insight.confidence
-    status = ("Business action withheld; review validation warnings." if insight.what_study_found == ABSTENTION
+    status = ("Business action withheld; review validation warnings." if insight.validation_warnings or insight.what_study_found == ABSTENTION
               else "Mechanical checks passed; interpretation and completeness need human review.")
     warnings = "\n".join(f"- {warning}" for warning in insight.validation_warnings)
     return f"""# KPMG Research Executive Brief

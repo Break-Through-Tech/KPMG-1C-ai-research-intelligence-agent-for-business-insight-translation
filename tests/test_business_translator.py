@@ -111,6 +111,7 @@ def test_supported_insight_preserves_evidence_and_adds_guardrails(chunks):
 def test_abstention_has_no_business_recommendation(chunks):
     insight = format_structured_business_insight("Revenue?", ABSTENTION, chunks)
     assert insight.what_study_found == ABSTENTION
+    assert insight.confidence.tier == "Abstained"
     assert insight.kpmg_service_area == "Unassigned"
     assert "No business action recommended" in insight.what_kpmg_could_consider
 
@@ -170,7 +171,8 @@ def test_confidence_detects_uncited_sentences_and_cross_paper_gap(chunks):
     assert score.source_diversity == .5
     assert score.tier == "Low"
     insight = format_structured_business_insight("Compare two papers", answer, chunks)
-    assert insight.what_study_found == ABSTENTION
+    assert insight.what_study_found == answer
+    assert insight.confidence.tier == "Review needed"
     assert insight.validation_warnings
 
 
