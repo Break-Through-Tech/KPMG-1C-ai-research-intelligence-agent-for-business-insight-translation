@@ -51,7 +51,7 @@ const labels = {
 const state = {
   data: null,
   persona: "allison",
-  run: "answers_grounded.json",
+  run: null,
   mode: "saved",
   current: null,
   tab: "business",
@@ -104,7 +104,7 @@ function questionButton(id, label) {
 function composer() {
   const live = state.mode === "live";
   return `<section class="composer" aria-label="Research query">
-  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}">Ask a question</button></div><span class="tag ${live ? "amber" : "blue"}">${icon(live ? "info" : "book")}${live ? (state.data.live_configured ? "Local model · on demand" : "Live model not connected") : "Saved benchmark collection"}</span></div>
+  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Start the server with --live-root . to ask new questions"'}>Ask a question</button></div><span class="tag ${live ? "amber" : "blue"}">${icon(live ? "info" : "book")}${live ? "Local model · on demand" : "Saved benchmark collection"}</span></div>
   <form id="research-form"><label class="prompt-label" for="research-query">${live ? "What would you like to understand?" : "What are you exploring today?"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask a question about the indexed research…" : "Search model routing, AI agents, workflow automation…"}" aria-describedby="query-help" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Generate insight" : "Explore research"}${icon("arrow")}</button></div></form>
   ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Local model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions"><span>START WITH</span>${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
   <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Uses your existing index and local model." : "Browse 25 fixed questions. No new answer is generated."}</small></div></section>`;
@@ -512,6 +512,7 @@ async function boot() {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Could not load research.");
     state.data = data;
+    state.run = data.default_run;
     document
       .querySelectorAll("[data-icon]")
       .forEach((el) => (el.innerHTML = icon(el.dataset.icon)));

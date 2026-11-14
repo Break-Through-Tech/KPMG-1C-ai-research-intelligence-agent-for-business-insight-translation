@@ -87,6 +87,7 @@ class FakeRetriever:
         return self.chunks
 
     format_context = ResearchRetriever.format_context
+    format_focused_context = lambda self, query, chunks: ResearchRetriever.format_context(self, chunks)
 
 
 def test_live_answer_rewrites_reserves_filters_and_attaches_quotes(monkeypatch):
@@ -107,16 +108,16 @@ def test_live_answer_rewrites_reserves_filters_and_attaches_quotes(monkeypatch):
 
     def generate(request, timeout):
         captured.update(json.loads(request.data))
-        assert timeout == 45
+        assert timeout == 180
         return Response()
 
     monkeypatch.setattr(app, "urlopen", generate)
-    answer, chunks = app.live_answer(retriever, "Compare Pandora and Travel Behavior survey", "Reviewer", collection_area="operations_supply_chain")
+    answer, chunks = app.live_answer(retriever, "Compare Pandora and Travel Behavior survey", "Reviewer", collection_area="operations_supply_chain", rewrite=True)
     assert retriever.kwargs["min_papers"] == 2
     assert retriever.kwargs["collection_area"] == "operations_supply_chain"
     assert "Retrieval terms:" in retriever.query
-    assert "Reviewer" in captured["prompt"]
-    assert captured["model"] == "llama3.2"
+    assert "Compare Pandora and Travel Behavior survey" in captured["prompt"]
+    assert captured["model"] == "qwen2.5:7b"
     assert not answer_issues(answer, chunks)
 
 

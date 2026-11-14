@@ -5,6 +5,7 @@ Importing helpers neither imports Streamlit nor initializes models or services.
 """
 
 import json
+import hashlib
 import math
 import os
 import sys
@@ -15,32 +16,50 @@ from urllib.parse import urlparse
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "notebooks"))
 
-from answer_validation import ABSTENTION, answer_issues, attach_evidence
+from answer_validation import ABSTENTION, answer_issues, attach_evidence, paper_search_answer
 from business_translator import (
-    KPMG_COLLECTION_AREAS, build_business_insight_prompt, format_structured_business_insight,
+    KPMG_COLLECTION_AREAS, format_structured_business_insight,
     export_executive_brief_markdown, infer_collection_area, recommend_min_papers, reformat_prompt,
 )
 from personas import selectable_personas
-from retrieval import ResearchRetriever, RetrievedChunk, load_paper_metadata
+from retrieval import (
+    ResearchRetriever, RetrievedChunk, asks_which_papers, load_paper_metadata,
+    needs_focused_context,
+)
 
 OLLAMA_HOST = "http://127.0.0.1:11434"
-MODEL = "llama3.2"
-MODELS = ("llama3.2", "qwen2.5:7b", "gemini-1.5-flash")
+MODEL = "qwen2.5:7b"
+MODELS = ("qwen2.5:7b", "llama3.2", "gemini-1.5-flash")
 
 
 def available_evaluation_runs(root: Path = ROOT) -> list[str]:
-    """List saved answer runs only; prioritize the grounded offline default."""
-    paths = (root / "evaluation/results").glob("answers*.json")
-    return sorted((path.name for path in paths), key=lambda name: (name != "answers_grounded.json", name))
+    """List complete saved runs, with the newest evaluated path first."""
+    try:
+        count = len(json.loads((root / "evaluation/benchmark.json").read_text(encoding="utf-8"))["queries"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return []
+    complete = []
+    for path in (root / "evaluation/results").glob("answers*.json"):
+        try:
+            rows = json.loads(path.read_text(encoding="utf-8"))["answers"]
+            if len(rows) == count and len({row["id"] for row in rows}) == count:
+                complete.append(path.name)
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+    preferred = ("answers_after_parser_integrated.json", "answers_qwen_branch_final.json",
+                 "answers_grounded.json")
+    return sorted(complete, key=lambda name: (preferred.index(name) if name in preferred else len(preferred), name))
 
 
-def load_demo_data(root: Path = ROOT, answers_name: str = "answers_grounded.json") -> tuple[dict, list[dict]]:
+def load_demo_data(root: Path = ROOT, answers_name: str | None = None) -> tuple[dict, list[dict]]:
     """Join saved answers to the benchmark by ID, never by list position.
 
     Bad/missing files produce an actionable UI message, not an uncaught exception.
     """
     benchmark = json.loads((root / "evaluation/benchmark.json").read_text(encoding="utf-8"))
-    if answers_name not in available_evaluation_runs(root):
+    runs = available_evaluation_runs(root)
+    answers_name = answers_name or (runs[0] if runs else None)
+    if answers_name not in runs:
         raise FileNotFoundError("Select an available evaluation answer run.")
     report = json.loads((root / "evaluation/results" / answers_name).read_text(encoding="utf-8"))
     papers = benchmark["papers"]
@@ -77,16 +96,25 @@ def demo_chunks(record: dict, papers: dict, metadata: dict | None = None) -> lis
 
 
 def load_live_retriever(root: Path = ROOT) -> ResearchRetriever:
-    """Open an existing populated collection and locally cached models only."""
-    directory = root / "arxiv_data/chroma_db"
+    """Use the evaluated five-paper index, building it once if it is missing."""
+    root = root.resolve()
+    if root != ROOT:
+        raise FileNotFoundError("Live mode expects this repository root.")
+    from evaluation.run_retrieval import notebook_parser, run
+
+    _, parser_source = notebook_parser()
+    digest = hashlib.sha256(parser_source.encode())
+    digest.update((root / "notebooks/ingest.py").read_bytes())
+    for path in sorted((root / "data").glob("*.pdf")):
+        digest.update(path.read_bytes())
+    directory = root / ".evaluation_cache" / digest.hexdigest()[:12]
     if not (directory / "chroma.sqlite3").is_file():
-        raise FileNotFoundError("Build the notebook's citable Chroma index to enable live mode.")
+        run(root / "evaluation/benchmark.json", root / ".evaluation_cache/live_retrieval.json",
+            5, 60, 4, "cross-encoder/ms-marco-MiniLM-L6-v2", 8, True)
     import chromadb
     from langchain_huggingface import HuggingFaceEmbeddings
 
-    collection = chromadb.PersistentClient(path=str(directory)).get_collection(
-        "research_mpnet_cosine_v3_citable"
-    )
+    collection = chromadb.PersistentClient(path=str(directory)).get_collection("evaluation_mpnet_cosine")
     if not collection.count():
         raise ValueError("The citable Chroma collection is empty.")
     embeddings = HuggingFaceEmbeddings(
@@ -94,20 +122,17 @@ def load_live_retriever(root: Path = ROOT) -> ResearchRetriever:
         model_kwargs={"local_files_only": True}, encode_kwargs={"normalize_embeddings": True},
     )
     retriever = ResearchRetriever.from_persisted(
-        embeddings, persist_directory=directory, metadata_path=root / "arxiv_data/metadata/papers.jsonl",
+        embeddings, persist_directory=directory, collection_name="evaluation_mpnet_cosine",
         max_chunks_per_paper=4, rerank_model="cross-encoder/ms-marco-MiniLM-L6-v2",
         max_rerank_gap=8, order_by_vector=True,
     )
-    # Avoid downloading the reranker during a presentation.
-    from sentence_transformers import CrossEncoder
-    retriever._reranker = CrossEncoder(retriever.rerank_model, local_files_only=True)
     return retriever
 
 
 def live_answer(
     retriever: ResearchRetriever, question: str, persona_context: str,
     k: int = 5, min_papers: int | None = None, collection_area: str | None = None,
-    rewrite: bool = True, model: str = MODEL,
+    rewrite: bool = False, model: str = MODEL,
 ) -> tuple[str, list[RetrievedChunk]]:
     """Retrieve with synthesis reservations, generate via the chosen model, and attach quotes."""
     if model not in MODELS:
@@ -119,8 +144,13 @@ def live_answer(
     )
     if not chunks:
         return ABSTENTION, []
-    prompt = build_business_insight_prompt(question, retriever.format_context(chunks), persona_context)
-    prompt += "\nReturn only the technical evidence answer. The UI adds business framing separately."
+    if asks_which_papers(question):
+        return paper_search_answer(chunks, question), chunks
+    from evaluation.run_answers import notebook_prompt
+
+    context = (retriever.format_focused_context(question, chunks)
+               if needs_focused_context(question) else retriever.format_context(chunks))
+    prompt = notebook_prompt().format(question=question, context=context)
     if model.startswith("gemini-"):
         # Match the notebook's optional provider; no cloud dependency in offline mode.
         from dotenv import load_dotenv
@@ -140,11 +170,16 @@ def live_answer(
         }).encode("utf-8")
         request = Request(OLLAMA_HOST + "/api/generate", data=payload,
                           headers={"Content-Type": "application/json"})
-        with urlopen(request, timeout=45) as response:
+        with urlopen(request, timeout=180) as response:
             answer = json.loads(response.read())["response"]
     if not isinstance(answer, str) or not answer.strip():
         raise ValueError("The model returned no answer.")
-    return attach_evidence(answer, chunks, question), chunks
+    checked = attach_evidence(answer, chunks, question)
+    if answer_issues(checked, chunks):
+        matches = paper_search_answer(chunks, question)
+        return (("I could not verify a cited answer. Here are source matches to inspect:\n\n" + matches)
+                if matches != ABSTENTION else ABSTENTION), chunks
+    return checked, chunks
 
 
 def try_live_answer(retriever: ResearchRetriever, question: str, persona_context: str, **kwargs) -> tuple[tuple | None, str | None]:
@@ -230,7 +265,7 @@ def main() -> None:
     area = st.sidebar.selectbox("KPMG Business Area Filter", ["Auto", "All"] + list(KPMG_COLLECTION_AREAS))
     k = st.sidebar.slider("Top-k chunks", 3, 10, 5)
     synthesis = st.sidebar.selectbox("Cross-paper synthesis (minimum papers)", ["Auto", "1", "2", "3"])
-    rewrite = st.sidebar.checkbox("Rewrite business queries for retrieval", value=True)
+    rewrite = st.sidebar.checkbox("Rewrite business queries for retrieval", value=False)
     retriever = None
     if mode == "Live RAG":
         try:
@@ -292,7 +327,7 @@ def main() -> None:
                         st.warning(warning)
     except (OSError, ValueError, KeyError, TypeError) as error:
         st.error(f"Saved demo files are missing or malformed ({type(error).__name__}). "
-                 "Restore evaluation/benchmark.json and evaluation/results/answers_grounded.json from the repository.")
+                 "Restore evaluation/benchmark.json and the saved answer runs from the repository.")
 
 
 if __name__ == "__main__":

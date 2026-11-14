@@ -21,6 +21,7 @@ WEB = ROOT / "frontend"
 
 def bootstrap():
     papers, records = app.load_demo_data()
+    runs = app.available_evaluation_runs()
     return {
         "papers": [{"id": key, "title": title, "url": f"https://arxiv.org/abs/{key}",
                     "area": app.infer_collection_area(title),
@@ -30,7 +31,8 @@ def bootstrap():
                       for row in records],
         "personas": [{"id": key, "name": p.name, "role": p.role}
                      for key, p in app.selectable_personas().items()],
-        "runs": app.available_evaluation_runs(),
+        "runs": runs,
+        "default_run": runs[0],
         "models": [model for model in app.MODELS if not model.startswith("gemini-")],
         "areas": list(app.KPMG_COLLECTION_AREAS),
     }
@@ -46,8 +48,9 @@ def make_insight(payload, live_root=None, live_lock=None):
     persona = personas[persona_key]
     mode = payload.get("mode", "saved")
     if mode == "saved":
-        run = payload.get("run", "answers_grounded.json")
-        if not isinstance(run, str) or run not in app.available_evaluation_runs():
+        runs = app.available_evaluation_runs()
+        run = payload.get("run", runs[0] if runs else None)
+        if not isinstance(run, str) or run not in runs:
             raise ValueError("Choose an available saved run.")
         papers, records = app.load_demo_data(answers_name=run)
         record = next((r for r in records if r["id"] == payload.get("id")), None)

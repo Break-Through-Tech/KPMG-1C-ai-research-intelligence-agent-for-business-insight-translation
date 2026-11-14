@@ -18,7 +18,8 @@ def test_catalog_uses_committed_data_and_selectable_personas():
     assert len(data["questions"]) == 25
     assert len(data["personas"]) == 3
     assert {p["id"] for p in data["personas"]} == set(frontend.app.selectable_personas())
-    assert data["runs"][0] == "answers_grounded.json"
+    assert data["default_run"] == data["runs"][0]
+    assert data["default_run"] != "answers_grounded.json"
 
 
 @pytest.mark.parametrize("run", frontend.app.available_evaluation_runs())
