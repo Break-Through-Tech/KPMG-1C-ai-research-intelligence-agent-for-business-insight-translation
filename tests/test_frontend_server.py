@@ -22,6 +22,17 @@ def test_catalog_uses_committed_data_and_selectable_personas():
     assert data["default_run"] != "answers_grounded.json"
 
 
+def test_catalog_excludes_same_length_run_with_wrong_questions(tmp_path):
+    (tmp_path / "evaluation/results").mkdir(parents=True)
+    (tmp_path / "evaluation/benchmark.json").write_text(json.dumps({"queries": [
+        {"id": "q1", "query": "First?"}, {"id": "q2", "query": "Second?"},
+    ]}))
+    (tmp_path / "evaluation/results/answers_fake.json").write_text(json.dumps({"answers": [
+        {"id": "q1", "query": "First?"}, {"id": "q3", "query": "Third?"},
+    ]}))
+    assert frontend.app.available_evaluation_runs(tmp_path) == []
+
+
 @pytest.mark.parametrize("run", frontend.app.available_evaluation_runs())
 def test_all_saved_answers_preserve_sources_checks_and_exports(run):
     papers, records = frontend.app.load_demo_data(answers_name=run)

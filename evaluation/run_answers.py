@@ -48,6 +48,28 @@ def ask_ollama(prompt, model, host):
         return json.load(response)
 
 
+def completed_answers(path, model, model_digest, template, retrieval_path, benchmark):
+    """Resume only a run produced with the same model, prompt, retrieval, and questions."""
+    if not path.exists():
+        return {}
+    previous = json.loads(path.read_text(encoding="utf-8"))
+    expected_meta = {
+        "model": model,
+        "model_digest": model_digest,
+        "notebook_prompt_sha256": hashlib.sha256(template.encode()).hexdigest(),
+        "retrieval_result": str(retrieval_path.resolve().relative_to(ROOT)),
+    }
+    if any(previous.get(key) != value for key, value in expected_meta.items()):
+        raise ValueError(f"Existing answer run uses different settings: {path}. Choose a new output path.")
+    rows = previous["answers"]
+    expected_questions = {item["id"]: item["query"] for item in benchmark["queries"]}
+    if (not isinstance(rows, list) or len(rows) > len(expected_questions)
+            or len({row["id"] for row in rows}) != len(rows)
+            or any(expected_questions.get(row["id"]) != row.get("query") for row in rows)):
+        raise ValueError(f"Existing answer run has mismatched questions: {path}. Choose a new output path.")
+    return {row["id"]: row for row in rows}
+
+
 def main(args):
     from langchain_huggingface import HuggingFaceEmbeddings
 
@@ -69,10 +91,8 @@ def main(args):
         models = json.load(response)["models"]
     model_digest = next((m["digest"] for m in models
                          if m["name"] in {args.model, f"{args.model}:latest"}), None)
-    completed = {}
-    if args.output.exists():
-        previous = json.loads(args.output.read_text(encoding="utf-8"))
-        completed = {row["id"]: row for row in previous["answers"]}
+    completed = completed_answers(
+        args.output, args.model, model_digest, template, args.retrieval, benchmark)
     for item in benchmark["queries"]:
         if args.limit and len(completed) >= args.limit:
             break

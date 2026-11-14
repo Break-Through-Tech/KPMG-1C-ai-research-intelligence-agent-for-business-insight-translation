@@ -35,14 +35,18 @@ MODELS = ("qwen2.5:7b", "llama3.2", "gemini-1.5-flash")
 def available_evaluation_runs(root: Path = ROOT) -> list[str]:
     """List complete saved runs, with the newest evaluated path first."""
     try:
-        count = len(json.loads((root / "evaluation/benchmark.json").read_text(encoding="utf-8"))["queries"])
+        benchmark = json.loads((root / "evaluation/benchmark.json").read_text(encoding="utf-8"))
+        expected = {row["id"]: row["query"] for row in benchmark["queries"]}
+        if len(expected) != len(benchmark["queries"]):
+            return []
     except (OSError, ValueError, KeyError, TypeError):
         return []
     complete = []
     for path in (root / "evaluation/results").glob("answers*.json"):
         try:
             rows = json.loads(path.read_text(encoding="utf-8"))["answers"]
-            if len(rows) == count and len({row["id"] for row in rows}) == count:
+            if (len(rows) == len(expected)
+                    and {row["id"]: row["query"] for row in rows} == expected):
                 complete.append(path.name)
         except (OSError, ValueError, KeyError, TypeError):
             continue

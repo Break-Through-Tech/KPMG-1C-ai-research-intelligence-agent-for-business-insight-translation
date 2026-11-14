@@ -1,7 +1,7 @@
 """Local, same-origin frontend adapter. Existing research modules stay unchanged.
 
 Run: python frontend_server.py --port 8765
-Live mode is opt-in: --live-root PATH (an existing notebook index; never builds one).
+Live mode is opt-in: --live-root PATH (builds the five-paper index once if missing).
 """
 
 import argparse
