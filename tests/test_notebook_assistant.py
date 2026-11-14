@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 @pytest.fixture
 def assistant():
-    notebook = json.loads((ROOT / 'notebooks/eda_workbook.ipynb').read_text())
+    notebook = json.loads((ROOT / 'notebooks/eda_workbook.ipynb').read_text(encoding='utf-8'))
     source = next(''.join(c['source']) for c in notebook['cells']
                   if 'def generate_local_answer' in ''.join(c.get('source', [])))
     ns = {'needs_multiple_papers': needs_multiple_papers}
