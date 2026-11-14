@@ -110,9 +110,10 @@ function questionButton(id, label) {
 }
 function composer() {
   const live = state.mode === "live";
+  const allArxiv = state.data.live_scope === "arxiv";
   return `<section class="composer" aria-label="Research query">
-  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Live arXiv search needs the local server"'}>Ask arXiv</button><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Examples</button></div></div>
-  <form id="research-form"><label class="prompt-label" for="research-query">${live ? "Ask a research question" : "Explore example questions"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask anything about arXiv research…" : "Search the example questions…"}" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Ask" : "Search"}${icon("arrow")}</button></div></form>
+  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Live arXiv search needs the local server"'}>${allArxiv || STATIC_DEMO ? "Ask arXiv" : "Ask sample"}</button><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Examples</button></div></div>
+  <form id="research-form"><label class="prompt-label" for="research-query">${live ? "Ask a research question" : "Explore example questions"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? allArxiv ? "Search arXiv research…" : "Ask about the sample papers…" : "Search the example questions…"}" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Ask" : "Search"}${icon("arrow")}</button></div></form>
   ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions">${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
   <div class="composer-bottom">${perspectiveSelect()}</div></section>`;
 }
@@ -185,7 +186,7 @@ function sourceBlock(source) {
   return `<article class="source-block"><h3>${esc(source.title)}</h3><div class="paper-meta">Passage ${source.rank} · ${esc(source.section || "Abstract")}</div><details><summary>Passage text</summary><blockquote>${esc(source.text)}</blockquote><div class="source-properties">${esc(source.chunk_id || "")}${source.published ? ` · ${esc(source.published)}` : ""}</div></details>${source.source_url ? `<a class="source-link" href="${esc(source.source_url)}" target="_blank" rel="noopener noreferrer">Open paper ${icon("external")}</a>` : ""}</article>`;
 }
 function conciseBusiness(text) {
-  return text.replace(/^Proposed [^:]+ applications for stakeholder review:\s*/i, "")
+  return text.replace(/^Proposed [^:]+ applications? for stakeholder review:\s*/i, "")
     .replace(/\s*The papers do not establish KPMG-specific outcomes or ROI\.\s*$/i, "");
 }
 function firstSentence(text) {
@@ -203,7 +204,7 @@ function briefBody() {
       ? result.sources.map(sourceBlock).join("")
       : '<p class="muted">No source passages were retrieved.</p>';
   if (state.tab === "technical")
-    return `<section class="brief-section"><h2>Model answer</h2><div class="rich-text">${rich(result.answer)}</div></section><section class="brief-section"><h2>Checks</h2>${reviewIssues.length ? `<ul class="warning-list">${reviewIssues.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : '<p class="check-passed">No formatting or source mismatches flagged.</p>'}</section>`;
+    return `<section class="brief-section"><h2>Answer</h2><div class="rich-text">${rich(result.answer.split(/\n\s*Evidence\s*:/i)[0].trim())}</div>${result.answer.includes("Evidence:") ? `<details class="review-details"><summary>Evidence quotes</summary><div class="rich-text">${rich(result.answer.split(/\n\s*Evidence\s*:/i).slice(1).join("Evidence:").trim())}</div></details>` : ""}</section>${reviewIssues.length ? `<section class="brief-section"><h2>Source checks</h2><ul class="warning-list">${reviewIssues.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></section>` : ""}`;
   const finding = insight.what_study_found.split(/\n\s*Evidence\s*:/i)[0].trim();
   const application = conciseBusiness(insight.why_it_matters_to_kpmg);
   const action = insight.what_kpmg_could_consider;
@@ -218,18 +219,17 @@ function renderBrief() {
   const r = state.current;
   const c = r.insight.confidence;
   const unique = [...new Map(r.sources.map((s) => [s.paper_id, s])).values()];
-  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back</a><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${r.mode === "saved" ? "Example" : "arXiv"}</span><span class="tag amber">Review sources</span><span class="tag">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</span></div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save</button><button class="button" data-action="export">${icon("download")}Export</button></div></div><div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${[
-    ["business", "Brief"],
-    ["technical", "Answer"],
-    ["sources", `Sources (${r.sources.length})`],
-  ]
+  const liveArxiv = r.scope === "arxiv";
+  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back</a><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${r.mode === "saved" ? "Example" : liveArxiv ? "arXiv" : "Sample"}</span><span class="tag amber">Review sources</span>${liveArxiv ? "" : `<span class="tag">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</span>`}</div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save</button><button class="button" data-action="export">${icon("download")}Export</button></div></div><div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${(liveArxiv
+    ? [["technical", "Answer"], ["sources", `Sources (${r.sources.length})`]]
+    : [["business", "Brief"], ["technical", "Answer"], ["sources", `Sources (${r.sources.length})`]])
     .map(
       ([id, label]) =>
         `<button role="tab" id="tab-${id}" aria-selected="${state.tab === id}" aria-controls="brief-panel" tabindex="${state.tab === id ? 0 : -1}" data-action="tab" data-tab="${id}">${label}</button>`,
     )
     .join(
       "",
-    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence check</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}${c ? `<span>${Math.round(c.overall_score * 100)}/100</span>` : ""}</div><details class="score-details"><summary>Score details</summary>${
+    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>${liveArxiv ? "Source checks" : "Evidence check"}</h3>${liveArxiv ? `<p class="check-passed">${r.checks.length ? `${r.checks.length} issue${r.checks.length === 1 ? "" : "s"} to review` : "No mechanical issues flagged"}</p>` : `<div class="evidence-tier">${esc(c?.tier || "Not assessed")}${c ? `<span>${Math.round(c.overall_score * 100)}/100</span>` : ""}</div><details class="score-details"><summary>Score details</summary>${
     c
       ? [
           ["Citation coverage", c.citation_coverage],
@@ -242,7 +242,7 @@ function renderBrief() {
           )
           .join("")
       : ""
-  }<p class="method-note">${esc(c?.rationale || "No score details available.")}</p></details></div><div class="source-panel"><h3>Papers (${unique.length})</h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}">${icon("file")}<strong>${esc(s.title)}</strong></button>`).join("") || '<p class="muted">No sources.</p>'}</div></aside></div>`;
+  }<p class="method-note">${esc(c?.rationale || "No score details available.")}</p></details>`}</div><div class="source-panel"><h3>Papers (${unique.length})</h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}">${icon("file")}<strong>${esc(s.title)}</strong></button>`).join("") || '<p class="muted">No sources.</p>'}</div></aside></div>`;
 }
 async function requestInsight(payload) {
   const token = ++state.request;
@@ -265,7 +265,7 @@ async function requestInsight(payload) {
         result.error || "The research request could not be completed.",
       );
     state.current = result;
-    state.tab = "business";
+    state.tab = result.scope === "arxiv" ? "technical" : "business";
     renderBrief();
   } catch (error) {
     if (token !== state.request) return;
@@ -329,7 +329,7 @@ function route() {
     });
   else if (page === "saved" && saved[Number(id)]) {
     state.current = saved[Number(id)];
-    state.tab = "business";
+    state.tab = state.current.scope === "arxiv" ? "technical" : "business";
     renderBrief();
   } else workspace();
   window.scrollTo(0, 0);

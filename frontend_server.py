@@ -1,7 +1,8 @@
 """Local, same-origin frontend adapter. Existing research modules stay unchanged.
 
 Run: python frontend_server.py --port 8765
-Live mode is opt-in: --live-root PATH (builds the five-paper index once if missing).
+Live arXiv mode is opt-in: --arxiv (requires internet and local Ollama).
+The five-paper evaluation index remains available with --live-root PATH.
 """
 
 import argparse
@@ -38,7 +39,15 @@ def bootstrap():
     }
 
 
-def make_insight(payload, live_root=None, live_lock=None):
+def arxiv_brief_markdown(question, answer, sources):
+    lines = [f"# {question}", "", answer.strip(), "", "## Sources", ""]
+    for source in sources:
+        lines.append(f"- [{source['rank']}] {source['title']} — {source['section']} ({source['source_url']})")
+    lines.extend(["", "Source checks do not establish factual accuracy. Review the cited passages."])
+    return "\n".join(lines) + "\n"
+
+
+def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False):
     if not isinstance(payload, dict):
         raise ValueError("Expected a JSON object.")
     personas = app.selectable_personas()
@@ -59,7 +68,7 @@ def make_insight(payload, live_root=None, live_lock=None):
         question, answer = record["query"], record["answer"]
         chunks = app.demo_chunks(record, papers)
     elif mode == "live":
-        if live_root is None:
+        if live_root is None and not arxiv_live:
             raise ConnectionError("Live research is not connected in this preview. You can continue browsing the saved research collection.")
         question = payload.get("question")
         if not isinstance(question, str) or not 1 <= len(question.strip()) <= 2000:
@@ -71,10 +80,13 @@ def make_insight(payload, live_root=None, live_lock=None):
         if live_lock is None or not live_lock.acquire(blocking=False):
             raise ConnectionError("Another research request is running. Try again when it finishes.")
         try:
-            retriever = app.load_live_retriever(live_root)
+            retriever = app.load_arxiv_retriever() if arxiv_live else app.load_live_retriever(live_root)
             result, error = app.try_live_answer(retriever, question.strip(), persona.context, model=model)
             if error:
-                raise ConnectionError("The local model is unavailable. Saved research remains available.")
+                raise ConnectionError(
+                    "Could not search arXiv or reach local Ollama. Check your internet connection and Ollama."
+                    if arxiv_live else "The local model is unavailable. Saved research remains available."
+                )
             answer, chunks = result
         finally:
             live_lock.release()
@@ -89,18 +101,23 @@ def make_insight(payload, live_root=None, live_lock=None):
         source["source_url"] = app.safe_arxiv_url(chunk.source_url)
         sources.append(source)
     return {"id": payload.get("id") if mode == "saved" else None,
-            "mode": mode, "run": run, "persona": persona_key, "persona_name": persona.name,
+            "mode": mode,
+            **({"scope": "arxiv" if arxiv_live else "sample"} if mode == "live" else {}),
+            "run": run, "persona": persona_key, "persona_name": persona.name,
             "question": question, "answer": answer, "insight": asdict(insight), "sources": sources,
             "checks": app.answer_issues(answer, chunks),
-            "markdown": app.export_executive_brief_markdown(insight, persona.name)}
+            "markdown": (arxiv_brief_markdown(question, answer, sources)
+                         if mode == "live" and arxiv_live else
+                         app.export_executive_brief_markdown(insight, persona.name))}
 
 
 class FrontendServer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, address, live_root=None):
+    def __init__(self, address, live_root=None, arxiv_live=False):
         super().__init__(address, Handler)
         self.live_root = live_root
+        self.arxiv_live = arxiv_live
         self.live_lock = threading.Lock()
 
 
@@ -129,7 +146,10 @@ class Handler(BaseHTTPRequestHandler):
         path = urlsplit(self.path).path
         try:
             if path == "/api/bootstrap":
-                return self.respond(200, {**bootstrap(), "live_configured": self.server.live_root is not None})
+                return self.respond(200, {**bootstrap(),
+                                          "live_configured": self.server.arxiv_live or self.server.live_root is not None,
+                                          "live_scope": "arxiv" if self.server.arxiv_live else
+                                                        "sample" if self.server.live_root is not None else "none"})
             static = {
                 "/": (WEB / "index.html", "text/html; charset=utf-8"),
                 "/app.js": (WEB / "app.js", "text/javascript; charset=utf-8"),
@@ -158,7 +178,7 @@ class Handler(BaseHTTPRequestHandler):
                 return self.respond(413, {"error": "Request must be between 1 and 16,000 bytes."})
             self.connection.settimeout(10)
             payload = json.loads(self.rfile.read(length))
-            result = make_insight(payload, self.server.live_root, self.server.live_lock)
+            result = make_insight(payload, self.server.live_root, self.server.live_lock, self.server.arxiv_live)
             return self.respond(200, result)
         except (ValueError, TypeError, UnicodeError):
             return self.respond(400, {"error": "Invalid request. Choose an available question, run and perspective."})
@@ -171,9 +191,11 @@ class Handler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=8765)
-    parser.add_argument("--live-root", type=Path)
+    live = parser.add_mutually_exclusive_group()
+    live.add_argument("--live-root", type=Path)
+    live.add_argument("--arxiv", action="store_true", help="Search all of arXiv on demand; answer with local Ollama")
     args = parser.parse_args()
-    server = FrontendServer(("127.0.0.1", args.port), args.live_root)
+    server = FrontendServer(("127.0.0.1", args.port), args.live_root, args.arxiv)
     print(f"Research Intelligence: http://127.0.0.1:{server.server_port}", flush=True)
     try:
         server.serve_forever()

@@ -135,6 +135,13 @@ def load_live_retriever(root: Path = ROOT) -> ResearchRetriever:
     return retriever
 
 
+def load_arxiv_retriever():
+    """Search arXiv on demand instead of using the five-paper evaluation index."""
+    from arxiv_search import ArxivRetriever
+
+    return ArxivRetriever(ROOT / ".evaluation_cache" / "arxiv")
+
+
 def live_answer(
     retriever: ResearchRetriever, question: str, persona_context: str,
     k: int = 5, min_papers: int | None = None, collection_area: str | None = None,

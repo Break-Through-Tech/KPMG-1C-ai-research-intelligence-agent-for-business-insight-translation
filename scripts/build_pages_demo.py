@@ -61,6 +61,7 @@ def main() -> None:
     data["default_run"] = RUN
     data["models"] = []
     data["live_configured"] = False
+    data["live_scope"] = "none"
     write_json(DEST / "data" / "bootstrap.json", data)
 
     insights = DEST / "data" / "insights"

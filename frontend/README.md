@@ -1,6 +1,6 @@
 # Research Intelligence frontend
 
-This local browser UI builds on Raghul's Streamlit persona and insight work and his browser preview. It keeps the paper library, saved briefs, source dialogs, review perspectives, and evidence breakdowns. The current design uses KPMG's navy header, clear typography, and generous whitespace as a reference, with quieter blue and gray colors.
+This browser UI builds on Raghul's Streamlit persona and insight work and his browser preview. The chat is the main screen. The five-paper benchmark is kept as a separate set of examples and tests.
 
 ## Start with saved research
 
@@ -11,11 +11,11 @@ python -m pip install -r evaluation/requirements.txt
 python frontend_server.py --port 8765
 ```
 
-Open `http://127.0.0.1:8765`. The current complete Qwen evaluation is selected by default. You can browse 25 benchmark questions and five papers, inspect their exact saved answers and passages, switch review perspectives, save briefs for this browser tab, and export a Markdown brief. Saved answers are not regenerated when the perspective changes.
+Open `http://127.0.0.1:8765`. This starts with the 25 recorded example answers and does not need Ollama.
 
-For a shareable, saved-results version, build the [GitHub Pages demo](../docs/demo/) with `python scripts/build_pages_demo.py` from the repository root. It preserves the paper library, answers, source views, perspectives, and brief export. It cannot run new questions; use this local server for that.
+For a shareable, saved-results preview, build the [GitHub Pages files](../docs/demo/) with `python scripts/build_pages_demo.py` from the repository root. Pages cannot run the live chat backend.
 
-## Ask a new question locally
+## Ask arXiv with the local model
 
 Start Ollama in one terminal and make sure the evaluated model is installed:
 
@@ -27,12 +27,12 @@ ollama serve
 Start the browser server in another terminal:
 
 ```bash
-python frontend_server.py --port 8765 --live-root .
+python frontend_server.py --port 8765 --arxiv
 ```
 
-Choose **Ask a question** in the UI. The first live question builds the five-paper Chroma index from the committed PDFs if it is missing; this can take a little while. Later questions reuse the cached index. Live answers use the notebook's Qwen prompt, passage retrieval settings, focused excerpts for numeric or comparison questions, exact passage citations, and verbatim quote checks. If the draft fails a source check, the UI shows inspectable source matches instead of treating it as a verified answer. Business applications stay separate from paper findings.
+The chat starts in **Ask arXiv** mode. Each question searches arXiv's catalog, reads up to three top matching PDFs when available, ranks short passages, and asks local Qwen to answer from those passages. PDFs are cached locally. The UI links back to the original paper and shows verbatim excerpts and source checks. This path has been tried with individual live questions, but the five-paper and BEIR evaluation numbers do **not** measure its accuracy or recall across arXiv.
 
-Live mode searches the five public papers committed under `data/`. It does not access KPMG or client documents. The local server listens only on `127.0.0.1`; it has no account system and is meant for local review, not public hosting. The Gemini option remains in the Streamlit app and notebook, not this browser UI.
+To rerun the fixed five-paper evaluation path instead, use `python frontend_server.py --port 8765 --live-root .`. The local server listens only on `127.0.0.1`; it has no account system and is meant for local review, not public hosting. The Gemini option remains in the Streamlit app and notebook, not this browser UI.
 
 ## What the evidence signal means
 
