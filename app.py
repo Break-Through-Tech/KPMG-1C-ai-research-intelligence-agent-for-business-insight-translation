@@ -46,7 +46,9 @@ def available_evaluation_runs(root: Path = ROOT) -> list[str]:
         try:
             rows = json.loads(path.read_text(encoding="utf-8"))["answers"]
             if (len(rows) == len(expected)
-                    and {row["id"]: row["query"] for row in rows} == expected):
+                    and {row["id"]: row["query"] for row in rows} == expected
+                    and all(isinstance(row.get("answer"), str)
+                            and isinstance(row.get("passages"), list) for row in rows)):
                 complete.append(path.name)
         except (OSError, ValueError, KeyError, TypeError):
             continue

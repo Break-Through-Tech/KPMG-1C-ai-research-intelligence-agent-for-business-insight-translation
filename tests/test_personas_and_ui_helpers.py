@@ -51,17 +51,23 @@ def test_missing_demo_files_report_error(tmp_path):
         app.load_demo_data(tmp_path)
 
 
-def test_missing_saved_answer_joins_by_id_and_abstains(tmp_path):
+def test_saved_answers_join_by_id_not_file_order(tmp_path):
     (tmp_path / "evaluation/results").mkdir(parents=True)
     (tmp_path / "evaluation/benchmark.json").write_text(json.dumps({
-        "papers": {}, "queries": [{"id": "q1", "query": "Unknown?", "relevant_papers": []}],
+        "papers": {}, "queries": [
+            {"id": "q1", "query": "First?", "relevant_papers": []},
+            {"id": "q2", "query": "Second?", "relevant_papers": []},
+        ],
     }), encoding="utf-8")
     (tmp_path / "evaluation/results/answers_grounded.json").write_text(json.dumps({
-        "answers": [{"id": "q2", "answer": "Must not match q1", "passages": []}],
+        "answers": [
+            {"id": "q2", "query": "Second?", "answer": "Second answer", "passages": []},
+            {"id": "q1", "query": "First?", "answer": "First answer", "passages": []},
+        ],
     }), encoding="utf-8")
     _, records = app.load_demo_data(tmp_path)
-    assert records[0]["answer"] == ABSTENTION
-    assert not records[0]["saved_answer_available"]
+    assert [row["answer"] for row in records] == ["First answer", "Second answer"]
+    assert all(row["saved_answer_available"] for row in records)
 
 
 def test_missing_live_index_fails_before_service_or_model_load(tmp_path):
@@ -200,7 +206,9 @@ def test_evaluation_artifact_selection_and_path_boundary(tmp_path):
         "papers": {}, "queries": [{"id": "q1", "query": "Q?"}],
     }), encoding="utf-8")
     for name, answer in (("answers_grounded.json", "Grounded"), ("answers_qwen_branch_baseline.json", "Qwen")):
-        (directory / name).write_text(json.dumps({"answers": [{"id": "q1", "answer": answer}]}), encoding="utf-8")
+        (directory / name).write_text(json.dumps({"answers": [
+            {"id": "q1", "query": "Q?", "answer": answer, "passages": []},
+        ]}), encoding="utf-8")
     assert app.available_evaluation_runs(tmp_path)[0] == "answers_grounded.json"
     _, records = app.load_demo_data(tmp_path, "answers_qwen_branch_baseline.json")
     assert records[0]["answer"] == "Qwen"
