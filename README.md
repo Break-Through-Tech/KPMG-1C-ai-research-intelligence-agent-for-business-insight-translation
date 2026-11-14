@@ -20,7 +20,7 @@ AI papers arrive faster than teams can read them. This project explores a resear
 
 ## Project overview
 
-This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and a direct source excerpt. The current notebook supports local Ollama (`llama3.2`) and an optional Google Gemini provider. The evaluation results below used Ollama, not Gemini.
+This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and direct source excerpts. The notebook uses local Ollama (`qwen2.5:7b`) by default and also supports optional Google Gemini. The evaluation results below used Ollama, not Gemini.
 
 The project measures **retrieval relevance**, **answer accuracy and completeness**, and whether citations and quotes can be traced to a source. Translating findings into business recommendations and assessing their usefulness with KPMG reviewers remain future work. See the [challenge overview](Challenge-Project-Overview.md) for the full scope.
 
@@ -41,7 +41,7 @@ arXiv metadata and PDFs → extracted sections → text chunks → MPNet embeddi
 
 The [shared ingestion code](notebooks/ingest.py) creates the Chroma index with `all-mpnet-base-v2` embeddings. The [retriever](notebooks/retrieval.py) filters non-content sections, limits how many chunks one paper can take, and uses a cross-encoder to select passages. It reserves room for multiple papers when a question calls for a comparison. The [answer checks](notebooks/answer_validation.py) flag invalid citation numbers, quotes that do not occur in the cited chunk, and certain answer contradictions. These checks cannot establish that every claim is true or that a quote supports the sentence next to it.
 
-The current assistant workflow is in [the EDA workbook](notebooks/eda_workbook.ipynb). Query rewriting and Gemini are optional notebook paths; neither is part of the reported baseline evaluation.
+The current assistant workflow is in [the EDA workbook](notebooks/eda_workbook.ipynb). Raghul's [local browser UI](frontend/README.md) and Streamlit app (`app.py`) add paper browsing, review perspectives, source dialogs, saved briefs, an evidence score, and a separate business-application view. The evidence score helps reviewers inspect outputs; it is [not a calibrated correctness probability](docs/evidence_score.md). Query rewriting and Gemini remain optional paths outside the reported default evaluation.
 
 ## Setup and use
 
@@ -63,9 +63,11 @@ cd notebooks
 jupyter lab eda_workbook.ipynb
 ```
 
-Run the notebook's metadata, PDF extraction, parser, embedding, shared-index, and assistant cells in order. It creates local `arxiv_data/` files and may download papers and embedding models on first use. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem. The five committed PDFs support the evaluation scripts documented in [evaluation/README.md](evaluation/README.md), but the full notebook collection needs its own local metadata catalog and PDFs.
+For a quick demo using the **five committed PDFs**, scroll to **“Run the research assistant on the five committed papers”** near the bottom. Run the next two setup cells, then edit and run the example question cell. The first setup cell builds the saved index if it is missing. You do not need to run the earlier EDA cells for this demo. The full EDA workflow uses local `arxiv_data/` files and requires its metadata, PDF extraction, parser, and embedding cells in order. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem.
 
-For local answers, [install Ollama](https://ollama.com/), then run `ollama pull llama3.2` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+For local answers, [install Ollama](https://ollama.com/), then run `ollama pull qwen2.5:7b` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. The smaller `llama3.2` model can still be selected with `ask_llm(question, model="llama3.2")`, but it had more citation and content errors in this test. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+
+To use the browser UI, run `python frontend_server.py --port 8765` and open `http://127.0.0.1:8765`. That opens the saved benchmark without a model. To ask a new question with local Qwen, keep Ollama running and start the server with `python frontend_server.py --port 8765 --live-root .`. The first live question builds the five-paper index if needed. See the [frontend guide](frontend/README.md) for the full workflow.
 
 ## Evaluation and findings
 
@@ -76,22 +78,26 @@ Kathleen's [evaluation notes](evaluation/results/findings.md) separate two datas
 | Five committed arXiv PDFs | 25 labeled questions: 23 answerable and two unanswerable | The latest retriever found every labeled relevant paper for **23/23 answerable questions**. Literal labeled fact snippets in selected chunks rose from **7/28** in the baseline to **23/28**. |
 | BEIR SciFact subset | 20 test claims searched against 500 selected article titles and abstracts | The relevant article ranked first for **18/20** claims and appeared in the top five for **20/20**. MRR@10 was **0.950**. |
 
-The 23/28 figure is an exact wording check on retrieved passages, **not answer accuracy**. The SciFact corpus was reduced from the full benchmark, so these scores should not be compared with published full-corpus BEIR scores. SciFact tests retrieval, not the assistant's written answers or business usefulness.
+The parser fix from the teammate branch removed repeated page headers and table captions mistaken for sections. After integration, the five-paper index has 288 chunks (previously 289); retrieval remains **23/23** relevant papers and **23/28** literal fact snippets. The tiny SciFact rerun remains **18/20** at rank one and **20/20** in the top five. These scores describe retrieval on small test sets, not answer accuracy or business usefulness; the reduced SciFact corpus cannot be compared with published full-corpus BEIR scores.
 
-The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. In a later full run using an earlier reranked passage order, **18/23** answerable responses had mechanically verified citations and direct quotes, up from **0/23** verified quotes in the baseline. Some answers were still factually wrong. The notebook's final passage order has been tested for retrieval, but **has not had a full 25-answer quality rerun or claim-by-claim human review**. Citation and quote checks alone do not prove accuracy or completeness.
+The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. The [new 25-question run](evaluation/results/branch_evaluation.md) uses `qwen2.5:7b`, focused source windows, and stricter citation checks. It gave direct answers to all 20 single-paper questions; **20/20** passed mechanical passage citation, verbatim quote, and numeric source checks. Three cross-paper questions returned the two labeled papers as source lists, and both unsupported questions were declined. One review against the fixed labels found the expected facts in all 20 direct answers. These are small, AI-drafted questions over five papers; source checks and a single review do not establish broader accuracy or business usefulness.
 
-For the exact commands, result files, review rubric, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/findings.md](evaluation/results/findings.md). From the repository root, run the existing tests with:
+The [post-parser answer rerun](evaluation/results/answers_after_parser_integrated.json) kept those mechanical counts: **20/20** direct answers pass source checks, **3/3** paper-list questions return the labeled pair, and **2/2** unsupported questions abstain. In a content review, 19 direct answers covered the requested facts; q01 explained the Router's reservation-price calculation but omitted its explicit stopping rule. A focused-window pilot made that answer worse, so it was not adopted. The [evaluation notes](evaluation/results/branch_evaluation.md) record this remaining completeness gap.
+
+For the exact commands, result files, question-by-question review, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/branch_evaluation.md](evaluation/results/branch_evaluation.md). From the repository root, run the existing tests with:
 
 ```bash
 python -m pytest -q
 ```
 
+The [advisor demo brief](docs/presentation_brief.md) has a short walkthrough. The [issue status](docs/issue_status.md) distinguishes implemented work from the parts that still need reviewer evidence. The [business prompt pilot](docs/prompt-templates/pilot_review.md) uses fixed passages from one paper; it is separate from the live answer evaluation.
+
 ## Next steps
 
-1. Run and manually review all 25 answers with the notebook's final retrieval settings, checking each claim and every requested part of each question against its cited passage.
-2. Test retrieval on a larger, more representative paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
+1. Have teammates or KPMG reviewers independently label new questions and assess answer support, completeness, business usefulness, and trust.
+2. Test retrieval on a larger paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
 3. Compare optional query rewriting and Gemini with the same questions and passages before changing the evaluated default.
-4. Add a clearly sourced business-implications layer and ask KPMG reviewers to assess usefulness and trust.
+4. Have KPMG reviewers try the interactive business-application view and compare it with the experimental prompt template on a larger, fixed evidence set.
 
 ## License and acknowledgements
 
