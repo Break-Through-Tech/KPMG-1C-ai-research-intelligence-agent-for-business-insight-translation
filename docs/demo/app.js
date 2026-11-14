@@ -42,9 +42,9 @@ const areaLabel = (area) =>
   })[area] || "AI research";
 const labels = {
   workspace: "Workspace",
-  library: "Research library",
+  library: "Example papers",
   briefs: "Saved briefs",
-  evaluation: "Evidence & evaluation",
+  evaluation: "Evaluation",
   questions: "Research questions",
   brief: "Research brief",
   saved: "Saved brief",
@@ -97,10 +97,10 @@ function updateCounts() {
     state.data?.papers.length ?? "—";
 }
 function perspectiveSelect() {
-  return `<label class="select-field">${icon("user")}<span>Review perspective</span><select id="persona" aria-label="Review perspective">${state.data.personas.map((p) => `<option value="${esc(p.id)}" ${p.id === state.persona ? "selected" : ""}>${esc(p.role)}</option>`).join("")}</select></label>`;
+  return `<label class="select-field">${icon("user")}<span>View as</span><select id="persona" aria-label="Review perspective">${state.data.personas.map((p) => `<option value="${esc(p.id)}" ${p.id === state.persona ? "selected" : ""}>${esc(p.role)}</option>`).join("")}</select></label>`;
 }
-function heading(title, subtitle, extra = "") {
-  return `<div class="page-heading"><div><div class="eyebrow">KPMG × BREAK THROUGH TECH</div><h1>${title}</h1><p>${subtitle}</p></div>${extra}</div>`;
+function heading(title, subtitle = "", extra = "") {
+  return `<div class="page-heading"><div><h1>${title}</h1>${subtitle ? `<p>${subtitle}</p>` : ""}</div>${extra}</div>`;
 }
 function status(message, warning = false) {
   return `<div class="status-bar ${warning ? "warning" : ""}">${icon(warning ? "info" : "shield")}<span>${message}</span></div>`;
@@ -111,32 +111,24 @@ function questionButton(id, label) {
 function composer() {
   const live = state.mode === "live";
   return `<section class="composer" aria-label="Research query">
-  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : `disabled title="${STATIC_DEMO ? "Run the project locally to ask new questions" : "Start the server with --live-root . to ask new questions"}"`}>Ask a question</button></div></div>
-  <form id="research-form"><label class="prompt-label" for="research-query">${live ? "What would you like to understand?" : "What are you exploring today?"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask a question about the indexed research…" : "Search model routing, AI agents, workflow automation…"}" aria-describedby="query-help" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Generate insight" : "Explore research"}${icon("arrow")}</button></div></form>
-  ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Local model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions"><span>START WITH</span>${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
-  <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Answers use the five local papers and show source checks." : state.data.live_configured ? "Browse saved answers, or ask your own question." : STATIC_DEMO ? "Shareable saved demo. Run the project locally to ask new questions." : "To ask new questions, start the server with --live-root ."}</small></div></section>`;
+  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Live arXiv search needs the local server"'}>Ask arXiv</button><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Examples</button></div></div>
+  <form id="research-form"><label class="prompt-label" for="research-query">${live ? "Ask a research question" : "Explore example questions"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask anything about arXiv research…" : "Search the example questions…"}" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Ask" : "Search"}${icon("arrow")}</button></div></form>
+  ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions">${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
+  <div class="composer-bottom">${perspectiveSelect()}</div></section>`;
 }
 function paperRow(paper, index, library = false) {
-  return `<article class="paper-row"><div class="paper-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div><div><span class="tag blue">${esc(areaLabel(paper.area))}</span><h3><button data-action="paper" data-id="${esc(paper.id)}">${esc(paper.title)}</button></h3><div class="paper-meta"><span>arXiv · ${esc(paper.id)}</span><span>${paper.questions.length} benchmark questions</span></div></div>${library ? `<div class="paper-actions"><button class="button secondary compact" data-action="paper" data-id="${esc(paper.id)}">Explore questions ${icon("arrow")}</button><a class="button text compact" href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer">Original paper ${icon("external")}</a></div>` : `<button class="paper-open" data-action="paper" data-id="${esc(paper.id)}" aria-label="Explore ${esc(paper.title)}">${icon("arrow")}</button>`}</article>`;
+  return `<article class="paper-row"><div class="paper-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div><div><span class="tag blue">${esc(areaLabel(paper.area))}</span><h3><button data-action="paper" data-id="${esc(paper.id)}">${esc(paper.title)}</button></h3><div class="paper-meta">arXiv · ${esc(paper.id)}</div></div>${library ? `<div class="paper-actions"><button class="button secondary compact" data-action="paper" data-id="${esc(paper.id)}">Questions ${icon("arrow")}</button><a class="button text compact" href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer">Paper ${icon("external")}</a></div>` : `<button class="paper-open" data-action="paper" data-id="${esc(paper.id)}" aria-label="Explore ${esc(paper.title)}">${icon("arrow")}</button>`}</article>`;
 }
 function workspace() {
   main.innerHTML =
-    heading(
-      "Research, with evidence.",
-      "Find a paper, inspect the answer, and trace every source.",
-    ) +
+    heading("Research chat", "", '<div class="chat-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div>') +
     composer() +
-    `<div id="workspace-results"><div class="home-grid"><section><div class="section-heading"><div><h2>Research library</h2><p>Start with a paper or search the benchmark questions.</p></div><a href="#library">View all ${icon("arrow")}</a></div><div class="paper-list">${state.data.papers
-      .slice(0, 3)
-      .map((p, i) => paperRow(p, i))
-      .join(
-        "",
-    )}</div></section><aside class="corpus-panel"><div class="corpus-body"><div class="eyebrow">THE EVIDENCE BASE</div><h3>What you can inspect</h3><div class="corpus-stats"><div><strong>${state.data.papers.length}</strong><small>Public papers</small></div><div><strong>${state.data.questions.length}</strong><small>Test questions</small></div></div><p>Read the cited passages and check where an answer came from.</p><a class="button text" href="#evaluation">See evaluation ${icon("arrow")}</a></div></aside></div></div>`;
+    `<div id="workspace-results">${state.mode === "saved" ? `<div class="section-heading"><h2>Questions</h2><a href="#questions">All ${state.data.questions.length} ${icon("arrow")}</a></div>${questionList(state.data.questions.slice(0, 3))}` : ""}</div>`;
 }
 function questionList(questions) {
   return questions.length
-    ? `<div class="query-list">${questions.map((q) => `<button class="query-item" data-action="question" data-id="${esc(q.id)}"><span><small>${esc(q.id.toUpperCase())} · ${q.relevant_papers.length ? q.relevant_papers.length + " relevant paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Out-of-corpus test"}</small><strong>${esc(q.query)}</strong></span>${icon("arrow")}</button>`).join("")}</div>`
-    : `<div class="empty-state"><h2>No matching research</h2><p>Try “model”, “task”, “travel” or “G-CARL”. This collection contains fixed benchmark questions.</p><button class="button secondary" data-action="all-questions">Browse all questions</button></div>`;
+    ? `<div class="query-list">${questions.map((q) => `<button class="query-item" data-action="question" data-id="${esc(q.id)}"><span class="question-id">${esc(q.id.toUpperCase())}</span><strong>${esc(q.query)}</strong>${icon("arrow")}</button>`).join("")}</div>`
+    : `<div class="empty-state"><h2>No matches</h2><button class="button secondary" data-action="all-questions">All examples</button></div>`;
 }
 function searchQuestions(query) {
   const words = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
@@ -152,11 +144,8 @@ function searchQuestions(query) {
 }
 function library() {
   main.innerHTML =
-    heading(
-      "Research library",
-      "A closer look at the papers behind the insight.",
-    ) +
-    `<div class="filters"><label class="searchbar">${icon("search")}<input id="library-search" aria-label="Search papers" placeholder="Search papers by title or topic"></label><select id="area-filter" class="filter-select" aria-label="Filter by research theme"><option value="">All research themes</option>${[...new Set(state.data.papers.map((p) => p.area).filter(Boolean))].map((a) => `<option value="${esc(a)}">${esc(areaLabel(a))}</option>`).join("")}</select></div><div class="section-heading"><span class="small-label" id="library-count">${state.data.papers.length} PAPERS IN THE COLLECTION</span><span class="tag">Public preprints · not peer-review verification</span></div><div class="library-list" id="library-results">${state.data.papers.map((p, i) => paperRow(p, i, true)).join("")}</div>`;
+    heading("Example papers") +
+    `<div class="filters"><label class="searchbar">${icon("search")}<input id="library-search" aria-label="Search papers" placeholder="Search papers"></label><select id="area-filter" class="filter-select" aria-label="Filter by research theme"><option value="">All topics</option>${[...new Set(state.data.papers.map((p) => p.area).filter(Boolean))].map((a) => `<option value="${esc(a)}">${esc(areaLabel(a))}</option>`).join("")}</select></div><div class="section-heading"><span id="library-count">${state.data.papers.length} papers</span></div><div class="library-list" id="library-results">${state.data.papers.map((p, i) => paperRow(p, i, true)).join("")}</div>`;
 }
 function filterLibrary() {
   const query = document.querySelector("#library-search").value.toLowerCase();
@@ -167,7 +156,7 @@ function filterLibrary() {
       `${p.title} ${p.id} ${areaLabel(p.area)}`.toLowerCase().includes(query),
   );
   document.querySelector("#library-count").textContent =
-    `${papers.length} PAPER${papers.length === 1 ? "" : "S"} IN THE COLLECTION`;
+    `${papers.length} paper${papers.length === 1 ? "" : "s"}`;
   document.querySelector("#library-results").innerHTML = papers.length
     ? papers.map((p, i) => paperRow(p, i, true)).join("")
     : '<p class="no-results">No papers match these filters. Try another title or research theme.</p>';
@@ -175,14 +164,8 @@ function filterLibrary() {
 function questionsPage(paperId) {
   const paper = state.data.papers.find((p) => p.id === paperId);
   main.innerHTML =
-    `<a class="back-link" href="#library">${icon("back")}Research library</a>` +
-    heading(
-      paper ? "Explore the evidence" : "Research questions",
-      paper ? esc(paper.title) : "Choose one of the saved benchmark questions.",
-    ) +
-    status(
-      "These are saved model outputs. Review the source passages and validation status before using a finding.",
-    ) +
+    `<a class="back-link" href="#library">${icon("back")}Example papers</a>` +
+    heading(paper ? paper.title : "Example questions") +
     questionList(
       paper
         ? state.data.questions.filter((q) =>
@@ -199,7 +182,15 @@ function rich(text) {
   );
 }
 function sourceBlock(source) {
-  return `<article class="source-block"><span class="tag blue">Passage ${source.rank}</span><h3>${esc(source.title)}</h3><div class="paper-meta"><span>${esc(source.paper_id)}</span><span>${esc(source.section || "Section not recorded")}</span></div><details><summary>Read source passage</summary><blockquote>${esc(source.text)}</blockquote><div class="source-properties">Chunk: ${esc(source.chunk_id || "Not recorded")}<br>Authors: ${esc(source.authors?.join(", ") || "Not recorded")}<br>Publication date: ${esc(source.published || "Not recorded")}<br>Retrieval score: ${source.score === null ? "Not recorded in this saved run" : esc(source.score)}</div></details>${source.source_url ? `<a class="source-link" href="${esc(source.source_url)}" target="_blank" rel="noopener noreferrer">Open original paper ${icon("external")}</a>` : ""}</article>`;
+  return `<article class="source-block"><h3>${esc(source.title)}</h3><div class="paper-meta">Passage ${source.rank} · ${esc(source.section || "Abstract")}</div><details><summary>Passage text</summary><blockquote>${esc(source.text)}</blockquote><div class="source-properties">${esc(source.chunk_id || "")}${source.published ? ` · ${esc(source.published)}` : ""}</div></details>${source.source_url ? `<a class="source-link" href="${esc(source.source_url)}" target="_blank" rel="noopener noreferrer">Open paper ${icon("external")}</a>` : ""}</article>`;
+}
+function conciseBusiness(text) {
+  return text.replace(/^Proposed [^:]+ applications for stakeholder review:\s*/i, "")
+    .replace(/\s*The papers do not establish KPMG-specific outcomes or ROI\.\s*$/i, "");
+}
+function firstSentence(text) {
+  const match = text.match(/^.*?[.!?](?=\s|$)/s);
+  return match ? match[0] : text;
 }
 function briefBody() {
   const result = state.current;
@@ -212,42 +203,24 @@ function briefBody() {
       ? result.sources.map(sourceBlock).join("")
       : '<p class="muted">No source passages were retrieved.</p>';
   if (state.tab === "technical")
-    return `<section class="brief-section"><div class="section-kicker"><h2>Original model answer</h2></div><p class="section-label">Preserved from ${result.mode === "saved" ? esc(result.run) : "the local model"}</p><div class="rich-text">${rich(result.answer)}</div></section><section class="brief-section"><div class="section-kicker"><h2>Mechanical verification</h2></div>${status(reviewIssues.length ? "The answer has issues that require review." : "No mechanical issues were flagged. This is not a claim of factual accuracy.", !!reviewIssues.length)}${reviewIssues.length ? `<ul class="warning-list">${reviewIssues.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : ""}</section>`;
-  return `${insight.validation_warnings.length ? status("Business action withheld. The existing evidence checks found issues in this answer.", true) : ""}${[
-    [
-      "01",
-      "What the study found",
-      "Source-grounded answer",
-      insight.what_study_found,
-    ],
-    [
-      "02",
-      "Why it matters",
-      "Proposed business application · stakeholder review required",
-      insight.why_it_matters_to_kpmg,
-    ],
-    [
-      "03",
-      "What to consider",
-      "Proportionate action & guardrails",
-      insight.what_kpmg_could_consider,
-    ],
-  ]
-    .map(
-      ([n, title, label, body]) =>
-        `<section class="brief-section"><div class="section-kicker"><span>${n}</span><h2>${title}</h2></div><p class="section-label">${label}</p><div class="rich-text">${rich(body)}</div></section>`,
-    )
-    .join(
-      "",
-    )}${insight.validation_warnings.length ? `<section class="brief-section"><h3>Review notes</h3><ul class="warning-list">${insight.validation_warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></section>` : ""}`;
+    return `<section class="brief-section"><h2>Model answer</h2><div class="rich-text">${rich(result.answer)}</div></section><section class="brief-section"><h2>Checks</h2>${reviewIssues.length ? `<ul class="warning-list">${reviewIssues.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>` : '<p class="check-passed">No formatting or source mismatches flagged.</p>'}</section>`;
+  const finding = insight.what_study_found.split(/\n\s*Evidence\s*:/i)[0].trim();
+  const application = conciseBusiness(insight.why_it_matters_to_kpmg);
+  const action = insight.what_kpmg_could_consider;
+  const actionLead = firstSentence(action);
+  return `${insight.validation_warnings.length ? status("Needs review", true) : ""}
+    <section class="brief-section"><h2>Finding</h2><div class="rich-text">${rich(finding)}</div></section>
+    <section class="brief-section"><h2>Business use</h2><div class="rich-text">${rich(application)}</div></section>
+    <section class="brief-section"><h2>Next step</h2><div class="rich-text">${rich(actionLead)}</div>${action.length > actionLead.length ? `<details class="review-details"><summary>More context</summary><div class="rich-text">${rich(action.slice(actionLead.length).trim())}</div></details>` : ""}</section>
+    ${insight.validation_warnings.length ? `<section class="brief-section"><h2>Review notes</h2><ul class="warning-list">${insight.validation_warnings.map((w) => `<li>${esc(w)}</li>`).join("")}</ul></section>` : ""}`;
 }
 function renderBrief() {
   const r = state.current;
   const c = r.insight.confidence;
   const unique = [...new Map(r.sources.map((s) => [s.paper_id, s])).values()];
-  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back to workspace</a><div class="eyebrow">RESEARCH BRIEF · ${r.mode === "saved" ? "SAVED BENCHMARK" : "LIVE LOCAL MODEL"}</div><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${esc(r.insight.kpmg_service_area)}</span><span class="tag amber">Human review required</span><span>${unique.length} source paper${unique.length === 1 ? "" : "s"}</span></div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save brief</button><button class="button" data-action="export">${icon("download")}Export brief</button></div></div>${status(r.mode === "saved" ? "Saved answer with its source passages. Business applications are suggestions for review." : "New answer from the five-paper local corpus. Review the sources before using it.")}<div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${[
-    ["business", "Business perspective"],
-    ["technical", "Technical answer"],
+  main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back</a><h1 class="brief-title">${esc(r.question)}</h1><div class="brief-toolbar"><div class="brief-meta"><span class="tag blue">${r.mode === "saved" ? "Example" : "arXiv"}</span><span class="tag amber">Review sources</span><span class="tag">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</span></div><div class="brief-actions"><button class="button secondary" data-action="save">${icon("bookmark")}Save</button><button class="button" data-action="export">${icon("download")}Export</button></div></div><div class="brief-grid"><article class="brief-content"><div class="tabs" role="tablist" aria-label="Brief views">${[
+    ["business", "Brief"],
+    ["technical", "Answer"],
     ["sources", `Sources (${r.sources.length})`],
   ]
     .map(
@@ -256,7 +229,7 @@ function renderBrief() {
     )
     .join(
       "",
-    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence checks</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}${c ? `<span>${Math.round(c.overall_score * 100)}/100</span>` : ""}</div><p>Heuristic evidence score for review, not a correctness probability</p>${
+    )}</div><div class="brief-sections" id="brief-panel" role="tabpanel" aria-labelledby="tab-${state.tab}" tabindex="0">${briefBody()}</div></article><aside class="brief-aside"><div class="evidence-panel"><h3>Evidence check</h3><div class="evidence-tier">${esc(c?.tier || "Not assessed")}${c ? `<span>${Math.round(c.overall_score * 100)}/100</span>` : ""}</div><details class="score-details"><summary>Score details</summary>${
     c
       ? [
           ["Citation coverage", c.citation_coverage],
@@ -269,7 +242,7 @@ function renderBrief() {
           )
           .join("")
       : ""
-  }<p class="method-note">${esc(c?.rationale || "No confidence breakdown supplied.")}<br><br>This signal is not a probability of correctness.</p></div><div class="source-panel"><h3>Source papers <span class="muted">(${unique.length})</span></h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}"><span>${icon("file")}</span><span><strong>${esc(s.title)}</strong><small>arXiv · ${esc(s.paper_id)}</small></span></button>`).join("") || '<p class="muted">No retrieved sources.</p>'}</div><div class="source-panel"><h3>Review perspective</h3><p class="muted evaluation-note">${esc(state.data.personas.find((p) => p.id === r.persona)?.role || r.persona_name)}</p><p class="method-note">Illustrative stakeholder lens. This is not an approval or review by a named person.</p></div></aside></div>`;
+  }<p class="method-note">${esc(c?.rationale || "No score details available.")}</p></details></div><div class="source-panel"><h3>Papers (${unique.length})</h3>${unique.map((s) => `<button class="source-preview" data-action="source" data-rank="${s.rank}">${icon("file")}<strong>${esc(s.title)}</strong></button>`).join("") || '<p class="muted">No sources.</p>'}</div></aside></div>`;
 }
 async function requestInsight(payload) {
   const token = ++state.request;
@@ -307,21 +280,15 @@ async function requestInsight(payload) {
 }
 function savedPage() {
   main.innerHTML =
-    heading(
-      "Saved briefs",
-      "Your working collection, kept for this browser tab.",
-    ) +
-    status(
-      "Briefs are stored in this tab’s session only. Export any brief you want to keep after the tab is closed.",
-    ) +
+    heading("Saved briefs") +
     (saved.length
       ? saved
           .map(
             (r, i) =>
-              `<article class="saved-card"><span class="tag blue">${r.mode === "saved" ? "Saved benchmark" : "Local model"}</span><h3>${esc(r.question)}</h3><small>${esc(r.persona_name)} · ${r.sources.length} passages · ${esc(r.insight.confidence?.tier || "Not assessed")}</small><div class="brief-actions"><a class="button secondary" href="#saved/${i}">Open brief ${icon("arrow")}</a><button class="button text" data-action="remove" data-index="${i}">Remove from session</button></div></article>`,
+              `<article class="saved-card"><h3>${esc(r.question)}</h3><div class="brief-actions"><a class="button secondary" href="#saved/${i}">Open ${icon("arrow")}</a><button class="button text" data-action="remove" data-index="${i}">Remove</button></div></article>`,
           )
           .join("")
-      : `<div class="empty-state">${icon("bookmark")}<h2>Keep the research worth revisiting.</h2><p>Open a research brief and choose “Save brief” to add it to this collection.</p><a class="button" href="#workspace">Explore research ${icon("arrow")}</a></div>`);
+      : `<div class="empty-state">${icon("bookmark")}<h2>No saved briefs</h2><a class="button" href="#workspace">Ask a question ${icon("arrow")}</a></div>`);
 }
 function evaluation() {
   const data = state.data;
@@ -329,11 +296,8 @@ function evaluation() {
     (q) => q.relevant_papers.length,
   ).length;
   main.innerHTML =
-    heading("Evaluation", "What the benchmark checks, and where human review still matters.") +
-    status(
-      "The figures below describe the committed benchmark. They are not live performance, answer accuracy, or validated business value.",
-    ) +
-    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PUBLIC CORPUS</span><strong>${data.papers.length}</strong><p>Committed arXiv papers.</p></div><div class="summary-card"><span class="small-label">ANSWERABLE QUESTIONS</span><strong>${answerable} <span class="muted">/ ${data.questions.length}</span></strong><p>${data.questions.length - answerable} questions test when to abstain.</p></div><div class="summary-card"><span class="small-label">SAVED RUNS</span><strong>${data.runs.length}</strong><p>${data.runs.length > 1 ? "Compare recorded answers and sources." : "Inspect recorded answers and sources."}</p></div></div><div class="section-heading"><div><h2>Inspect the benchmark</h2><p>Each question opens its saved answer and source checks.</p></div><label class="select-field">Answer run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(runLabel(r))}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">QUESTION</th><th scope="col">RESEARCH QUESTION</th><th scope="col">EXPECTED COVERAGE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Abstention"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Citation IDs, literal quotes, and numeric checks help review an answer. They do not prove every claim or business application.</p>`;
+    heading("Sample evaluation") +
+    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PAPERS</span><strong>${data.papers.length}</strong></div><div class="summary-card"><span class="small-label">QUESTIONS</span><strong>${data.questions.length}</strong></div><div class="summary-card"><span class="small-label">ANSWERABLE</span><strong>${answerable}</strong></div></div><div class="section-heading"><h2>Example questions</h2><label class="select-field">Run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(runLabel(r))}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">ID</th><th scope="col">QUESTION</th><th scope="col">SOURCE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "None"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Five-paper test. These figures are not live arXiv performance.</p>`;
 }
 function route() {
   if (!state.data) return;
@@ -479,7 +443,7 @@ document.addEventListener("submit", (event) => {
   } else {
     const results = searchQuestions(state.search);
     document.querySelector("#workspace-results").innerHTML =
-      `<div class="section-heading results-heading"><div><h2>${state.search ? "Matching research" : "All research questions"}</h2><p>${results.length} saved questions${state.search ? " for “" + esc(state.search) + "”" : ""}</p></div><button class="button text" data-action="all-questions">View all ${icon("arrow")}</button></div>${questionList(results)}`;
+      `<div class="section-heading results-heading"><h2>${results.length} result${results.length === 1 ? "" : "s"}</h2><button class="button text" data-action="all-questions">All examples ${icon("arrow")}</button></div>${questionList(results)}`;
   }
 });
 document.addEventListener("input", (event) => {
@@ -521,6 +485,7 @@ async function boot() {
     if (!response.ok) throw new Error(data.error || "Could not load research.");
     state.data = data;
     state.run = data.default_run;
+    state.mode = data.live_configured ? "live" : "saved";
     document
       .querySelectorAll("[data-icon]")
       .forEach((el) => (el.innerHTML = icon(el.dataset.icon)));

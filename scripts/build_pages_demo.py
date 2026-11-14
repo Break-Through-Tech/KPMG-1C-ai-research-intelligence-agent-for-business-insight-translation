@@ -50,7 +50,6 @@ def main() -> None:
         ('href="/styles.css"', 'href="styles.css"'),
         ('src="/app.js"', 'src="app.js"'),
         ('src="/kpmg-logo.png"', 'src="kpmg-logo.png"'),
-        ("Local research prototype", "Saved research demo"),
     ):
         html = replace_exact(html, old, new)
     (DEST / "index.html").write_text(html, encoding="utf-8")
