@@ -78,9 +78,9 @@ Kathleen's [evaluation notes](evaluation/results/findings.md) separate two datas
 
 The 23/28 figure is an exact wording check on retrieved passages, **not answer accuracy**. The SciFact corpus was reduced from the full benchmark, so these scores should not be compared with published full-corpus BEIR scores. SciFact tests retrieval, not the assistant's written answers or business usefulness.
 
-The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. In a later full run using an earlier reranked passage order, **18/23** answerable responses had mechanically verified citations and direct quotes, up from **0/23** verified quotes in the baseline. Some answers were still factually wrong. The notebook's final passage order has been tested for retrieval, but **has not had a full 25-answer quality rerun or claim-by-claim human review**. Citation and quote checks alone do not prove accuracy or completeness.
+The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. The [new 25-question run](evaluation/results/branch_evaluation.md) uses `qwen2.5:7b`, focused source windows, and stricter citation checks. It gave direct answers to all 20 single-paper questions; **20/20** passed mechanical passage citation, verbatim quote, and numeric source checks. Three cross-paper questions returned the two labeled papers as source lists, and both unsupported questions were declined. One review against the fixed labels found the expected facts in all 20 direct answers. These are small, AI-drafted questions over five papers; source checks and a single review do not establish broader accuracy or business usefulness.
 
-For the exact commands, result files, review rubric, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/findings.md](evaluation/results/findings.md). From the repository root, run the existing tests with:
+For the exact commands, result files, question-by-question review, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/branch_evaluation.md](evaluation/results/branch_evaluation.md). From the repository root, run the existing tests with:
 
 ```bash
 python -m pytest -q
@@ -88,10 +88,10 @@ python -m pytest -q
 
 ## Next steps
 
-1. Run and manually review all 25 answers with the notebook's final retrieval settings, checking each claim and every requested part of each question against its cited passage.
-2. Test retrieval on a larger, more representative paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
+1. Have teammates or KPMG reviewers independently label new questions and assess answer support, completeness, business usefulness, and trust.
+2. Test retrieval on a larger paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
 3. Compare optional query rewriting and Gemini with the same questions and passages before changing the evaluated default.
-4. Add a clearly sourced business-implications layer and ask KPMG reviewers to assess usefulness and trust.
+4. Integrate and test the sourced business-implications layer in an interactive UI.
 
 ## License and acknowledgements
 
