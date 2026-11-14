@@ -71,6 +71,12 @@ For local answers, [install Ollama](https://ollama.com/), then run `ollama pull 
 
 To use the browser UI, run `python frontend_server.py --port 8765` and open `http://127.0.0.1:8765`. That opens the saved benchmark without a model. To ask a new question with local Qwen, keep Ollama running and start the server with `python frontend_server.py --port 8765 --live-root .`. The first live question builds the five-paper index if needed. See the [frontend guide](frontend/README.md) for the full workflow.
 
+### Share a saved demo with GitHub Pages
+
+The [Pages-ready demo](docs/demo/) lets someone browse the 25 saved questions, switch reviewer perspectives, inspect source passages, and export a brief through a link. It uses the latest recorded Qwen answers from the five public papers. It does **not** generate new answers: GitHub Pages serves static files and cannot run the Python retriever or Ollama. For live questions, use the local browser UI above.
+
+To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. To publish, a repository maintainer can set **Settings → Pages → Build and deployment → Deploy from a branch**, select this branch (or `main` after merging), and choose `/docs`. The intended URL is `https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/` once Pages is enabled and its deployment finishes. Treat the demo as public; do not add private papers, prompts, or client data to its generated files.
+
 ## Evaluation and findings
 
 ### Five-paper arXiv test

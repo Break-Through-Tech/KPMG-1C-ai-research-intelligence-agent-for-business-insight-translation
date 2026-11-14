@@ -13,6 +13,8 @@ python frontend_server.py --port 8765
 
 Open `http://127.0.0.1:8765`. The current complete Qwen evaluation is selected by default. You can browse 25 benchmark questions and five papers, inspect their exact saved answers and passages, switch review perspectives, save briefs for this browser tab, and export a Markdown brief. Saved answers are not regenerated when the perspective changes.
 
+For a shareable, saved-results version, build the [GitHub Pages demo](../docs/demo/) with `python scripts/build_pages_demo.py` from the repository root. It preserves the paper library, answers, source views, perspectives, and brief export. It cannot run new questions; use this local server for that.
+
 ## Ask a new question locally
 
 Start Ollama in one terminal and make sure the evaluated model is installed:

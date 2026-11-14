@@ -1,5 +1,7 @@
 "use strict";
 
+const STATIC_DEMO = document.documentElement.dataset.staticDemo === "true";
+
 const icons = {
   grid: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
   book: '<path d="M12 5v15M3 4c4-1 6 0 9 2 3-2 5-3 9-2v15c-4-1-6 0-9 2-3-2-5-3-9-2Z"/>',
@@ -109,10 +111,10 @@ function questionButton(id, label) {
 function composer() {
   const live = state.mode === "live";
   return `<section class="composer" aria-label="Research query">
-  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : 'disabled title="Start the server with --live-root . to ask new questions"'}>Ask a question</button></div></div>
+  <div class="composer-top"><div class="segmented" aria-label="Research mode"><button data-action="mode" data-mode="saved" aria-pressed="${!live}">Explore saved research</button><button data-action="mode" data-mode="live" aria-pressed="${live}" ${state.data.live_configured ? "" : `disabled title="${STATIC_DEMO ? "Run the project locally to ask new questions" : "Start the server with --live-root . to ask new questions"}"`}>Ask a question</button></div></div>
   <form id="research-form"><label class="prompt-label" for="research-query">${live ? "What would you like to understand?" : "What are you exploring today?"}</label><div class="prompt-row"><input id="research-query" name="question" maxlength="2000" autocomplete="off" placeholder="${live ? "Ask a question about the indexed research…" : "Search model routing, AI agents, workflow automation…"}" aria-describedby="query-help" value="${esc(state.search)}"><button class="button" type="submit">${live ? "Generate insight" : "Explore research"}${icon("arrow")}</button></div></form>
   ${live ? `<div class="suggestions live-controls"><label class="inline-label" for="model">Local model</label><select id="model" class="filter-select">${state.data.models.map((m) => `<option>${esc(m)}</option>`).join("")}</select></div>` : `<div class="suggestions"><span>START WITH</span>${questionButton("q02", "Model routing")}${questionButton("q09", "Workflow intelligence")}${questionButton("q18", "AI reliability")}</div>`}
-  <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Answers use the five local papers and show source checks." : state.data.live_configured ? "Browse saved answers, or ask your own question." : "To ask new questions, start the server with --live-root ."}</small></div></section>`;
+  <div class="composer-bottom">${perspectiveSelect()}<small id="query-help">${live ? "Answers use the five local papers and show source checks." : state.data.live_configured ? "Browse saved answers, or ask your own question." : STATIC_DEMO ? "Shareable saved demo. Run the project locally to ask new questions." : "To ask new questions, start the server with --live-root ."}</small></div></section>`;
 }
 function paperRow(paper, index, library = false) {
   return `<article class="paper-row"><div class="paper-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</div><div><span class="tag blue">${esc(areaLabel(paper.area))}</span><h3><button data-action="paper" data-id="${esc(paper.id)}">${esc(paper.title)}</button></h3><div class="paper-meta"><span>arXiv · ${esc(paper.id)}</span><span>${paper.questions.length} benchmark questions</span></div></div>${library ? `<div class="paper-actions"><button class="button secondary compact" data-action="paper" data-id="${esc(paper.id)}">Explore questions ${icon("arrow")}</button><a class="button text compact" href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer">Original paper ${icon("external")}</a></div>` : `<button class="paper-open" data-action="paper" data-id="${esc(paper.id)}" aria-label="Explore ${esc(paper.title)}">${icon("arrow")}</button>`}</article>`;
@@ -273,11 +275,16 @@ async function requestInsight(payload) {
   const token = ++state.request;
   main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back to workspace</a><div class="loading-state" role="status">${payload.mode === "live" ? "Retrieving sources and checking the evidence…" : "Preparing the research brief…"}</div>`;
   try {
-    const response = await fetch("/api/insight", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    if (STATIC_DEMO && (payload.mode !== "saved" || !state.data.questions.some((q) => q.id === payload.id)
+        || !state.data.personas.some((p) => p.id === payload.persona)))
+      throw new Error("This public demo only includes the saved research questions.");
+    const response = STATIC_DEMO
+      ? await fetch(`data/insights/${payload.persona}/${payload.id}.json`)
+      : await fetch("/api/insight", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
     const result = await response.json();
     if (token !== state.request) return;
     if (!response.ok)
@@ -326,7 +333,7 @@ function evaluation() {
     status(
       "The figures below describe the committed benchmark. They are not live performance, answer accuracy, or validated business value.",
     ) +
-    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PUBLIC CORPUS</span><strong>${data.papers.length}</strong><p>Committed arXiv papers.</p></div><div class="summary-card"><span class="small-label">ANSWERABLE QUESTIONS</span><strong>${answerable} <span class="muted">/ ${data.questions.length}</span></strong><p>${data.questions.length - answerable} questions test when to abstain.</p></div><div class="summary-card"><span class="small-label">SAVED RUNS</span><strong>${data.runs.length}</strong><p>Compare recorded answers and sources.</p></div></div><div class="section-heading"><div><h2>Inspect the benchmark</h2><p>Each question opens its saved answer and source checks.</p></div><label class="select-field">Answer run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(runLabel(r))}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">QUESTION</th><th scope="col">RESEARCH QUESTION</th><th scope="col">EXPECTED COVERAGE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Abstention"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Citation IDs, literal quotes, and numeric checks help review an answer. They do not prove every claim or business application.</p>`;
+    `<div class="summary-grid"><div class="summary-card"><span class="small-label">PUBLIC CORPUS</span><strong>${data.papers.length}</strong><p>Committed arXiv papers.</p></div><div class="summary-card"><span class="small-label">ANSWERABLE QUESTIONS</span><strong>${answerable} <span class="muted">/ ${data.questions.length}</span></strong><p>${data.questions.length - answerable} questions test when to abstain.</p></div><div class="summary-card"><span class="small-label">SAVED RUNS</span><strong>${data.runs.length}</strong><p>${data.runs.length > 1 ? "Compare recorded answers and sources." : "Inspect recorded answers and sources."}</p></div></div><div class="section-heading"><div><h2>Inspect the benchmark</h2><p>Each question opens its saved answer and source checks.</p></div><label class="select-field">Answer run<select id="answer-run" aria-label="Saved answer run">${data.runs.map((r) => `<option value="${esc(r)}" ${r === state.run ? "selected" : ""}>${esc(runLabel(r))}</option>`).join("")}</select></label></div><div class="table-wrap"><table><thead><tr><th scope="col">QUESTION</th><th scope="col">RESEARCH QUESTION</th><th scope="col">EXPECTED COVERAGE</th></tr></thead><tbody>${data.questions.map((q) => `<tr><td>${esc(q.id.toUpperCase())}</td><td><button data-action="question" data-id="${esc(q.id)}">${esc(q.query)}</button></td><td><span class="tag ${q.relevant_papers.length ? "blue" : "amber"}">${q.relevant_papers.length ? q.relevant_papers.length + " paper" + (q.relevant_papers.length === 1 ? "" : "s") : "Abstention"}</span></td></tr>`).join("")}</tbody></table></div><p class="evaluation-note">Citation IDs, literal quotes, and numeric checks help review an answer. They do not prove every claim or business application.</p>`;
 }
 function route() {
   if (!state.data) return;
@@ -509,7 +516,7 @@ document.addEventListener("keydown", (event) => {
 window.addEventListener("hashchange", route);
 async function boot() {
   try {
-    const response = await fetch("/api/bootstrap");
+    const response = await fetch(STATIC_DEMO ? "data/bootstrap.json" : "/api/bootstrap");
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Could not load research.");
     state.data = data;
