@@ -90,12 +90,14 @@ For the exact commands, result files, question-by-question review, and limitatio
 python -m pytest -q
 ```
 
+The [advisor demo brief](docs/presentation_brief.md) has a short walkthrough. The [issue status](docs/issue_status.md) distinguishes implemented work from the parts that still need reviewer evidence. The [business prompt pilot](docs/prompt-templates/pilot_review.md) uses fixed passages from one paper; it is separate from the live answer evaluation.
+
 ## Next steps
 
 1. Have teammates or KPMG reviewers independently label new questions and assess answer support, completeness, business usefulness, and trust.
 2. Test retrieval on a larger paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
 3. Compare optional query rewriting and Gemini with the same questions and passages before changing the evaluated default.
-4. Integrate and test the sourced business-implications layer in an interactive UI.
+4. Have KPMG reviewers try the interactive business-application view and compare it with the experimental prompt template on a larger, fixed evidence set.
 
 ## License and acknowledgements
 

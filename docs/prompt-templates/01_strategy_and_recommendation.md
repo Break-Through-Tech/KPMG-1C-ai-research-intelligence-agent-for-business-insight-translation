@@ -4,7 +4,7 @@ Revised November 1, 2026 for the product owner.
 
 ## Purpose and recommendation
 
-Help a professional-services user understand research and decide what to investigate next. The reader should not need AI knowledge. Use Template B version 2 as a candidate for testing, not a proven winner. It separates findings, potential business implications, uncertainty, and proposed actions while supporting the requested format.
+Help a professional-services user understand research and decide what to investigate next. The reader should not need AI knowledge. Use Template B version 3 as a provisional candidate, not a proven winner. It separates findings, potential business implications, uncertainty, and proposed actions while supporting the requested format. The [A31 pilot](pilot_review.md) found citation gaps that still need review.
 
 ## Basis for this revision
 
@@ -28,7 +28,7 @@ Use questions 29, 30, 31, 32 and follow-ups 41 and 42 for development; reserve 3
 
 ## Current results and limits
 
-Model runs, independent scoring, robustness results, and product owner acceptance remain pending. The six worked comparisons are version 1 demonstrations drafted in conversation, not captured Gemini or Llama outputs. Input rendering and blocked-case handling can be verified without model access, but cannot establish answer quality. The suite is small, and example source metadata still needs retrieval-team input. Latest and maturity claims require supporting evidence rather than compliance with an unsupported question premise.
+One small local Qwen run on A31 original and paraphrase is complete. The remaining business cases, independent scoring, broader robustness results, and product owner acceptance remain pending. The six worked comparisons are version 1 demonstrations drafted in conversation, not captured Gemini or Llama outputs. Input rendering and blocked-case handling can be verified without model access, but cannot establish answer quality. The suite is small, and example source metadata still needs retrieval-team input. Latest and maturity claims require supporting evidence rather than compliance with an unsupported question premise.
 
 ## Next actions
 

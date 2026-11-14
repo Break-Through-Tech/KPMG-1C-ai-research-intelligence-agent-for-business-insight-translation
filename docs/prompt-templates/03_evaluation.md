@@ -2,7 +2,7 @@
 
 ## Current status
 
-Sixteen primary cases are defined: eight selected Allison questions, each with original and paraphrased wording. Comparing A and B yields 32 response records. Relevant evidence has not yet been attached, so evaluation_results.csv marks them awaiting_evidence and leaves scores blank. No provider outputs, independent scores, or stakeholder acceptance are claimed. The old ten-case suite and six paired demonstrations remain supplementary version 1 material.
+Sixteen primary cases are defined: eight selected Allison questions, each with original and paraphrased wording. Comparing A and B yields 32 response records. Fixed passages have been attached for A31 only; see [the local Qwen pilot](pilot_review.md). The other cases still await evidence, and evaluation_results.csv leaves all independent scores blank. No stakeholder acceptance is claimed. The old ten-case suite and six paired demonstrations remain supplementary version 1 material.
 
 ## Procedure
 
@@ -37,4 +37,4 @@ Critical failures include invented research numbers, savings or sources; unsuppo
 
 Confirm thresholds with the product owner: zero critical failures, mean accuracy/citation support/clarity/business usefulness at least 4, and no unexplained material contradictions under paraphrasing. These are proposed thresholds, not instructions from Allison. Report coverage and retrieval limitations separately. A small pilot does not establish production reliability.
 
-Template B version 2 is the candidate because its design exposes decision-relevant distinctions and adapts the output format. Actual superiority, final selection, and scores remain pending model runs and review. The final report should state the exact model/settings/date, evidence snapshots, completed case counts, failures, reviewer feedback, template choice, and limitations.
+Template B version 3 is a provisional candidate because it separates findings, possible use, gaps, and a validation step. The small pilot still found missing adjacent citations and differences between original and paraphrased coverage. Actual superiority, final selection, and scores remain pending the full model run and independent review. The final report should state the exact model/settings/date, evidence snapshots, completed case counts, failures, reviewer feedback, template choice, and limitations.

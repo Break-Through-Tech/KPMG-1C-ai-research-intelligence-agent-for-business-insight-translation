@@ -26,3 +26,7 @@ Seven standard-library checks passed: matrix shape and blank scores; fixed evide
 All eight original questions match the supplied Word document exactly. Ten old supplementary fixtures remain. All Python files parse and the whitespace check passes.
 
 Actual retrieval, provider runs, independent scoring, robustness findings, product owner validation, and final selection are pending. No model-performance results have been invented. The Word documents were read without being edited or added to this branch.
+
+## November 13 local pilot
+
+After the revision above, fixed excerpts from the five-paper corpus became available for A31. A local `qwen2.5:7b` run compared the two phrasings and both templates. Template B was shortened to version 3 after the first run used inconsistent source notation; a further version 4 attempt regressed on sentence-level citations and was archived. See [pilot review](pilot_review.md) for outputs and limits. The statement above that no real model was called describes the November 1 revision only. The full business suite and independent scoring are still pending.

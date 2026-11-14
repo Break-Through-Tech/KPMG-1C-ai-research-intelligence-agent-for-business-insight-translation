@@ -63,6 +63,8 @@ def main():
     parser.add_argument('--split', choices=['development', 'held_out', 'all'], default='development')
     parser.add_argument('--variant', choices=['original', 'paraphrase', 'all'], default='all')
     parser.add_argument('--case-ids', nargs='+', help='Restrict to exact case IDs')
+    parser.add_argument('--templates', nargs='+', choices=['A', 'B'], default=['A', 'B'],
+                        help='Templates to run; default is both A and B')
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--output', type=Path, required=True, help='New path, never overwritten')
     args = parser.parse_args()
@@ -85,7 +87,8 @@ def main():
     if not cases:
         parser.error('No cases match the selection')
     prepared = [(case, *prepare(case, args.suite, evidence)) for case in cases]
-    templates = {label: (ROOT / f'template_{label.lower()}.txt').read_text(encoding='utf-8') for label in ['A', 'B']}
+    templates = {label: (ROOT / f'template_{label.lower()}.txt').read_text(encoding='utf-8')
+                 for label in dict.fromkeys(args.templates)}
     records = []
     with args.output.open('x', encoding='utf-8') as target:
         generate = None
