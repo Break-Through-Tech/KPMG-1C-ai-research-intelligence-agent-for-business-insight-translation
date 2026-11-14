@@ -46,6 +46,9 @@ PAPER_TOPICS = (
     r"\b(?:task models?|task model induction|tmi|computer-use traces)\b",
     r"\b(?:travel behavior|weather-sensitive|active data collection)\b",
 )
+SOURCE_REVIEW = re.compile(
+    r"^(?:I could not verify a cited answer\.|Top matching papers \()", re.I,
+)
 
 QUERY_EXPANSIONS = (
     (r"api costs?|pick the right model|model routing|llm costs?",
@@ -81,8 +84,9 @@ def recommend_min_papers(query: str) -> int:
     if topics >= 2 or requested == 2 or re.search(r"\btwo (?:papers|studies)\b", query, re.I) or needs_multiple_papers(query):
         return 2
     if topics == 0 and re.search(
-        r"difference between|approaches differ|across the corpus|synthesi[sz]e|"
-        r"trade[- ]offs? between|compare|comparison", query, re.I
+        r"difference between (?:the )?approaches|approaches differ|across the corpus|"
+        r"synthesi[sz]e|trade[- ]offs? between (?:the )?approaches|"
+        r"compare (?:the )?approaches", query, re.I
     ):
         return 2
     return 1
@@ -142,6 +146,7 @@ def compute_confidence_breakdown(
               for chunk in selected]
     retrieval = sum(scores) / len(scores) if scores else 0.0
     body = re.split(r"\n\s*Evidence\s*:", grounded_answer, maxsplit=1, flags=re.I)[0]
+    body = re.sub(r"^Top matching papers \(check the excerpts for relevance\):\s*", "", body, flags=re.I)
     # A multi-sentence direct quote is covered by its trailing citation.
     body = QUOTE_CITATION.sub(lambda match: f"Quoted evidence [{match[2]}]", body)
     # Include citations after terminal punctuation in the sentence they qualify.
@@ -290,6 +295,8 @@ must assess interpretation even when all mechanical checks pass.
         raise ValueError("Validation requires consecutive passage ranks starting at 1.")
     warnings = answer_issues(grounded_answer, results)
     confidence = compute_confidence_breakdown(grounded_answer, results, question=question)
+    if SOURCE_REVIEW.match(grounded_answer.strip()):
+        warnings.append("Only source matches were returned; inspect them before drawing a research or business conclusion.")
     if not NONANSWER.search(grounded_answer) and grounded_answer.strip() and results:
         if confidence.quote_verification < 1:
             warnings.append("Quote/numeric verification is incomplete or uses different passages from the claims.")

@@ -50,6 +50,8 @@ def test_blank_rejected():
     ("How well does TMI reconstruct tasks?", 1),
     ("difference between the approaches", 2),
     ("how do the approaches differ", 2),
+    ("How do submissions that change the learning algorithm compare with those that do not?", 1),
+    ("How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?", 1),
     ("synthesize findings across the corpus", 2),
     ("trade-offs between the approaches", 2),
     ("Which papers address auditable AI workflows derived from user activity or survey responses?", 2),
@@ -174,6 +176,20 @@ def test_confidence_detects_uncited_sentences_and_cross_paper_gap(chunks):
     assert insight.what_study_found == answer
     assert insight.confidence.tier == "Review needed"
     assert insight.validation_warnings
+
+
+def test_source_matches_do_not_become_business_recommendations(chunks):
+    answer = attach_evidence(
+        "Top matching papers (check the excerpts for relevance):\n- Paper 1 [1]\n- Paper 2 [2]",
+        chunks, "Which papers cover survey observations?",
+    )
+    insight = format_structured_business_insight(
+        "Which papers cover survey observations?", answer, chunks)
+    assert insight.what_study_found == answer
+    assert insight.confidence.tier == "Review needed"
+    assert insight.confidence.citation_coverage == 1
+    assert "No business action recommended" in insight.what_kpmg_could_consider
+    assert "Only source matches" in " ".join(insight.validation_warnings)
 
 
 @pytest.mark.parametrize("answer", [
