@@ -1,0 +1,8 @@
+question_id,question,test_type,expected_paper_ids,check_hint
+q02,What is the difference between Pandora's Router and Pandora's Bidder?,direct_answer,2608.20316,Router is centralized; Bidder is decentralized.
+q08,How do submissions that change the learning algorithm compare with those that do not?,direct_answer,2608.20318,"Compare the paper’s average scores, 0.226 and 0.126, rather than calling them gains."
+q11,How much of observed execution does TMI reconstruct?,direct_answer,2608.20319,Look for 74.9% of observed execution.
+q13,How many commuters and respondent-scenario observations did the weather travel survey collect?,direct_answer,2608.20320,Look for 92 student commuters and 454 respondent–scenario observations.
+q18,How does G-CARL supervise factuality and response coverage?,direct_answer,2608.20331,Look for retrieval-based claim checks and weighted checklist coverage.
+q21,Which papers address auditable AI workflows derived from user activity or survey responses?,paper_search,2608.20319|2608.20320,Expect a source list with both the task-model and travel-survey papers.
+q24,What is KPMG's 2026 revenue forecast?,abstention,,The corpus does not supply a KPMG revenue forecast; the answer should abstain.

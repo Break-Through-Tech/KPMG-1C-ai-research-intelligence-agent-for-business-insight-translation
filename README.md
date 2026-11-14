@@ -30,6 +30,8 @@ The project measures **retrieval relevance**, **answer accuracy and completeness
 - The notebook caches metadata, deduplicates paper IDs while preserving collection-area labels, downloads PDFs within a storage budget, checks basic PDF integrity, and records page counts, approximate word counts, and extraction errors. Its recorded EDA run analyzed **85 downloaded papers**, ranging from about **2,900 to 46,500 words** and **5 to 151 pages**. Some keyword matches had weak business relevance, so search and screening need refinement.
 - The larger downloaded collection lives in local `arxiv_data/` and is not included in this repository. The five PDFs in [`data/`](data/) are the committed, reproducible corpus for the project-specific evaluation. A separate small retrieval test uses [BEIR SciFact](https://github.com/beir-cellar/beir).
 
+For a quick hands-on test, use the [starter dataset](sample_data/README.md): it lists all five included PDFs and seven representative questions with expected source papers and short check hints. The CSV files are UTF-8 and can be opened without running the model.
+
 The parser cleans extracted PDF text and groups it into sections. Shared ingestion skips reference sections, splits text into chunks of about 350 tokens with 50-token overlap, and keeps stable paper and chunk IDs for tracing results. Page-level citation mapping and validation across more PDF layouts still need work.
 
 ## RAG pipeline

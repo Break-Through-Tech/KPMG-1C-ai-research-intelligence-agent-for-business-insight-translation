@@ -4,6 +4,8 @@
 
 The **five-paper arXiv set** is the five PDFs committed in `data/`. Its 25 questions and relevance labels in [`benchmark.json`](benchmark.json) were drafted by Codex (GPT-6-Sol), then checked against the PDFs during preparation. Twenty questions ask about one paper, three ask across papers, and two have no answer in the papers. There is no documented independent human annotation pass. This set is useful for finding specific failures, not estimating how the assistant will perform on every research topic.
 
+New users can start with the seven-question [sample dataset](../sample_data/README.md), which points to the committed PDFs and gives short manual checks without requiring a full benchmark run.
+
 The **BEIR SciFact subset** comes from the official [BEIR SciFact dataset](https://github.com/beir-cellar/beir). We sample 20 test claims with seed 42, include all 19 distinct relevant articles for them, then add fixed random distractors to make 500 articles. We index each title and abstract. Because the corpus is reduced, these numbers cannot be compared with published full-corpus BEIR scores. SciFact tests retrieval relevance only; it does not test generated answers or business usefulness.
 
 ## Try the assistant in the notebook
