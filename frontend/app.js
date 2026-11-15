@@ -122,7 +122,7 @@ function paperRow(paper, index, library = false) {
 }
 function workspace() {
   main.innerHTML =
-    heading("Research chat", "", '<div class="chat-art" aria-hidden="true"><span></span><span></span><span></span><span></span></div>') +
+    heading("Research chat") +
     composer() +
     `<div id="workspace-results">${state.mode === "saved" ? `<div class="section-heading"><h2>Questions</h2><a href="#questions">All ${state.data.questions.length} ${icon("arrow")}</a></div>${questionList(state.data.questions.slice(0, 3))}` : ""}</div>`;
 }

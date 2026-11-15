@@ -554,23 +554,8 @@ main {
 }
 .paper-number {
   width: 40px;
-  height: 49px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #c7d9ea;
-  background: #edf4fa;
-  border-radius: 3px;
-  color: #5480a7;
+  color: #6c7e90;
   font-size: 12px;
-  position: relative;
-}
-.paper-number:after {
-  content: "";
-  height: 1px;
-  width: 18px;
-  background: #a9c5de;
-  position: absolute;
-  bottom: 11px;
 }
 .paper-row h3 {
   font-size: 15px;
@@ -1635,35 +1620,9 @@ dialog form {
   }
 }
 
-/* Keep Raghul's blue layout and graphic card; let the work carry the page. */
+/* Keep Raghul's blue layout; let the work carry the page. */
 .page-heading {
   margin-bottom: 22px;
-}
-.chat-art {
-  display: flex;
-  align-items: end;
-  gap: 7px;
-  height: 48px;
-  padding-right: 8px;
-}
-.chat-art span {
-  display: block;
-  width: 17px;
-  height: 25px;
-  background: #234a7b;
-  transform: skewY(-15deg);
-}
-.chat-art span:nth-child(2) {
-  height: 39px;
-  background: #3a6b9b;
-}
-.chat-art span:nth-child(3) {
-  height: 29px;
-  background: #7198ba;
-}
-.chat-art span:nth-child(4) {
-  height: 35px;
-  background: #aac5d9;
 }
 .composer {
   border-color: #b9cde2;
@@ -1690,34 +1649,6 @@ dialog form {
 }
 .corpus-panel {
   overflow: hidden;
-}
-.corpus-art {
-  height: 104px;
-  background: #e7f0f8;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  gap: 9px;
-  padding: 20px;
-}
-.corpus-art span {
-  display: block;
-  width: 32px;
-  height: 56px;
-  background: #234a7b;
-  transform: skewY(-15deg);
-}
-.corpus-art span:nth-child(2) {
-  height: 72px;
-  background: #3a6b9b;
-}
-.corpus-art span:nth-child(3) {
-  height: 42px;
-  background: #7198ba;
-}
-.corpus-art span:nth-child(4) {
-  height: 61px;
-  background: #aac5d9;
 }
 .corpus-body h3 {
   margin-bottom: 0;
@@ -1779,9 +1710,6 @@ dialog form {
   margin-bottom: 0;
 }
 @media (max-width: 700px) {
-  .chat-art {
-    display: none;
-  }
   .composer label.prompt-label {
     font-size: 19px;
   }
