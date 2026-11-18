@@ -71,11 +71,11 @@ For local answers, [install Ollama](https://ollama.com/), then run `ollama pull 
 
 To ask a new question across arXiv, keep Ollama running and start the browser chat with `python frontend_server.py --port 8765 --arxiv`, then open `http://127.0.0.1:8765`. Each question searches arXiv's catalog, reads passages from up to three top matching PDFs, and asks local Qwen for a cited answer. It searches on demand rather than indexing every arXiv paper. The separate five-paper evaluation path is still available with `--live-root .`; running without either flag shows example answers only. See the [frontend guide](frontend/README.md).
 
-### Share a saved demo with GitHub Pages
+### Share the chat with GitHub Pages
 
-The [Pages-ready preview](docs/demo/) lets someone try 25 example questions, inspect sources, and export a brief through a link. It uses recorded Qwen answers from the five public test papers. It does **not** search arXiv or generate new answers: GitHub Pages serves static files and cannot run the Python retriever or Ollama. Live chat needs the local server above or a separately hosted backend.
+The [Pages site](docs/demo/) includes 25 recorded example answers. **Ask arXiv** can also work there when a separate HTTPS API is deployed and its URL is configured in the static build. GitHub Pages serves the browser files; the API searches arXiv and generates answers. The [hosting guide](docs/hosting.md) has the exact setup, including the server-only model key. Until that setup is complete, the Pages site keeps Ask arXiv disabled and the examples remain available. The live hosted path has not been measured by the five-paper or BEIR evaluations below.
 
-To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. To publish, a repository maintainer can set **Settings → Pages → Build and deployment → Deploy from a branch**, select this branch (or `main` after merging), and choose `/docs`. The intended URL is `https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/` once Pages is enabled and its deployment finishes. Treat the demo as public; do not add private papers, prompts, or client data to its generated files.
+To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. To publish, a repository maintainer can set **Settings → Pages → Build and deployment → Deploy from a branch**, select this branch (or `main` after merging), and choose `/docs`. The site is at `https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/`. Treat the demo as public; do not add private papers, prompts, or client data to its generated files.
 
 ## Evaluation and findings
 
