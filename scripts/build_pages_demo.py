@@ -5,9 +5,11 @@ This only exports committed benchmark answers; it does not call a model.
 """
 
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +65,17 @@ def main() -> None:
     data["live_configured"] = False
     data["live_scope"] = "none"
     write_json(DEST / "data" / "bootstrap.json", data)
+
+    api_base = os.getenv("PAGES_API_BASE_URL", "").rstrip("/")
+    if api_base:
+        parsed = urlsplit(api_base)
+        if (parsed.scheme != "https" or not parsed.netloc or parsed.username or parsed.password
+                or parsed.path or parsed.query or parsed.fragment):
+            raise ValueError("PAGES_API_BASE_URL must be an HTTPS origin, without a path or credentials")
+    write_json(DEST / "data" / "runtime-config.json", {
+        "api_base_url": api_base,
+        "model": os.getenv("PAGES_API_MODEL", "gemini-3.5-flash-lite"),
+    })
 
     insights = DEST / "data" / "insights"
     if insights.exists():
