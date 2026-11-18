@@ -78,7 +78,7 @@ def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False, arxi
         model = payload.get("model", arxiv_model or app.MODEL)
         allowed_models = [arxiv_model] if arxiv_model else [m for m in app.MODELS if not m.startswith("gemini-")]
         if model not in allowed_models:
-            raise ValueError("Choose a supported local model.")
+            raise ValueError("Choose the configured model." if arxiv_model else "Choose a supported local model.")
         # Serialize model access; a preview must not flood a shared local service.
         if live_lock is None or not live_lock.acquire(blocking=False):
             raise ConnectionError("Another research request is running. Try again when it finishes.")
@@ -87,8 +87,11 @@ def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False, arxi
             result, error = app.try_live_answer(retriever, question.strip(), persona.context, model=model)
             if error:
                 raise ConnectionError(
+                    "Could not search arXiv or reach the hosted model. Try again shortly."
+                    if arxiv_model else
                     "Could not search arXiv or reach local Ollama. Check your internet connection and Ollama."
-                    if arxiv_live else "The local model is unavailable. Saved research remains available."
+                    if arxiv_live else
+                    "The local model is unavailable. Saved research remains available."
                 )
             answer, chunks = result
         finally:
@@ -206,7 +209,7 @@ class Handler(BaseHTTPRequestHandler):
         origin = self.headers.get("Origin")
         expected_origin = self.server.public_origin or f"http://{self.headers.get('Host')}"
         if not self.valid_host() or (self.server.public_origin and origin != expected_origin) or (origin and origin != expected_origin):
-            return self.respond(403, {"error": "Same-origin local access only."})
+            return self.respond(403, {"error": "Origin not allowed." if self.server.public_origin else "Same-origin local access only."})
         if urlsplit(self.path).path != "/api/insight":
             return self.respond(404, {"error": "Not found."})
         if self.headers.get_content_type() != "application/json":
@@ -229,7 +232,10 @@ class Handler(BaseHTTPRequestHandler):
         except ConnectionError as error:
             return self.respond(503, {"error": str(error)})
         except Exception:
-            return self.respond(503, {"error": "Research is temporarily unavailable. Check the index and local model; saved research remains available."})
+            message = ("Research is temporarily unavailable. Try again shortly."
+                       if self.server.arxiv_model else
+                       "Research is temporarily unavailable. Check the index and local model; saved research remains available.")
+            return self.respond(503, {"error": message})
 
 
 if __name__ == "__main__":
@@ -242,7 +248,7 @@ if __name__ == "__main__":
                         help="Server-selected Gemini model for hosted arXiv chat")
     live = parser.add_mutually_exclusive_group()
     live.add_argument("--live-root", type=Path)
-    live.add_argument("--arxiv", action="store_true", help="Search all of arXiv on demand; answer with local Ollama")
+    live.add_argument("--arxiv", action="store_true", help="Search arXiv on demand; answer with the selected model")
     args = parser.parse_args()
     if args.public_origin and (not args.arxiv or not args.model or not args.model.startswith("gemini-")):
         parser.error("Hosted API requires --arxiv and a server-selected Gemini --model")

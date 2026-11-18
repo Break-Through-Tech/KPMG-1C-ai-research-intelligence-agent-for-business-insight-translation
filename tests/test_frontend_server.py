@@ -171,6 +171,10 @@ def test_hosted_api_accepts_only_pages_origin_and_locks_model(monkeypatch):
                        {**request_headers, "Origin": "https://evil.test"})[0] == 403
         bad_model = json.dumps({"mode": "live", "question": "Question?", "model": "qwen2.5:7b"})
         assert request(server, "POST", "/api/insight", bad_model, request_headers)[0] == 400
+        monkeypatch.setattr(frontend.app, "try_live_answer", lambda *a, **k: (None, "Unavailable"))
+        status, body, _ = request(server, "POST", "/api/insight", payload, request_headers)
+        assert status == 503
+        assert "hosted model" in json.loads(body)["error"]
         server.public_request_count = 30
         assert request(server, "POST", "/api/insight", payload, request_headers)[0] == 429
     finally:
