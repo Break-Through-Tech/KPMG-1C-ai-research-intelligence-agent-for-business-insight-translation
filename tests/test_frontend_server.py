@@ -135,3 +135,45 @@ def test_http_static_allowlist_and_same_origin_boundary(http_server):
     assert request(http_server,"POST","/api/insight",payload,{"Content-Type":"text/plain"})[0] == 415
     assert request(http_server,"POST","/api/insight","x"*16001,headers)[0] == 413
     assert request(http_server,"POST","/api/insight",json.dumps({"mode":"live","question":"test"}),headers)[0] == 503
+
+
+def test_hosted_api_accepts_only_pages_origin_and_locks_model(monkeypatch):
+    origin = "https://break-through-tech.github.io"
+    monkeypatch.setenv("GEMINI_API_KEY", "test-key")
+    calls = []
+
+    def fake_answer(retriever, question, context, **kwargs):
+        calls.append((question, kwargs["model"]))
+        return (frontend.app.ABSTENTION, []), None
+
+    monkeypatch.setattr(frontend.app, "load_arxiv_retriever", lambda: object())
+    monkeypatch.setattr(frontend.app, "try_live_answer", fake_answer)
+    server = frontend.FrontendServer(("127.0.0.1", 0), arxiv_live=True,
+                                     public_origin=origin, arxiv_model=frontend.app.GEMINI_MODEL)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        status, body, headers = request(server, "OPTIONS", "/api/insight", headers={"Origin": origin})
+        assert status == 204 and headers["Access-Control-Allow-Origin"] == origin
+        assert request(server, "OPTIONS", "/api/insight", headers={"Origin": "https://evil.test"})[0] == 403
+        status, body, headers = request(server, "GET", "/api/bootstrap", headers={"Origin": origin})
+        assert status == 200 and json.loads(body)["models"] == [frontend.app.GEMINI_MODEL]
+        assert headers["Access-Control-Allow-Origin"] == origin
+
+        payload = json.dumps({"mode": "live", "question": "What did the paper find?",
+                              "model": frontend.app.GEMINI_MODEL})
+        request_headers = {"Content-Type": "application/json", "Origin": origin}
+        status, body, headers = request(server, "POST", "/api/insight", payload, request_headers)
+        assert status == 200 and json.loads(body)["scope"] == "arxiv"
+        assert headers["Access-Control-Allow-Origin"] == origin
+        assert calls == [("What did the paper find?", frontend.app.GEMINI_MODEL)]
+        assert request(server, "POST", "/api/insight", payload,
+                       {**request_headers, "Origin": "https://evil.test"})[0] == 403
+        bad_model = json.dumps({"mode": "live", "question": "Question?", "model": "qwen2.5:7b"})
+        assert request(server, "POST", "/api/insight", bad_model, request_headers)[0] == 400
+        server.public_request_count = 30
+        assert request(server, "POST", "/api/insight", payload, request_headers)[0] == 429
+    finally:
+        server.shutdown()
+        server.server_close()
+        thread.join(timeout=2)

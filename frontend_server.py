@@ -10,8 +10,10 @@ from dataclasses import asdict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 import math
+import os
 from pathlib import Path
 import threading
+import time
 from urllib.parse import urlsplit
 
 import app
@@ -20,7 +22,7 @@ ROOT = Path(__file__).resolve().parent
 WEB = ROOT / "frontend"
 
 
-def bootstrap():
+def bootstrap(public_model=None):
     papers, records = app.load_demo_data()
     runs = app.available_evaluation_runs()
     return {
@@ -34,7 +36,7 @@ def bootstrap():
                      for key, p in app.selectable_personas().items()],
         "runs": runs,
         "default_run": runs[0],
-        "models": [model for model in app.MODELS if not model.startswith("gemini-")],
+        "models": [public_model] if public_model else [model for model in app.MODELS if not model.startswith("gemini-")],
         "areas": list(app.KPMG_COLLECTION_AREAS),
     }
 
@@ -47,7 +49,7 @@ def arxiv_brief_markdown(question, answer, sources):
     return "\n".join(lines) + "\n"
 
 
-def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False):
+def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False, arxiv_model=None):
     if not isinstance(payload, dict):
         raise ValueError("Expected a JSON object.")
     personas = app.selectable_personas()
@@ -73,8 +75,9 @@ def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False):
         question = payload.get("question")
         if not isinstance(question, str) or not 1 <= len(question.strip()) <= 2000:
             raise ValueError("Enter a research question of 1–2,000 characters.")
-        model = payload.get("model", app.MODEL)
-        if model not in [m for m in app.MODELS if not m.startswith("gemini-")]:
+        model = payload.get("model", arxiv_model or app.MODEL)
+        allowed_models = [arxiv_model] if arxiv_model else [m for m in app.MODELS if not m.startswith("gemini-")]
+        if model not in allowed_models:
             raise ValueError("Choose a supported local model.")
         # Serialize model access; a preview must not flood a shared local service.
         if live_lock is None or not live_lock.acquire(blocking=False):
@@ -114,11 +117,29 @@ def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False):
 class FrontendServer(ThreadingHTTPServer):
     daemon_threads = True
 
-    def __init__(self, address, live_root=None, arxiv_live=False):
+    def __init__(self, address, live_root=None, arxiv_live=False,
+                 public_origin=None, arxiv_model=None):
         super().__init__(address, Handler)
         self.live_root = live_root
         self.arxiv_live = arxiv_live
         self.live_lock = threading.Lock()
+        self.public_origin = public_origin
+        self.arxiv_model = arxiv_model
+        self.public_usage_lock = threading.Lock()
+        self.public_window_start = time.monotonic()
+        self.public_request_count = 0
+
+    def allow_public_request(self):
+        """Bound shared demo usage before paid model calls."""
+        with self.public_usage_lock:
+            now = time.monotonic()
+            if now - self.public_window_start >= 3600:
+                self.public_window_start = now
+                self.public_request_count = 0
+            if self.public_request_count >= 30:
+                return False
+            self.public_request_count += 1
+            return True
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -134,20 +155,37 @@ class Handler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'")
+        if self.server.public_origin and self.headers.get("Origin") == self.server.public_origin:
+            self.send_header("Access-Control-Allow-Origin", self.server.public_origin)
+            self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Vary", "Origin")
         self.end_headers()
         self.wfile.write(data)
 
     def valid_host(self):
+        if self.server.public_origin:
+            return bool(self.headers.get("Host"))
         return self.headers.get("Host") in {f"127.0.0.1:{self.server.server_port}", f"localhost:{self.server.server_port}"}
+
+    def do_OPTIONS(self):
+        if (not self.server.public_origin or self.headers.get("Origin") != self.server.public_origin
+                or urlsplit(self.path).path != "/api/insight"):
+            return self.respond(403, {"error": "Origin not allowed."})
+        return self.respond(204, b"", "text/plain; charset=utf-8")
 
     def do_GET(self):
         if not self.valid_host():
             return self.respond(403, {"error": "Local access only."})
         path = urlsplit(self.path).path
         try:
+            if path == "/api/health":
+                ready = not self.server.arxiv_model or bool(os.getenv("GEMINI_API_KEY"))
+                return self.respond(200 if ready else 503, {"ready": ready})
             if path == "/api/bootstrap":
-                return self.respond(200, {**bootstrap(),
-                                          "live_configured": self.server.arxiv_live or self.server.live_root is not None,
+                ready = not self.server.arxiv_model or bool(os.getenv("GEMINI_API_KEY"))
+                return self.respond(200, {**bootstrap(self.server.arxiv_model),
+                                          "live_configured": ready and (self.server.arxiv_live or self.server.live_root is not None),
                                           "live_scope": "arxiv" if self.server.arxiv_live else
                                                         "sample" if self.server.live_root is not None else "none"})
             static = {
@@ -166,19 +204,25 @@ class Handler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         origin = self.headers.get("Origin")
-        if not self.valid_host() or (origin and origin != f"http://{self.headers.get('Host')}"):
+        expected_origin = self.server.public_origin or f"http://{self.headers.get('Host')}"
+        if not self.valid_host() or (self.server.public_origin and origin != expected_origin) or (origin and origin != expected_origin):
             return self.respond(403, {"error": "Same-origin local access only."})
         if urlsplit(self.path).path != "/api/insight":
             return self.respond(404, {"error": "Not found."})
         if self.headers.get_content_type() != "application/json":
             return self.respond(415, {"error": "Send application/json."})
+        if self.server.arxiv_model and not os.getenv("GEMINI_API_KEY"):
+            return self.respond(503, {"error": "The hosted model is not configured."})
         try:
             length = int(self.headers.get("Content-Length", "0"))
             if not 0 < length <= 16000:
                 return self.respond(413, {"error": "Request must be between 1 and 16,000 bytes."})
             self.connection.settimeout(10)
             payload = json.loads(self.rfile.read(length))
-            result = make_insight(payload, self.server.live_root, self.server.live_lock, self.server.arxiv_live)
+            if self.server.public_origin and not self.server.allow_public_request():
+                return self.respond(429, {"error": "The demo has reached its hourly question limit. Try again later."})
+            result = make_insight(payload, self.server.live_root, self.server.live_lock,
+                                  self.server.arxiv_live, self.server.arxiv_model)
             return self.respond(200, result)
         except (ValueError, TypeError, UnicodeError):
             return self.respond(400, {"error": "Invalid request. Choose an available question, run and perspective."})
@@ -190,12 +234,22 @@ class Handler(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--port", type=int, default=8765)
+    parser.add_argument("--port", type=int, default=int(os.getenv("PORT", "8765")))
+    parser.add_argument("--host", default="127.0.0.1")
+    parser.add_argument("--public-origin", default=None,
+                        help="Exact GitHub Pages origin allowed to call this hosted API")
+    parser.add_argument("--model", default=None,
+                        help="Server-selected Gemini model for hosted arXiv chat")
     live = parser.add_mutually_exclusive_group()
     live.add_argument("--live-root", type=Path)
     live.add_argument("--arxiv", action="store_true", help="Search all of arXiv on demand; answer with local Ollama")
     args = parser.parse_args()
-    server = FrontendServer(("127.0.0.1", args.port), args.live_root, args.arxiv)
+    if args.public_origin and (not args.arxiv or not args.model or not args.model.startswith("gemini-")):
+        parser.error("Hosted API requires --arxiv and a server-selected Gemini --model")
+    if args.model and args.model not in app.MODELS:
+        parser.error("Choose a model from the configured model list")
+    server = FrontendServer((args.host, args.port), args.live_root, args.arxiv,
+                            args.public_origin, args.model)
     print(f"Research Intelligence: http://127.0.0.1:{server.server_port}", flush=True)
     try:
         server.serve_forever()

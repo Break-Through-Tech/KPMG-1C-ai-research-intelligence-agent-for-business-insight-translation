@@ -29,7 +29,8 @@ from retrieval import (
 
 OLLAMA_HOST = "http://127.0.0.1:11434"
 MODEL = "qwen2.5:7b"
-MODELS = ("qwen2.5:7b", "llama3.2", "gemini-1.5-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+MODELS = ("qwen2.5:7b", "llama3.2", GEMINI_MODEL)
 
 
 def available_evaluation_runs(root: Path = ROOT) -> list[str]:
