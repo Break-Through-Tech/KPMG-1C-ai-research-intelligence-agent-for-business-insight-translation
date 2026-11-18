@@ -20,7 +20,7 @@ AI papers arrive faster than teams can read them. This project explores a resear
 
 ## Project overview
 
-This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and a direct source excerpt. The current notebook supports local Ollama (`llama3.2`) and an optional Google Gemini provider. The evaluation results below used Ollama, not Gemini.
+This is a [Break Through Tech AI Studio](https://www.breakthroughtech.org/) challenge hosted by KPMG. The prototype uses public AI research rather than internal or client data. A user asks a question; the system searches paper passages, reranks them, and asks an LLM to answer with passage citations and direct source excerpts. The notebook uses local Ollama (`qwen2.5:7b`) by default and also supports optional Google Gemini. The evaluation results below used Ollama, not Gemini.
 
 The project measures **retrieval relevance**, **answer accuracy and completeness**, and whether citations and quotes can be traced to a source. Translating findings into business recommendations and assessing their usefulness with KPMG reviewers remain future work. See the [challenge overview](Challenge-Project-Overview.md) for the full scope.
 
@@ -29,6 +29,8 @@ The project measures **retrieval relevance**, **answer accuracy and completeness
 - The [EDA workbook](notebooks/eda_workbook.ipynb) searches [arXiv](https://arxiv.org/) by seven team-selected business research themes and a broader computer-science search. Its pilot target is about 100 papers, with 70% from theme searches and 30% from general discovery. The themes were informed by [KPMG's published capabilities](https://kpmg.com/us/en/capabilities-services.html), but the mapping and split are project choices, not an official KPMG classification or an established sampling standard. The general search covers arXiv categories such as `cs.AI`, `cs.LG`, `cs.CL`, `cs.IR`, and `cs.CV`.
 - The notebook caches metadata, deduplicates paper IDs while preserving collection-area labels, downloads PDFs within a storage budget, checks basic PDF integrity, and records page counts, approximate word counts, and extraction errors. Its recorded EDA run analyzed **85 downloaded papers**, ranging from about **2,900 to 46,500 words** and **5 to 151 pages**. Some keyword matches had weak business relevance, so search and screening need refinement.
 - The larger downloaded collection lives in local `arxiv_data/` and is not included in this repository. The five PDFs in [`data/`](data/) are the committed, reproducible corpus for the project-specific evaluation. A separate small retrieval test uses [BEIR SciFact](https://github.com/beir-cellar/beir).
+
+For a quick hands-on test, use the [starter dataset](sample_data/README.md): it lists all five included PDFs and seven representative questions with expected source papers and short check hints. The CSV files are UTF-8 and can be opened without running the model.
 
 The parser cleans extracted PDF text and groups it into sections. Shared ingestion skips reference sections, splits text into chunks of about 350 tokens with 50-token overlap, and keeps stable paper and chunk IDs for tracing results. Page-level citation mapping and validation across more PDF layouts still need work.
 
@@ -41,7 +43,7 @@ arXiv metadata and PDFs → extracted sections → text chunks → MPNet embeddi
 
 The [shared ingestion code](notebooks/ingest.py) creates the Chroma index with `all-mpnet-base-v2` embeddings. The [retriever](notebooks/retrieval.py) filters non-content sections, limits how many chunks one paper can take, and uses a cross-encoder to select passages. It reserves room for multiple papers when a question calls for a comparison. The [answer checks](notebooks/answer_validation.py) flag invalid citation numbers, quotes that do not occur in the cited chunk, and certain answer contradictions. These checks cannot establish that every claim is true or that a quote supports the sentence next to it.
 
-The current assistant workflow is in [the EDA workbook](notebooks/eda_workbook.ipynb). Query rewriting and Gemini are optional notebook paths; neither is part of the reported baseline evaluation.
+The current assistant workflow is in [the EDA workbook](notebooks/eda_workbook.ipynb). Raghul's [browser UI](frontend/README.md) puts live questions first and also includes example answers, source dialogs, saved briefs, and an evidence score. The evidence score helps reviewers inspect outputs; it is [not a calibrated correctness probability](docs/evidence_score.md). Query rewriting and Gemini remain optional paths outside the reported default evaluation.
 
 ## Setup and use
 
@@ -63,35 +65,54 @@ cd notebooks
 jupyter lab eda_workbook.ipynb
 ```
 
-Run the notebook's metadata, PDF extraction, parser, embedding, shared-index, and assistant cells in order. It creates local `arxiv_data/` files and may download papers and embedding models on first use. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem. The five committed PDFs support the evaluation scripts documented in [evaluation/README.md](evaluation/README.md), but the full notebook collection needs its own local metadata catalog and PDFs.
+For a quick demo using the **five committed PDFs**, scroll to **“Run the research assistant on the five committed papers”** near the bottom. Run the next two setup cells, then edit and run the example question cell. The first setup cell builds the saved index if it is missing. You do not need to run the earlier EDA cells for this demo. The full EDA workflow uses local `arxiv_data/` files and requires its metadata, PDF extraction, parser, and embedding cells in order. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem.
 
-For local answers, [install Ollama](https://ollama.com/), then run `ollama pull llama3.2` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+For local answers, [install Ollama](https://ollama.com/), then run `ollama pull qwen2.5:7b` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. The smaller `llama3.2` model can still be selected with `ask_llm(question, model="llama3.2")`, but it had more citation and content errors in this test. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+
+To ask a new question across arXiv, keep Ollama running and start the browser chat with `python frontend_server.py --port 8765 --arxiv`, then open `http://127.0.0.1:8765`. Each question searches arXiv's catalog, reads passages from up to three top matching PDFs, and asks local Qwen for a cited answer. It searches on demand rather than indexing every arXiv paper. The separate five-paper evaluation path is still available with `--live-root .`; running without either flag shows example answers only. See the [frontend guide](frontend/README.md).
+
+### Share a saved demo with GitHub Pages
+
+The [Pages-ready preview](docs/demo/) lets someone try 25 example questions, inspect sources, and export a brief through a link. It uses recorded Qwen answers from the five public test papers. It does **not** search arXiv or generate new answers: GitHub Pages serves static files and cannot run the Python retriever or Ollama. Live chat needs the local server above or a separately hosted backend.
+
+To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. To publish, a repository maintainer can set **Settings → Pages → Build and deployment → Deploy from a branch**, select this branch (or `main` after merging), and choose `/docs`. The intended URL is `https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/` once Pages is enabled and its deployment finishes. Treat the demo as public; do not add private papers, prompts, or client data to its generated files.
 
 ## Evaluation and findings
 
-Kathleen's [evaluation notes](evaluation/results/findings.md) separate two datasets:
+### Five-paper arXiv test
 
-| Dataset | What was tested | Result |
+This project-specific dataset uses the five PDFs committed in [`data/`](data/) and 25 project-drafted questions in [`evaluation/benchmark.json`](evaluation/benchmark.json). The latest run uses local `qwen2.5:7b` after the teammate's PDF parser fix; the index contains 288 chunks.
+
+| Check | Result | What it means |
 | --- | --- | --- |
-| Five committed arXiv PDFs | 25 labeled questions: 23 answerable and two unanswerable | The latest retriever found every labeled relevant paper for **23/23 answerable questions**. Literal labeled fact snippets in selected chunks rose from **7/28** in the baseline to **23/28**. |
-| BEIR SciFact subset | 20 test claims searched against 500 selected article titles and abstracts | The relevant article ranked first for **18/20** claims and appeared in the top five for **20/20**. MRR@10 was **0.950**. |
+| Find the labeled relevant paper | **23/23** answerable questions (100%) | Paper-level retrieval on this small corpus. |
+| Find the exact labeled fact snippets | **23/28** snippets (82%) | Literal presence in selected chunks; some missed snippets may appear in different words. |
+| Cover requested facts in direct answers | **19/20** complete (95%); **1/20** partial | One review against the fixed labels found that q01 omitted the Router's stopping rule. |
+| Pass citation, exact-quote, and number checks | **20/20** direct answers (100%) | Mechanical traceability, not proof that every claim is supported or complete. |
+| Paper-search and abstention cases | **3/3** source lists included both labeled papers; **2/2** unsupported questions were declined | The paper lists and one abstention use rules rather than a Qwen-generated answer. |
 
-The 23/28 figure is an exact wording check on retrieved passages, **not answer accuracy**. The SciFact corpus was reduced from the full benchmark, so these scores should not be compared with published full-corpus BEIR scores. SciFact tests retrieval, not the assistant's written answers or business usefulness.
+The original questions and labels were drafted by Codex and checked against the PDFs, without an independent annotation pass. The content review used one reviewer. These results are useful for diagnosing this prototype; they do not estimate accuracy across a broad research collection or business usefulness for KPMG. See the [question-by-question review](evaluation/results/branch_evaluation.md) and [saved answer checks](evaluation/results/answer_checks_after_parser_integrated.json).
 
-The first manually reviewed Ollama answer run on the 23 answerable arXiv questions had **10 full**, **4 partial**, and **9 failed** answers. In a later full run using an earlier reranked passage order, **18/23** answerable responses had mechanically verified citations and direct quotes, up from **0/23** verified quotes in the baseline. Some answers were still factually wrong. The notebook's final passage order has been tested for retrieval, but **has not had a full 25-answer quality rerun or claim-by-claim human review**. Citation and quote checks alone do not prove accuracy or completeness.
+### Tiny BEIR SciFact retrieval test
 
-For the exact commands, result files, review rubric, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/findings.md](evaluation/results/findings.md). From the repository root, run the existing tests with:
+This subset comes from BEIR's official SciFact test split: 20 claims searched against 500 selected article titles and abstracts, including their labeled relevant articles.
+
+The relevant article ranked first for **18/20** claims (90%) and appeared in the top five for **20/20** (100%). MRR@10 was **0.950** and nDCG@10 was **0.963**. This tests retrieval only. The reduced corpus makes it easier than the full BEIR benchmark, so these scores cannot be compared with published full-corpus results. See the [saved SciFact run](evaluation/results/beir_scifact_after_integration.json).
+
+For the exact commands, result files, question-by-question review, and limitations, see [evaluation/README.md](evaluation/README.md) and [evaluation/results/branch_evaluation.md](evaluation/results/branch_evaluation.md). From the repository root, run the existing tests with:
 
 ```bash
 python -m pytest -q
 ```
 
+The [advisor demo brief](docs/presentation_brief.md) has a short walkthrough. The [issue status](docs/issue_status.md) distinguishes implemented work from the parts that still need reviewer evidence. The [business prompt pilot](docs/prompt-templates/pilot_review.md) uses fixed passages from one paper; it is separate from the live answer evaluation.
+
 ## Next steps
 
-1. Run and manually review all 25 answers with the notebook's final retrieval settings, checking each claim and every requested part of each question against its cited passage.
-2. Test retrieval on a larger, more representative paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
+1. Have teammates or KPMG reviewers independently label new questions and assess answer support, completeness, business usefulness, and trust.
+2. Test retrieval on a larger paper collection and improve business-relevance screening, PDF section detection, and page-level traceability.
 3. Compare optional query rewriting and Gemini with the same questions and passages before changing the evaluated default.
-4. Add a clearly sourced business-implications layer and ask KPMG reviewers to assess usefulness and trust.
+4. Have KPMG reviewers try the interactive business-application view and compare it with the experimental prompt template on a larger, fixed evidence set.
 
 ## License and acknowledgements
 

@@ -1,0 +1,11 @@
+# Evidence score in the research UI
+
+Issue #12 asks how to tell a reviewer when an answer needs extra checking. The Streamlit and browser UIs show Raghul's evidence breakdown for each saved or live answer. The score is a **0–100 heuristic review signal**, not a calibrated probability that the answer is true.
+
+The current formula is 30% retrieval signal, 30% citation coverage, 25% quote and numeric verification, and 15% cited-paper diversity. The retrieval component clips the available reranker score to 0–1; raw reranker scores are not probabilities. Saved runs without scores contribute zero for that component, and the UI says the score is missing. Citation coverage counts factual sentences with a valid passage number. Quote verification checks exact text and numeric values against cited passages. Diversity checks whether the cited papers meet the question's inferred cross-paper demand.
+
+The UI shows High, Moderate, Low, Review needed, or Abstained. A failed source check or missing required paper lowers the tier. If a generated draft fails validation, the answer path returns source matches for inspection. If an answer has review warnings, the study answer stays visible but the proposed business action is withheld. Reviewers can open each citation to see the actual passage.
+
+**Interpretation:** A high score means these mechanical indicators passed. It does not establish that the passage entails every claim, that the answer covers every important fact, or that a proposed KPMG application is useful. The five-paper question set was AI drafted, and the small SciFact subset measures retrieval only. We do not have independent labels sufficient to calibrate score bands against real answer correctness. KPMG reviewers should treat any important decision as requiring source review, and prioritize Low or Review needed outputs for independent research or expert input.
+
+To turn this into a calibrated confidence estimate, collect independently labeled, representative questions and claim-level support judgments; freeze the model and retriever; then evaluate reliability by score band on held-out data. Report false-high cases and calibration error before calling the score a probability.

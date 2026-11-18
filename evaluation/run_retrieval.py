@@ -25,7 +25,7 @@ def compact(text):
 
 
 def notebook_parser():
-    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text())
+    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text(encoding="utf-8"))
     cells = ["".join(c.get("source", [])) for c in notebook["cells"] if c["cell_type"] == "code"]
     parser_cells = [source for source in cells if "def process_paper(" in source]
     if len(parser_cells) != 1:
@@ -64,7 +64,7 @@ def run(benchmark_path, output_path, k, fetch_k, per_paper, rerank_model=None,
         max_rerank_gap=None, order_by_vector=False):
     from langchain_huggingface import HuggingFaceEmbeddings
 
-    benchmark = json.loads(benchmark_path.read_text())
+    benchmark = json.loads(benchmark_path.read_text(encoding="utf-8"))
     parser, parser_source = notebook_parser()
     parsed, metadata = load_corpus(benchmark, parser)
     corpus_fingerprint = hashlib.sha256(parser_source.encode())

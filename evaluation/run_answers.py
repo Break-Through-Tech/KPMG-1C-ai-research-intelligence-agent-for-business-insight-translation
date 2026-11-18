@@ -11,12 +11,16 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
-from retrieval import ResearchRetriever, needs_multiple_papers  # noqa: E402
-from answer_validation import answer_issues, attach_evidence  # noqa: E402
+from retrieval import (  # noqa: E402
+    ResearchRetriever, asks_which_papers, needs_focused_context, needs_multiple_papers,
+)
+from answer_validation import (  # noqa: E402
+    ABSTENTION, answer_issues, attach_evidence, paper_search_answer,
+)
 
 
 def notebook_prompt():
-    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text())
+    notebook = json.loads((ROOT / "notebooks/eda_workbook.ipynb").read_text(encoding="utf-8"))
     for cell in notebook["cells"]:
         if cell["cell_type"] != "code":
             continue
@@ -44,11 +48,33 @@ def ask_ollama(prompt, model, host):
         return json.load(response)
 
 
+def completed_answers(path, model, model_digest, template, retrieval_path, benchmark):
+    """Resume only a run produced with the same model, prompt, retrieval, and questions."""
+    if not path.exists():
+        return {}
+    previous = json.loads(path.read_text(encoding="utf-8"))
+    expected_meta = {
+        "model": model,
+        "model_digest": model_digest,
+        "notebook_prompt_sha256": hashlib.sha256(template.encode()).hexdigest(),
+        "retrieval_result": str(retrieval_path.resolve().relative_to(ROOT)),
+    }
+    if any(previous.get(key) != value for key, value in expected_meta.items()):
+        raise ValueError(f"Existing answer run uses different settings: {path}. Choose a new output path.")
+    rows = previous["answers"]
+    expected_questions = {item["id"]: item["query"] for item in benchmark["queries"]}
+    if (not isinstance(rows, list) or len(rows) > len(expected_questions)
+            or len({row["id"] for row in rows}) != len(rows)
+            or any(expected_questions.get(row["id"]) != row.get("query") for row in rows)):
+        raise ValueError(f"Existing answer run has mismatched questions: {path}. Choose a new output path.")
+    return {row["id"]: row for row in rows}
+
+
 def main(args):
     from langchain_huggingface import HuggingFaceEmbeddings
 
-    benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text())
-    retrieval = json.loads(args.retrieval.read_text())
+    benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text(encoding="utf-8"))
+    retrieval = json.loads(args.retrieval.read_text(encoding="utf-8"))
     embeddings = HuggingFaceEmbeddings(
         model_name=retrieval["model"], encode_kwargs={"normalize_embeddings": True})
     retriever = ResearchRetriever.from_persisted(
@@ -65,10 +91,8 @@ def main(args):
         models = json.load(response)["models"]
     model_digest = next((m["digest"] for m in models
                          if m["name"] in {args.model, f"{args.model}:latest"}), None)
-    completed = {}
-    if args.output.exists():
-        previous = json.loads(args.output.read_text())
-        completed = {row["id"]: row for row in previous["answers"]}
+    completed = completed_answers(
+        args.output, args.model, model_digest, template, args.retrieval, benchmark)
     for item in benchmark["queries"]:
         if args.limit and len(completed) >= args.limit:
             break
@@ -78,16 +102,32 @@ def main(args):
             item["query"], k=retrieval["k_chunks"], fetch_k=retrieval["fetch_k"],
             min_papers=2 if needs_multiple_papers(item["query"]) else 1,
         )
-        context = retriever.format_context(chunks)
-        prompt = template.format(context=context, question=item["query"])
         start = time.monotonic()
-        response = ask_ollama(prompt, args.model, args.host)
-        draft = response["response"].strip()
-        answer = attach_evidence(draft, chunks, item["query"])
+        if not chunks:
+            draft, response, answer, kind = "", {}, ABSTENTION, "abstention"
+        elif asks_which_papers(item["query"]):
+            draft, response = "", {}
+            answer = paper_search_answer(chunks, item["query"])
+            kind = "abstention" if answer == ABSTENTION else "paper_matches"
+        else:
+            context = (retriever.format_focused_context(item["query"], chunks)
+                       if needs_focused_context(item["query"])
+                       else retriever.format_context(chunks))
+            prompt = template.format(context=context, question=item["query"])
+            response = ask_ollama(prompt, args.model, args.host)
+            draft = response["response"].strip()
+            answer = attach_evidence(draft, chunks, item["query"])
+            kind = "abstention" if answer == ABSTENTION else "answer"
+        draft_issues = answer_issues(answer, chunks)
+        if draft_issues:
+            answer = ("I could not verify a cited answer. Here are source matches to inspect:\n\n"
+                      + paper_search_answer(chunks, item["query"]))
+            kind = "source_review"
         completed[item["id"]] = {
             "id": item["id"], "query": item["query"],
-            "answer": answer,
+            "answer": answer, "response_kind": kind,
             "draft": draft,
+            "draft_issues": draft_issues,
             "remaining_issues": answer_issues(answer, chunks),
             "source_list": retriever.format_sources(chunks),
             "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
@@ -116,7 +156,7 @@ def save_answers(path, model, model_digest, prompt, retrieval_path, completed):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--model", default="llama3.2")
+    parser.add_argument("--model", default="qwen2.5:7b")
     parser.add_argument("--host", default="http://127.0.0.1:11434")
     parser.add_argument("--output", type=Path,
                         default=ROOT / "evaluation/results/answers.json")
