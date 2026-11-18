@@ -1,0 +1,73 @@
+{
+  "config": {
+    "model": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "prompt": "Rewrite this question as a concise academic search query. Preserve every requested part, named entity, comparison and constraint. Use descriptive research terminology only when it preserves the original meaning. Do not answer the question. Do not invent facts, numbers, paper names, mechanisms or conclusions. Return only the search query in the query field.\n\nQuestion: ",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 160
+    },
+    "benchmark_sha256": "13925e62025299a7b8ff2afdc2b51d658d52fdb80208dbc1ac7e06068ccb9400",
+    "runner_sha256": "4ceb8e39a04478a993ce197a9e1f8a3401b69fca157405e95acaaf6159b474e2"
+  },
+  "rewrites": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "rewrite": "Pandora's Router decision criteria specialist estimate cost-benefit analysis",
+      "seconds": 5.7,
+      "raw": "{\"query\": \"Pandora's Router decision criteria specialist estimate cost-benefit analysis\"}"
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "rewrite": "difference between Pandora's Router and Pandora's Bidder",
+      "seconds": 1.5,
+      "raw": "{\"query\": \"difference between Pandora's Router and Pandora's Bidder\"}"
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "rewrite": "submissions changing learning algorithm vs submissions not changing learning algorithm comparison",
+      "seconds": 1.7,
+      "raw": "{\"query\": \"submissions changing learning algorithm vs submissions not changing learning algorithm comparison\"}"
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "rewrite": "task model induction group interleaved tasks",
+      "seconds": 1.4,
+      "raw": "{\"query\": \"task model induction group interleaved tasks\"}"
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "rewrite": "G-CARL supervision factuality response coverage",
+      "seconds": 1.5,
+      "raw": "{\"query\": \"G-CARL supervision factuality response coverage\"}"
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "rewrite": "auditable AI workflows derived from user activity or survey responses",
+      "seconds": 1.7,
+      "raw": "{\"query\": \"auditable AI workflows derived from user activity or survey responses\"}"
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "rewrite": "AI agents OR model specialists benchmark tasks costs evaluation",
+      "seconds": 1.5,
+      "raw": "{\"query\": \"AI agents OR model specialists benchmark tasks costs evaluation\"}"
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "rewrite": "evidence-grounded explanations AND auditable task models",
+      "seconds": 1.5,
+      "raw": "{\"query\": \"evidence-grounded explanations AND auditable task models\"}"
+    }
+  ]
+}

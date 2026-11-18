@@ -1,0 +1,33 @@
+{
+  "changed_ids": [
+    "q03",
+    "q05",
+    "q07",
+    "q09",
+    "q11",
+    "q12",
+    "q13",
+    "q14",
+    "q15",
+    "q18",
+    "q19",
+    "q21",
+    "q22",
+    "q23",
+    "q24",
+    "q25"
+  ],
+  "reuse_ids": [
+    "q01",
+    "q02",
+    "q04",
+    "q06",
+    "q08",
+    "q10",
+    "q16",
+    "q17",
+    "q20"
+  ],
+  "method": "Generate changed grouped contexts; reuse exact same question/context/schema/model/options outputs, with per-row provenance. This is paired deterministic comparison, not independent repeated sampling.",
+  "threshold": "At least two additional complete answers without new major errors or unsupported answers."
+}

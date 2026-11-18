@@ -1,0 +1,734 @@
+{
+  "schema_version": 1,
+  "review_type": "automatic_checks_and_manual_review",
+  "source_answers": "/Users/alexnguyen/Documents/GitHub/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/evaluation/results/answers_ai_three.json",
+  "checklist_provenance": "Prepared against the repository benchmark and local PDF abstracts, with additional method sections for q01/q02 and evaluation dimensions for q19. This is not an independently human-reviewed gold standard. Numbers are surface checks; semantic attribution is assessed separately.",
+  "answers": [
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "answer": "Submissions that change the learning algorithm (122 submissions) do not differ significantly from those that do not (141 submissions) in terms of the number of submissions that reach the learning procedure, with 46.4% of the former and 53.6% of the latter reaching the procedure. [3]\n\nThe provided passages do not provide a direct comparison between the two groups.",
+      "content_review_status": "pending_manual_review",
+      "checklist": {
+        "id": "q08",
+        "query": "How do submissions that change the learning algorithm compare with those that do not?",
+        "required_checks": [
+          {
+            "id": "q08.1",
+            "label": "Algorithm-changing submissions",
+            "requirement": "Reports a mean normalized score of 0.226 for submissions that change the learning algorithm."
+          },
+          {
+            "id": "q08.2",
+            "label": "Other submissions",
+            "requirement": "Reports 0.126 for the rest and correctly identifies the former as higher, without claiming a causal effect."
+          }
+        ],
+        "expected_numbers": [
+          "0.226",
+          "0.126"
+        ],
+        "references": [
+          {
+            "paper_id": "2608.20318",
+            "file": "data/2608.20318v1_AI4AI-Bench Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Imp.pdf",
+            "page": 1,
+            "sha256": "93029b04f8612f4bfdd221a6f726e86a2d1408cab0a3256866f164e3c3749dfc"
+          }
+        ]
+      },
+      "automatic": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "numbers",
+            "status": "attention",
+            "message": "Check figures against their sources."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 57 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20318"
+          ]
+        },
+        "word_count": 57,
+        "numbers_absent_from_cited_sources": [
+          "141"
+        ],
+        "expected_numbers_not_found": [
+          "0.226",
+          "0.126"
+        ],
+        "legacy_mechanical_issues": [
+          "Check numbers absent from cited passages: ['141']"
+        ]
+      },
+      "passages": [
+        {
+          "rank": 1,
+          "score": 4.009890556335449,
+          "text": "Everything so far has been a score, and a score says only whether a submission worked. It does not say whether the agent designed an algorithm or tuned one that was already there, and those are the two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line diff can replace a learning rule, and a thousand-line refactor can leave the training procedure exactly as it was. The distinction has to be read off the submitted code, by asking which part of the training procedure it modifies. We group every change into eight families on two sides of that line (Table 4). The grouping is assigned by a separate language model reading each submitted diff against the definitions that follow. Four changehow this run goes: how long it trains and how often it saves; the training hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to keep; and how much trainable capacity to attach and where, such as the rank and placement of an adapter. Four changehow the model learns: the loss it optimizes, by adding, removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure did not have before; the update rule itself, replaced by a different one; and the data the procedure trains on. The families are not exclusive — a submission matches3.13of them on average, since changing a loss usually drags a hyperparameter along with it — so we report how many submissions reach a side rather than assigning each to a single family. Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay entirely on the run",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_9_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": 4.64284086227417,
+          "text": "optimum. The submissions say where the remaining distance went. Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it — the objective, the supervision signal, the learning rule, the data — average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes that mechanism; few of these submissions do. In summary, we make the following contributions: • A benchmark that isolates the algorithmic level.Ten research repositories spanning ten families of training algorithms, evaluated under a unified protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring. • A measurement of what agentsdo, not only whether they win.Every submission is classified by what it changes, which is what turns “the agent improved the training algorithm” into a checkable statement rather than a restatement of the score. • Revealing a gap between algorithmic exploration and actual improvement.The algorithmic design level is where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it.",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "1 Introduction",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_1_7",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": 3.8266804218292236,
+          "text": "how much trainable capacity, and where 73 27.8% learning the loss it optimizes 87 33.1% the supervision it learns from 66 25.1% the update rule itself 23 8.7% the data it trains on 21 8.0% any learning family 122 46.4% run side only141 53.6% reaching the learning sidenone low medium high xhigh max share of submissions 8% 39% 33% 49% 65% 64% ordering holds within four of the five models in this corpus. It is also not a randomized comparison: the systems that reach the learning procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there. Read together, the two numbers say that the algorithmic layer is where the distance actually gets closed, and that most submissions never go to it. What separates a submission that reaches that layer from one that does not is not effort spent but a step taken first: reading the training dynamics as a specific failure mechanism, and then addressing that mechanism.",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.1 Most submissions change how the run goes, not how the model learns",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_9_10",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": 2.864039897918701,
+          "text": "Is there anything that pushes agents down to that layer? The setup has exactly one knob that can be turned on its own, the reasoning-effort level, and taking it from the lowest setting to the highest shows clearly what it buys and what it does not. It buys nerve. The share of submissions that touch the learning algorithm rises from8.0%to64 .0%. At low effort the submissions move budgets, logging and optimization knobs; at high effort they operate on objectives, replace learning rules, and add supervision to the procedure. It buys attempts. Within the Codex grid, the only one that exposes the lowest setting, the median configuration goes from 4 evaluations inside its four hours to 16, from 18 edited lines to 246, and from11k output tokens to 109k. Cost follows: the median exploration cost per task rises from $1.69 to $34.60. The exploration stage of the whole evaluation consumed $5,334 of API calls, with Kimi K3 converted from Chinese yuan and with neither the GPU hours of the twelve-hour runs nor the evaluator’s compute included. It buys completion. Of the 19 cells that score zero, 8 ended their four hours without a usable patch — four of them workspaces the host found empty after the agent exited early — and 11 submitted a complete patch that started its twelve-hour run but finished with nothing satisfying the contract, most often no loadable merged model written to disk. All 19 terminated normally: the failure is in what the agent submitted. They concentrate at low effort, with 12 of the 19 at the two lowest levels and one each at the two highest. And it does buy a result, though a small one",
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "section": "4.2 Reasoning effort buys nerve, and nerve is what pays",
+          "source_url": "https://arxiv.org/abs/2608.20318",
+          "chunk_id": "2608.20318_10_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "source_units": [
+        {
+          "id": "p1.1",
+          "passage_id": 1,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 0,
+          "end": 478,
+          "text": "Everything so far has been a score, and a score says only whether a submission worked. It does not say whether the agent designed an algorithm or tuned one that was already there, and those are the two outcomes this paper exists to separate. Counting lines does not separate them either: a one-line diff can replace a learning rule, and a thousand-line refactor can leave the training procedure exactly as it was. The distinction has to be read off the submitted code, by asking"
+        },
+        {
+          "id": "p1.2",
+          "passage_id": 1,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 479,
+          "end": 955,
+          "text": "which part of the training procedure it modifies. We group every change into eight families on two sides of that line (Table 4). The grouping is assigned by a separate language model reading each submitted diff against the definitions that follow. Four changehow this run goes: how long it trains and how often it saves; the training hyperparameters, such as the learning rate or the batch size; which of the checkpoints it produced to keep; and how much trainable capacity to"
+        },
+        {
+          "id": "p1.3",
+          "passage_id": 1,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 956,
+          "end": 1436,
+          "text": "attach and where, such as the rank and placement of an adapter. Four changehow the model learns: the loss it optimizes, by adding, removing or reweighting a term; the supervision it learns from, by introducing a signal the procedure did not have before; the update rule itself, replaced by a different one; and the data the procedure trains on. The families are not exclusive — a submission matches3.13of them on average, since changing a loss usually drags a hyperparameter along"
+        },
+        {
+          "id": "p1.4",
+          "passage_id": 1,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 1437,
+          "end": 1659,
+          "text": "with it — so we report how many submissions reach a side rather than assigning each to a single family. Of the 280 submissions, 17 made no change that could be classified. Of the remaining 263, 141 stay entirely on the run"
+        },
+        {
+          "id": "p2.1",
+          "passage_id": 2,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 0,
+          "end": 477,
+          "text": "optimum. The submissions say where the remaining distance went. Of the 263 that change anything, 141 leave the learning procedure exactly as they found it and move budgets, checkpointing, hyperparameters and capacity instead. The 122 that do reach it — the objective, the supervision signal, the learning rule, the data — average0.226 against0 .126for the rest: the algorithmic layer is where the distance gets closed, and most submissions never go there. More reasoning effort"
+        },
+        {
+          "id": "p2.2",
+          "passage_id": 2,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 478,
+          "end": 954,
+          "text": "moves agents towards it, taking that share from8%to64%and the mean score from0 .094to0 .196, which is most of what effort buys. A machine learning scientist reads the training dynamics, names the mechanism that is failing, and changes that mechanism; few of these submissions do. In summary, we make the following contributions: • A benchmark that isolates the algorithmic level.Ten research repositories spanning ten families of training algorithms, evaluated under a unified"
+        },
+        {
+          "id": "p2.3",
+          "passage_id": 2,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 955,
+          "end": 1432,
+          "text": "protocol that separates a four-hour agent development window from the up to twelve-hour clean-start training run used for scoring. • A measurement of what agentsdo, not only whether they win.Every submission is classified by what it changes, which is what turns “the agent improved the training algorithm” into a checkable statement rather than a restatement of the score. • Revealing a gap between algorithmic exploration and actual improvement.The algorithmic design level is"
+        },
+        {
+          "id": "p2.4",
+          "passage_id": 2,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 1433,
+          "end": 1594,
+          "text": "where the distance to a better algorithm is closed and the one these agents reach least often, and more reasoning effort mostly buys the willingness to reach it."
+        },
+        {
+          "id": "p3.1",
+          "passage_id": 3,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 0,
+          "end": 480,
+          "text": "how much trainable capacity, and where 73 27.8% learning the loss it optimizes 87 33.1% the supervision it learns from 66 25.1% the update rule itself 23 8.7% the data it trains on 21 8.0% any learning family 122 46.4% run side only141 53.6% reaching the learning sidenone low medium high xhigh max share of submissions 8% 39% 33% 49% 65% 64% ordering holds within four of the five models in this corpus. It is also not a randomized comparison: the systems that reach the learning"
+        },
+        {
+          "id": "p3.2",
+          "passage_id": 3,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 481,
+          "end": 956,
+          "text": "procedure more often are the stronger ones to begin with, so the gap is the difference between the submissions that go there and the submissions that do not, rather than the effect of going there. Read together, the two numbers say that the algorithmic layer is where the distance actually gets closed, and that most submissions never go to it. What separates a submission that reaches that layer from one that does not is not effort spent but a step taken first: reading the"
+        },
+        {
+          "id": "p3.3",
+          "passage_id": 3,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 957,
+          "end": 1043,
+          "text": "training dynamics as a specific failure mechanism, and then addressing that mechanism."
+        },
+        {
+          "id": "p4.1",
+          "passage_id": 4,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 0,
+          "end": 473,
+          "text": "Is there anything that pushes agents down to that layer? The setup has exactly one knob that can be turned on its own, the reasoning-effort level, and taking it from the lowest setting to the highest shows clearly what it buys and what it does not. It buys nerve. The share of submissions that touch the learning algorithm rises from8.0%to64 .0%. At low effort the submissions move budgets, logging and optimization knobs; at high effort they operate on objectives, replace"
+        },
+        {
+          "id": "p4.2",
+          "passage_id": 4,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 474,
+          "end": 952,
+          "text": "learning rules, and add supervision to the procedure. It buys attempts. Within the Codex grid, the only one that exposes the lowest setting, the median configuration goes from 4 evaluations inside its four hours to 16, from 18 edited lines to 246, and from11k output tokens to 109k. Cost follows: the median exploration cost per task rises from $1.69 to $34.60. The exploration stage of the whole evaluation consumed $5,334 of API calls, with Kimi K3 converted from Chinese yuan"
+        },
+        {
+          "id": "p4.3",
+          "passage_id": 4,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 953,
+          "end": 1427,
+          "text": "and with neither the GPU hours of the twelve-hour runs nor the evaluator’s compute included. It buys completion. Of the 19 cells that score zero, 8 ended their four hours without a usable patch — four of them workspaces the host found empty after the agent exited early — and 11 submitted a complete patch that started its twelve-hour run but finished with nothing satisfying the contract, most often no loadable merged model written to disk. All 19 terminated normally: the"
+        },
+        {
+          "id": "p4.4",
+          "passage_id": 4,
+          "paper_id": "2608.20318",
+          "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+          "start": 1428,
+          "end": 1620,
+          "text": "failure is in what the agent submitted. They concentrate at low effort, with 12 of the 19 at the two lowest levels and one each at the two highest. And it does buy a result, though a small one"
+        }
+      ]
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "answer": "TMI recovers two kinds of task structure: objective models and procedure models. [3][2]\n\nThe objective model is a hierarchical decomposition of the objective of a task into subobjectives the user pursues. [3]\n\nThe procedure model is a trace-grounded composition of control-flow operators specifying how the execution of a task is organized through sequencing and iteration. [3]",
+      "content_review_status": "pending_manual_review",
+      "checklist": {
+        "id": "q09",
+        "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+        "required_checks": [
+          {
+            "id": "q09.1",
+            "label": "Goals",
+            "requirement": "Identifies a hierarchical objective model of recursive goal decomposition."
+          },
+          {
+            "id": "q09.2",
+            "label": "Procedure",
+            "requirement": "Identifies a procedure model representing execution control flow."
+          }
+        ],
+        "expected_numbers": [],
+        "references": [
+          {
+            "paper_id": "2608.20319",
+            "file": "data/2608.20319v1_Inducing Task Models from Computer-Use Traces.pdf",
+            "page": 1,
+            "sha256": "055abd08c5fed667badebc447be457006c754634853da9c27cf4b8811c8fad15"
+          }
+        ]
+      },
+      "automatic": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "pass",
+            "message": "Source references exist; whether they support each claim still needs review."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 53 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20319"
+          ]
+        },
+        "word_count": 53,
+        "numbers_absent_from_cited_sources": [],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": []
+      },
+      "passages": [
+        {
+          "rank": 1,
+          "score": 7.205049514770508,
+          "text": "TMI recovers task models from raw computer-use traces in three stages (Figure 2).Event grounding and activity segmentationrecovers what each event did from its visual context and groups the grounded events into semantic actions and activities (3.1). Latent task inductiondiscovers the tasks pursued in the session and assigns each activity to the task it realizes (3.2).Task model constructionbuilds complementary objective and procedure models for each task and reconciles them into a single task model, in which every node pairs an objective with the control-flow operator over its children (3.3).",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "3 Method",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_5_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": 4.58052921295166,
+          "text": "We introduced TASKMODELINDUCTION, which abstracts raw computer-use events into activities, discovers the latent tasks they realize, and reconciles separately induced objective and procedure models into one task model per task. It turns everyday computer-use activity traces into durable, auditable records of how work are carried out. Experiments show that this representation recovers interleaved execution faithfully and yields better downstream agent skills than raw traces or workflow summaries. TMI has the potential to facilitate the study of how work is carried out across domains and to make these records reusable as knowledge for both people and agents.",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "7 Conclusion",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_16_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": 3.4622445106506348,
+          "text": "Describing the activity conducted in a computeruse session is necessary for analyzing, learning, and auditing it. We formalize this process as the recovery, from a naturalistic computer-use trace, of the latent tasks and their task models specifying the objectives and procedures. Let X=⟨x 1, x2, . . . , xN ⟩ be a user’s computeruse trace in an interactive computer environment, where each event xi = (si, ai, τi) contains the state represented as a screenshot si, a low-level operation (e.g.,click), and a timestampτ i. The trajectory reflects the user pursuing a set of latent tasks T={t 1, t2, . . .}, where a possibly non-contiguous subsequence of events collectively realizes a task tj. However, inducing these latent tasks remains an open challenge, as none of the tasks, their boundaries, or the event-to-task assignments are predefined in realistic human traces. We define the induction problem as jointly discovering the set of latent tasks T and, for each task t∈ T, inducing a task model Mt that unifies two complementary axes. • Theobjective model Ot is a hierarchical decomposition of the objective of t into the subobjectives the user pursues. • Theprocedure model Pt is a trace-grounded composition of control-flow operators specifying how the execution of t is organized through sequencing and iteration. The task model Mt is structured as a tree, whose every node pairs an objective with a control-flow operator over its children.",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "2 Problem Formulation",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_4_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": 3.6054677963256836,
+          "text": "Naturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI’s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1",
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "section": "Abstract",
+          "source_url": "https://arxiv.org/abs/2608.20319",
+          "chunk_id": "2608.20319_1_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "source_units": [
+        {
+          "id": "p1.1",
+          "passage_id": 1,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 0,
+          "end": 478,
+          "text": "TMI recovers task models from raw computer-use traces in three stages (Figure 2).Event grounding and activity segmentationrecovers what each event did from its visual context and groups the grounded events into semantic actions and activities (3.1). Latent task inductiondiscovers the tasks pursued in the session and assigns each activity to the task it realizes (3.2).Task model constructionbuilds complementary objective and procedure models for each task and reconciles them"
+        },
+        {
+          "id": "p1.2",
+          "passage_id": 1,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 479,
+          "end": 599,
+          "text": "into a single task model, in which every node pairs an objective with the control-flow operator over its children (3.3)."
+        },
+        {
+          "id": "p2.1",
+          "passage_id": 2,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 0,
+          "end": 479,
+          "text": "We introduced TASKMODELINDUCTION, which abstracts raw computer-use events into activities, discovers the latent tasks they realize, and reconciles separately induced objective and procedure models into one task model per task. It turns everyday computer-use activity traces into durable, auditable records of how work are carried out. Experiments show that this representation recovers interleaved execution faithfully and yields better downstream agent skills than raw traces or"
+        },
+        {
+          "id": "p2.2",
+          "passage_id": 2,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 480,
+          "end": 663,
+          "text": "workflow summaries. TMI has the potential to facilitate the study of how work is carried out across domains and to make these records reusable as knowledge for both people and agents."
+        },
+        {
+          "id": "p3.1",
+          "passage_id": 3,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 0,
+          "end": 477,
+          "text": "Describing the activity conducted in a computeruse session is necessary for analyzing, learning, and auditing it. We formalize this process as the recovery, from a naturalistic computer-use trace, of the latent tasks and their task models specifying the objectives and procedures. Let X=⟨x 1, x2, . . . , xN ⟩ be a user’s computeruse trace in an interactive computer environment, where each event xi = (si, ai, τi) contains the state represented as a screenshot si, a low-level"
+        },
+        {
+          "id": "p3.2",
+          "passage_id": 3,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 478,
+          "end": 957,
+          "text": "operation (e.g.,click), and a timestampτ i. The trajectory reflects the user pursuing a set of latent tasks T={t 1, t2, . . .}, where a possibly non-contiguous subsequence of events collectively realizes a task tj. However, inducing these latent tasks remains an open challenge, as none of the tasks, their boundaries, or the event-to-task assignments are predefined in realistic human traces. We define the induction problem as jointly discovering the set of latent tasks T and,"
+        },
+        {
+          "id": "p3.3",
+          "passage_id": 3,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 958,
+          "end": 1438,
+          "text": "for each task t∈ T, inducing a task model Mt that unifies two complementary axes. • Theobjective model Ot is a hierarchical decomposition of the objective of t into the subobjectives the user pursues. • Theprocedure model Pt is a trace-grounded composition of control-flow operators specifying how the execution of t is organized through sequencing and iteration. The task model Mt is structured as a tree, whose every node pairs an objective with a control-flow operator over its"
+        },
+        {
+          "id": "p3.4",
+          "passage_id": 3,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 1439,
+          "end": 1448,
+          "text": "children."
+        },
+        {
+          "id": "p4.1",
+          "passage_id": 4,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 0,
+          "end": 474,
+          "text": "Naturalistic computer-use traces, passively recorded screenshots and mouse or keyboard actions, are a valuable resource for deriving symbolic, auditable, and reusable models of how everyday work is done. Such models matter as computer-use agents enter real work, where agents need to learn how tasks are actually performed, and organizations need to audit and reuse that knowledge. However, inducing such task models is challenging, as activity is observed only as low-level"
+        },
+        {
+          "id": "p4.2",
+          "passage_id": 4,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 475,
+          "end": 953,
+          "text": "events and realworld work is multi-threaded with interleaved goals. Existing methods assume a given task or a single workflow, and produce step-level summaries rather than structured task models. We introduce TASKMODELINDUCTION(TMI), which (i) discovers the latent tasks in an unconstrained trace, disentangling concurrent activity, and (ii) for each latent task, induces a task model pairing a hierarchical objective model of recursive goal decomposition with a procedure model"
+        },
+        {
+          "id": "p4.3",
+          "passage_id": 4,
+          "paper_id": "2608.20319",
+          "title": "Inducing Task Models from Computer-Use Traces",
+          "start": 954,
+          "end": 1382,
+          "text": "of the control flow that organized the execution. Intrinsically, on controlled human and agent trajectories, TMI recovers interleaved tasks with 0.974 agreement against ground-truth groupings and reconstructs 74.9% of the observed execution steps, far more than the strongest workflow induction baseline. Extrinsically, skills derived from TMI’s task models improve held-out task accuracy by 30.0% over the strongest baseline. 1"
+        }
+      ]
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "answer": "G-CARL supervises factuality through a retrieval-grounded branch that verifies report-grounded medical claims against evidence retrieved from a multi-source medical datastore, producing the factuality reward Rfact (Sec. 3.2). \n\nIt also constructs a case-specific weighted checklist through MLLM generation followed by clinician-guided refinement, and evaluates the checklist coverage of the generated response to produce the checklist reward Rcheck (Sec. 3.3).",
+      "content_review_status": "pending_manual_review",
+      "checklist": {
+        "id": "q18",
+        "query": "How does G-CARL supervise factuality and response coverage?",
+        "required_checks": [
+          {
+            "id": "q18.1",
+            "label": "Factual support",
+            "requirement": "Explains multi-source retrieval for verifying atomic claims."
+          },
+          {
+            "id": "q18.2",
+            "label": "Coverage",
+            "requirement": "Explains context-aware, instance-specific weighted checklists for covering user needs/response content."
+          }
+        ],
+        "expected_numbers": [],
+        "references": [
+          {
+            "paper_id": "2608.20331",
+            "file": "data/2608.20331v1_G-CARL Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical R.pdf",
+            "page": 1,
+            "sha256": "a91e11c0df97c24fe5a7553cc993cc463a958862bc3fbf8b864a7ef9ae352075"
+          }
+        ]
+      },
+      "automatic": {
+        "checks": [
+          {
+            "name": "citations",
+            "status": "attention",
+            "message": "Add source references to the answer itself."
+          },
+          {
+            "name": "numbers",
+            "status": "attention",
+            "message": "Check figures against their sources."
+          },
+          {
+            "name": "length",
+            "status": "pass",
+            "message": "Answer is 58 words; the review target is at most 120."
+          }
+        ],
+        "retrieval": {
+          "expected_papers_found": 1,
+          "expected_papers": 1,
+          "paper_recall": 1.0,
+          "paper_mrr": 1.0,
+          "paper_ndcg": 1.0,
+          "unique_paper_order": [
+            "2608.20331"
+          ]
+        },
+        "word_count": 58,
+        "numbers_absent_from_cited_sources": [
+          "3.2",
+          "3.3"
+        ],
+        "expected_numbers_not_found": [],
+        "legacy_mechanical_issues": [
+          "No passage citation appears in the answer.",
+          "Include one verified, verbatim Evidence quote per cited paper.",
+          "Check numbers absent from cited passages: ['3.2', '3.3']"
+        ]
+      },
+      "passages": [
+        {
+          "rank": 1,
+          "score": 4.161101341247559,
+          "text": "reward provides localized supervision for sparse factual errors and discouragesunsupportedelaboration.Forcontext-dependent objectives such as demand satisfaction and expression quality,G-CARLconstructsinstance-specificweightedchecklists throughMLLMgenerationfollowedbyclinicianrefinement. Each checklist item is assigned an automatically generated weight, allowing the reward to emphasize the aspects most relevant to the current report and user question. This yields an explicit checklist score that provides transparent supervision for whether the response addresses the user’s concern appropriately. In summary, our contributions are as follows: •WeformulatePMRIasanevidence-groundedandpatientfacingmultimodalgenerationtask,andproposeG-CARL, a reinforcement learning framework that decomposes reward supervision according to the heterogeneous verifiability of different objectives. •We propose a retrieval-grounded claim reward that provides fine-grained supervision for medical factuality through atomic claim verification, and a case-specific checklist reward that explicitly supervises demand satisfactionandexpressionqualitywithoutrelyingonasingle reference response. •We constructMMedReport, a real-world PMRI benchmark with clinician-designed evaluation protocols. Extensive experiments across multiple LVLM backbones demonstrate that G-CARL consistently outperforms supervised and reinforcement learning baselines, with the gains further validated by clinician preference and user comprehension studies.",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "1 Introduction",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_2_5",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 2,
+          "score": 4.461706161499023,
+          "text": "In this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework that decomposes reward supervision through retrieval-grounded claim verification and case-specific checklist guidance. ExtensiveexperimentsonthenewlyconstructedMMedReport benchmark, together with clinician-authored evaluation and human preference studies, show that G-CARL consistently improves the quality of patient-oriented medical report interpretation.Wehopethisworklaysthefoundationformore reliable and patient-centered multimodal medical assistants.",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "5 Conclusion",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_11_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 3,
+          "score": 2.2761735916137695,
+          "text": "Personalized interpretation of medical reports has emerged as an increasingly important need among patients. Addressing this need requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication,yetexisting medical vision-language tasks do not adequately capture these dual requirements. To bridge this gap, we introducePatient-orientedMedicalReportInterpretation(PMRI), a novel open-ended multimodal generation task that requires models to explain medical reports in accurate and accessible language based on a user’s query and dialogue history. Thesetwoobjectivesdifferfundamentallyintheirverifiability, yet remain tightly coupled, making them difficult to optimize jointly under conventional supervised fine-tuning and holistic reinforcement learning paradigms. To address this challenge, we propose G-CARL, a grounded, checklist-aligned reinforcementlearningframeworkthatcombinesmulti-source retrieval for atomic claim verification with context-aware, instance-specific weighted checklists for response coverage, providing structured supervision for factuality, user-demand satisfaction, and expression quality without constraining response diversity. We further constructMMedReport, a realworld PMRI benchmark, along with a clinician-designed three-dimensionalevaluationprotocol.Extensiveexperiments demonstrate that G-CARL consistently outperforms existing post-training baselines in overall quality, claim-level precision, and checklist recall. Pairwise preference evaluation by clinicians further confirms that G-CARL produces interpretations that are more accurate and better aligned with patient needs.",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "Abstract",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_1_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        },
+        {
+          "rank": 4,
+          "score": 2.3683385848999023,
+          "text": "BuiltuponGRPO,G-CARLoptimizesthepolicymodelwith three reward signals, as illustrated in Fig. 2. Given uploaded medical report imagesI, the dialogue historyh, and a user queryq,thepolicymodelfirstgeneratescandidateresponses. The retrieval-grounded branch then supervises medical factuality by verifying report-grounded medical claims against evidence retrieved from a multi-source medical datastore, producing the factuality rewardRfact (Sec. 3.2). In parallel, the case-specific checklist branch optimizes demand satisfaction and expression quality by constructing a weighted checklist through MLLM generation followed by clinicianguided refinement, and evaluating the checklist coverage of thegeneratedresponsetoproducethechecklistrewardR check (Sec. 3.3). Together with the format rewardRformat, these components are integrated into a multi-objective optimization task (Sec. 3.4).",
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "section": "3.1 Overall Architecture",
+          "source_url": "https://arxiv.org/abs/2608.20331",
+          "chunk_id": "2608.20331_4_1",
+          "authors": [],
+          "published": "",
+          "categories": [],
+          "collection_areas": []
+        }
+      ],
+      "source_units": [
+        {
+          "id": "p1.1",
+          "passage_id": 1,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 0,
+          "end": 479,
+          "text": "reward provides localized supervision for sparse factual errors and discouragesunsupportedelaboration.Forcontext-dependent objectives such as demand satisfaction and expression quality,G-CARLconstructsinstance-specificweightedchecklists throughMLLMgenerationfollowedbyclinicianrefinement. Each checklist item is assigned an automatically generated weight, allowing the reward to emphasize the aspects most relevant to the current report and user question. This yields an explicit"
+        },
+        {
+          "id": "p1.2",
+          "passage_id": 1,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 480,
+          "end": 957,
+          "text": "checklist score that provides transparent supervision for whether the response addresses the user’s concern appropriately. In summary, our contributions are as follows: •WeformulatePMRIasanevidence-groundedandpatientfacingmultimodalgenerationtask,andproposeG-CARL, a reinforcement learning framework that decomposes reward supervision according to the heterogeneous verifiability of different objectives. •We propose a retrieval-grounded claim reward that provides fine-grained"
+        },
+        {
+          "id": "p1.3",
+          "passage_id": 1,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 958,
+          "end": 1433,
+          "text": "supervision for medical factuality through atomic claim verification, and a case-specific checklist reward that explicitly supervises demand satisfactionandexpressionqualitywithoutrelyingonasingle reference response. •We constructMMedReport, a real-world PMRI benchmark with clinician-designed evaluation protocols. Extensive experiments across multiple LVLM backbones demonstrate that G-CARL consistently outperforms supervised and reinforcement learning baselines, with the"
+        },
+        {
+          "id": "p1.4",
+          "passage_id": 1,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 1434,
+          "end": 1513,
+          "text": "gains further validated by clinician preference and user comprehension studies."
+        },
+        {
+          "id": "p2.1",
+          "passage_id": 2,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 0,
+          "end": 476,
+          "text": "In this paper, we present PMRI as a challenging yet underexplored task that requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication.We propose G-CARL, a reinforcement learning framework that decomposes reward supervision through retrieval-grounded claim verification and case-specific checklist guidance. ExtensiveexperimentsonthenewlyconstructedMMedReport benchmark, together with clinician-authored evaluation and human preference studies,"
+        },
+        {
+          "id": "p2.2",
+          "passage_id": 2,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 477,
+          "end": 677,
+          "text": "show that G-CARL consistently improves the quality of patient-oriented medical report interpretation.Wehopethisworklaysthefoundationformore reliable and patient-centered multimodal medical assistants."
+        },
+        {
+          "id": "p3.1",
+          "passage_id": 3,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 0,
+          "end": 474,
+          "text": "Personalized interpretation of medical reports has emerged as an increasingly important need among patients. Addressing this need requires both evidence-grounded medical factualityandcontext-dependentpatientcommunication,yetexisting medical vision-language tasks do not adequately capture these dual requirements. To bridge this gap, we introducePatient-orientedMedicalReportInterpretation(PMRI), a novel open-ended multimodal generation task that requires models to explain"
+        },
+        {
+          "id": "p3.2",
+          "passage_id": 3,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 475,
+          "end": 948,
+          "text": "medical reports in accurate and accessible language based on a user’s query and dialogue history. Thesetwoobjectivesdifferfundamentallyintheirverifiability, yet remain tightly coupled, making them difficult to optimize jointly under conventional supervised fine-tuning and holistic reinforcement learning paradigms. To address this challenge, we propose G-CARL, a grounded, checklist-aligned reinforcementlearningframeworkthatcombinesmulti-source retrieval for atomic claim"
+        },
+        {
+          "id": "p3.3",
+          "passage_id": 3,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 949,
+          "end": 1423,
+          "text": "verification with context-aware, instance-specific weighted checklists for response coverage, providing structured supervision for factuality, user-demand satisfaction, and expression quality without constraining response diversity. We further constructMMedReport, a realworld PMRI benchmark, along with a clinician-designed three-dimensionalevaluationprotocol.Extensiveexperiments demonstrate that G-CARL consistently outperforms existing post-training baselines in overall"
+        },
+        {
+          "id": "p3.4",
+          "passage_id": 3,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 1424,
+          "end": 1638,
+          "text": "quality, claim-level precision, and checklist recall. Pairwise preference evaluation by clinicians further confirms that G-CARL produces interpretations that are more accurate and better aligned with patient needs."
+        },
+        {
+          "id": "p4.1",
+          "passage_id": 4,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 0,
+          "end": 478,
+          "text": "BuiltuponGRPO,G-CARLoptimizesthepolicymodelwith three reward signals, as illustrated in Fig. 2. Given uploaded medical report imagesI, the dialogue historyh, and a user queryq,thepolicymodelfirstgeneratescandidateresponses. The retrieval-grounded branch then supervises medical factuality by verifying report-grounded medical claims against evidence retrieved from a multi-source medical datastore, producing the factuality rewardRfact (Sec. 3.2). In parallel, the case-specific"
+        },
+        {
+          "id": "p4.2",
+          "passage_id": 4,
+          "paper_id": "2608.20331",
+          "title": "G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation",
+          "start": 479,
+          "end": 882,
+          "text": "checklist branch optimizes demand satisfaction and expression quality by constructing a weighted checklist through MLLM generation followed by clinicianguided refinement, and evaluating the checklist coverage of thegeneratedresponsetoproducethechecklistrewardR check (Sec. 3.3). Together with the format rewardRformat, these components are integrated into a multi-objective optimization task (Sec. 3.4)."
+        }
+      ]
+    }
+  ]
+}

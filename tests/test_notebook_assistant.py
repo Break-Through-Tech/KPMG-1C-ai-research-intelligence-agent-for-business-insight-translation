@@ -27,6 +27,13 @@ def assistant():
     calls = []
     retriever.retrieve = lambda query, **kwargs: calls.append((query, kwargs)) or chunks
     ns['rag_retriever'] = retriever
+    structured_calls = []
+    def structured(question, passages, **kwargs):
+        structured_calls.append((question, passages, kwargs))
+        return {'draft': 'The survey counted 92 commuters [1].',
+                'generation_error': None, 'local_warnings': []}
+    ns['structured_answers'] = SimpleNamespace(generate=structured)
+    ns['structured_calls'] = structured_calls
     return ns, calls, chunks
 
 
@@ -68,7 +75,7 @@ def test_citations_are_metadata_only_and_keep_original_numbers(assistant):
 def test_invalid_citation_is_withheld(assistant, capsys):
     ns, _, _ = assistant
     ns['generate_answer'] = lambda *args: 'Unsupported finding [999].'
-    result = ns['ask_llm']('Question')
+    result = ns['ask_llm']('Question', provider='google')
     assert 'Unknown passage citations: [999]' in capsys.readouterr().out
     assert 'I could not verify a cited answer' in result
     assert 'Unsupported finding' not in result
@@ -77,7 +84,8 @@ def test_invalid_citation_is_withheld(assistant, capsys):
 
 def test_missing_citation_is_withheld_with_inspectable_source(assistant, capsys):
     ns, _, _ = assistant
-    ns['generate_answer'] = lambda *args: 'The survey counted 92 commuters.'
+    ns['structured_answers'].generate = lambda *args, **kwargs: {
+        'draft': 'The survey counted 92 commuters.', 'generation_error': None, 'local_warnings': []}
     result = ns['ask_llm']('How many commuters?')
     assert 'No passage citation' in capsys.readouterr().out
     assert 'The survey counted 92 commuters.' not in result
@@ -102,16 +110,22 @@ def test_comparison_uses_focused_context(assistant):
     ns['rag_retriever'].format_focused_context = lambda *args: 'FOCUSED OUTCOME'
     ns['generate_answer'] = lambda prompt, provider, model: (
         prompts.append(prompt) or 'The survey counted 92 commuters [1].')
+    # Local Qwen path: focused excerpts become the structured generator's context.
     ns['ask_llm']('How do these results compare?')
     ns['ask_llm']('How much of the work was recovered?')
+    assert [call[2]['context'] for call in ns['structured_calls']] == ['FOCUSED OUTCOME'] * 2
+    # Optional Gemini path: focused excerpts go into the plain-text prompt.
+    ns['generate_answer'] = lambda prompt, provider, model: (
+        prompts.append(prompt) or 'The survey counted 92 commuters [1].')
+    ns['ask_llm']('How do these results compare?', provider='google')
     assert 'FOCUSED OUTCOME' in prompts[0]
-    assert 'FOCUSED OUTCOME' in prompts[1]
 
 
 def test_no_passages_abstains_without_generation(assistant):
     ns, _, _ = assistant
     ns['rag_retriever'].retrieve = lambda *args, **kwargs: []
     ns['generate_answer'] = lambda *args: pytest.fail('Generation should not run')
+    ns['structured_answers'].generate = lambda *args, **kwargs: pytest.fail('Structured generation should not run')
     assert ns['ask_llm']('Question') == 'The provided papers do not address this question.'
 
 
@@ -164,3 +178,44 @@ def test_invalid_inputs_rejected_before_retrieval(assistant):
     with pytest.raises(ValueError, match='Unknown provider'):
         ns['ask_llm']('Question', provider='unknown')
     assert not calls
+
+
+def test_live_default_uses_tested_structured_policy_and_grouping(assistant):
+    ns, _, chunks = assistant
+    ns['ask_llm']('How many commuters?')
+    question, passages, config = ns['structured_calls'][0]
+    assert question == 'How many commuters?' and passages == chunks
+    assert config['model'] == 'qwen3.5:9b'
+    assert config['policy'] == 'coverage'
+    assert config['evidence_mode'] == 'citation'
+    assert config['repair'] is False
+    assert 'Paper: Survey\nPaper ID: p1' in config['context']
+    assert callable(ns['format_answer'])
+
+
+def test_structured_failure_is_not_presented_as_abstention(assistant):
+    ns, _, _ = assistant
+    ns['structured_answers'].generate = lambda *a, **k: {
+        'generation_error': 'Invalid JSON', 'draft': '', 'local_warnings': []}
+    with pytest.raises(RuntimeError, match='could not be formatted reliably'):
+        ns['ask_llm']('How many commuters?')
+
+
+def test_local_rewrite_still_answers_original_question(assistant):
+    ns, calls, _ = assistant
+    ns['reformat_prompt'] = lambda *args: 'survey commuter count'
+    ns['ask_llm']('How many commuters?', rewrite_query=True, model='qwen3.5:9b')
+    assert calls[0][0] == 'survey commuter count'
+    assert ns['structured_calls'][0][0] == 'How many commuters?'
+
+
+def test_live_retriever_enables_tested_hybrid_settings():
+    notebook = json.loads((ROOT / 'notebooks/eda_workbook.ipynb').read_text())
+    source = next(''.join(c['source']) for c in notebook['cells']
+                  if 'rag_retriever = ResearchRetriever(' in ''.join(c.get('source', [])))
+    ns = {'vector_store': None}
+    exec(compile(source, 'retriever_cell', 'exec'), ns)
+    retriever = ns['rag_retriever']
+    assert retriever.hybrid and retriever.order_by_vector
+    assert retriever.max_chunks_per_paper == 4 and retriever.max_rerank_gap == 8
+    assert retriever.rerank_model == 'cross-encoder/ms-marco-MiniLM-L6-v2'

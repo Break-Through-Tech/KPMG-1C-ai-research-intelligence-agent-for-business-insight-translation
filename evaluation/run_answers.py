@@ -6,17 +6,21 @@ import hashlib
 import json
 import sys
 import time
+import tempfile
 import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "notebooks"))
 from retrieval import (  # noqa: E402
-    ResearchRetriever, asks_which_papers, needs_focused_context, needs_multiple_papers,
+    ResearchRetriever, RetrievedChunk, asks_which_papers, needs_focused_context,
+    needs_multiple_papers,
 )
 from answer_validation import (  # noqa: E402
     ABSTENTION, answer_issues, attach_evidence, paper_search_answer,
 )
+
+GENERATION_OPTIONS = {"temperature": 0, "seed": 42, "num_ctx": 8192, "num_predict": 550}
 
 
 def notebook_prompt():
@@ -39,8 +43,7 @@ def notebook_prompt():
 
 def ask_ollama(prompt, model, host):
     payload = json.dumps({"model": model, "prompt": prompt, "stream": False,
-                          "options": {"temperature": 0, "seed": 42, "num_ctx": 8192,
-                                      "num_predict": 550}}).encode()
+                          "options": GENERATION_OPTIONS}).encode()
     request = urllib.request.Request(
         f"{host.rstrip('/')}/api/generate", payload,
         headers={"Content-Type": "application/json"}, method="POST")
@@ -48,61 +51,153 @@ def ask_ollama(prompt, model, host):
         return json.load(response)
 
 
-def completed_answers(path, model, model_digest, template, retrieval_path, benchmark):
-    """Resume only a run produced with the same model, prompt, retrieval, and questions."""
+def json_digest(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True).encode()).hexdigest()
+
+
+def load_snapshot(retrieval, benchmark):
+    """Read the exact passages and prompt context saved by run_retrieval.py."""
+    if retrieval.get("snapshot_version") != 1:
+        raise ValueError("Retrieval report has no frozen passages. Run run_retrieval.py "
+                         "with a new --output path, then pass that file as --retrieval.")
+    if retrieval.get("benchmark_sha256") != json_digest(benchmark):
+        raise ValueError("Benchmark differs from the retrieval snapshot. Regenerate retrieval.")
+    expected = {item["id"]: item["query"] for item in benchmark["queries"]}
+    if len(expected) != len(benchmark["queries"]):
+        raise ValueError("Benchmark contains duplicate query IDs.")
+    snapshots = {}
+    formatter = ResearchRetriever(None)
+    for row in retrieval["queries"]:
+        query_id = row["id"]
+        if query_id in snapshots or query_id not in expected or row["query"] != expected[query_id]:
+            raise ValueError(f"Snapshot query mismatch: {query_id}")
+        chunks = [RetrievedChunk(**chunk) for chunk in row["retrieved_chunks"]]
+        if [c.rank for c in chunks] != list(range(1, len(chunks) + 1)):
+            raise ValueError(f"Snapshot passage ranks must be consecutive: {query_id}")
+        if (row["context"] != formatter.format_context(chunks)
+                or row["source_list"] != formatter.format_sources(chunks)):
+            raise ValueError(f"Snapshot context or sources differ from passages: {query_id}")
+        snapshots[query_id] = row
+    if set(snapshots) != set(expected):
+        raise ValueError("Snapshot must contain every benchmark query.")
+    return snapshots
+
+
+def run_configuration(model, model_digest, template, retrieval, benchmark):
+    if not model_digest:
+        raise ValueError(f"Cannot fingerprint Ollama model {model!r}; pull the model first.")
+    return {
+        "model": model, "model_digest": model_digest,
+        "notebook_prompt_sha256": hashlib.sha256(template.encode()).hexdigest(),
+        "generation_options": dict(GENERATION_OPTIONS),
+        # Includes corpus fingerprint, retrieval settings, passage text/order and metadata.
+        "retrieval_sha256": json_digest(retrieval),
+        "benchmark_sha256": json_digest(benchmark),
+        "answer_pipeline_sha256": hashlib.sha256(
+            Path(__file__).read_bytes()
+            + (ROOT / "notebooks/answer_validation.py").read_bytes()
+            + (ROOT / "notebooks/retrieval.py").read_bytes()
+        ).hexdigest(),
+    }
+
+
+def load_completed(path, config, snapshots):
     if not path.exists():
         return {}
-    previous = json.loads(path.read_text(encoding="utf-8"))
-    expected_meta = {
-        "model": model,
-        "model_digest": model_digest,
-        "notebook_prompt_sha256": hashlib.sha256(template.encode()).hexdigest(),
-        "retrieval_result": str(retrieval_path.resolve().relative_to(ROOT)),
-    }
-    if any(previous.get(key) != value for key, value in expected_meta.items()):
-        raise ValueError(f"Existing answer run uses different settings: {path}. Choose a new output path.")
-    rows = previous["answers"]
-    expected_questions = {item["id"]: item["query"] for item in benchmark["queries"]}
-    if (not isinstance(rows, list) or len(rows) > len(expected_questions)
-            or len({row["id"] for row in rows}) != len(rows)
-            or any(expected_questions.get(row["id"]) != row.get("query") for row in rows)):
-        raise ValueError(f"Existing answer run has mismatched questions: {path}. Choose a new output path.")
-    return {row["id"]: row for row in rows}
+    previous = json.loads(path.read_text())
+    previous_config = previous.get("run_config")
+    if previous.get("schema_version") != 2 or not isinstance(previous_config, dict):
+        raise ValueError("Existing answers lack a verified run configuration. "
+                         "Preserve that file and choose a new --output path.")
+    if previous.get("run_fingerprint") != json_digest(previous_config):
+        raise ValueError("Existing run fingerprint is invalid. Choose a new --output path.")
+    if previous_config != config:
+        changed = sorted(key for key in previous_config.keys() | config.keys()
+                         if previous_config.get(key) != config.get(key))
+        raise ValueError(f"Cannot resume: run configuration changed ({', '.join(changed)}). "
+                         "Choose a new --output path.")
+    completed = {}
+    for row in previous["answers"]:
+        query_id = row["id"]
+        frozen = snapshots.get(query_id)
+        if (query_id in completed or frozen is None
+                or row["query"] != frozen["query"]
+                or row["passages"] != frozen["retrieved_chunks"]
+                or row["source_list"] != frozen["source_list"]):
+            raise ValueError(f"Saved answer inputs differ from the snapshot: {query_id}")
+        completed[query_id] = row
+    return completed
+
+
+def select_queries(benchmark, ids=None, limit=0):
+    if ids and limit:
+        raise ValueError('Use --ids or --limit, not both.')
+    if ids:
+        by_id = {q['id']: q for q in benchmark['queries']}
+        if len(ids) != len(set(ids)) or any(key not in by_id for key in ids):
+            raise ValueError('--ids must contain unique, known benchmark question IDs.')
+        return [by_id[key] for key in ids]
+    return benchmark['queries'][:limit or None]
+
+
+def experiment_context(frozen, group_by_paper=False, selection_order=False):
+    """Change presentation only; retain frozen passage IDs, text and sources.
+
+    Reconstruct order_by_vector=False from saved reranker scores, including
+    reserved distinct-paper slots. Original citation IDs remain stable.
+    """
+    chunks = [RetrievedChunk(**chunk) for chunk in frozen['retrieved_chunks']]
+    if selection_order:
+        ranked = sorted(chunks, key=lambda chunk: chunk.score, reverse=True)
+        reserved = []
+        if needs_multiple_papers(frozen['query']):
+            seen = set()
+            for chunk in ranked:
+                if chunk.paper_id not in seen:
+                    reserved.append(chunk)
+                    seen.add(chunk.paper_id)
+                    if len(seen) == 2:
+                        break
+        reserved_ids = {chunk.rank for chunk in reserved}
+        chunks = reserved + [c for c in ranked if c.rank not in reserved_ids]
+    return ResearchRetriever(None).format_context(chunks, group_by_paper=group_by_paper)
 
 
 def main(args):
-    from langchain_huggingface import HuggingFaceEmbeddings
-
-    benchmark = json.loads((ROOT / "evaluation/benchmark.json").read_text(encoding="utf-8"))
-    retrieval = json.loads(args.retrieval.read_text(encoding="utf-8"))
-    embeddings = HuggingFaceEmbeddings(
-        model_name=retrieval["model"], encode_kwargs={"normalize_embeddings": True})
-    retriever = ResearchRetriever.from_persisted(
-        embeddings,
-        persist_directory=ROOT / ".evaluation_cache" / retrieval["corpus_fingerprint"],
-        collection_name="evaluation_mpnet_cosine",
-        max_chunks_per_paper=retrieval["max_chunks_per_paper"],
-        rerank_model=retrieval.get("rerank_model"),
-        max_rerank_gap=retrieval.get("max_rerank_gap"),
-        order_by_vector=retrieval.get("order_by_vector", False),
-    )
+    if args.limit < 0:
+        raise ValueError("--limit must be nonnegative.")
+    retrieval = json.loads(args.retrieval.read_text())
+    benchmark_path = ROOT / retrieval.get("benchmark", "evaluation/benchmark.json")
+    if args.output.resolve() in {args.retrieval.resolve(), benchmark_path.resolve()}:
+        raise ValueError("Answer output must differ from the retrieval and benchmark files.")
+    benchmark = json.loads(benchmark_path.read_text())
+    ids = getattr(args, 'ids', None)
+    selected = select_queries(benchmark, ids, args.limit)
+    snapshots = load_snapshot(retrieval, benchmark)
     template = notebook_prompt()
     with urllib.request.urlopen(f"{args.host.rstrip('/')}/api/tags", timeout=30) as response:
         models = json.load(response)["models"]
     model_digest = next((m["digest"] for m in models
                          if m["name"] in {args.model, f"{args.model}:latest"}), None)
-    completed = completed_answers(
-        args.output, args.model, model_digest, template, args.retrieval, benchmark)
-    for item in benchmark["queries"]:
-        if args.limit and len(completed) >= args.limit:
-            break
+    config = run_configuration(args.model, model_digest, template, retrieval, benchmark)
+    group_by_paper = getattr(args, 'group_by_paper', False)
+    selection_order = getattr(args, 'selection_order', False)
+    if selection_order and not retrieval.get('rerank_model'):
+        raise ValueError('--selection-order requires saved reranker scores.')
+    config['context_presentation'] = {
+        'group_by_paper': group_by_paper, 'selection_order': selection_order,
+    }
+    if ids:
+        config['selected_question_ids'] = ids
+    completed = load_completed(args.output, config, snapshots)
+    focused_formatter = ResearchRetriever(None, rerank_model=retrieval.get("rerank_model"))
+    for item in selected:
         if item["id"] in completed:
             continue
-        chunks = retriever.retrieve(
-            item["query"], k=retrieval["k_chunks"], fetch_k=retrieval["fetch_k"],
-            min_papers=2 if needs_multiple_papers(item["query"]) else 1,
-        )
+        frozen = snapshots[item["id"]]
+        chunks = [RetrievedChunk(**chunk) for chunk in frozen["retrieved_chunks"]]
         start = time.monotonic()
+        context = ""
         if not chunks:
             draft, response, answer, kind = "", {}, ABSTENTION, "abstention"
         elif asks_which_papers(item["query"]):
@@ -110,9 +205,11 @@ def main(args):
             answer = paper_search_answer(chunks, item["query"])
             kind = "abstention" if answer == ABSTENTION else "paper_matches"
         else:
-            context = (retriever.format_focused_context(item["query"], chunks)
-                       if needs_focused_context(item["query"])
-                       else retriever.format_context(chunks))
+            # Focused excerpts need the saved reranker; otherwise replay the
+            # frozen passages, optionally regrouped (same citation IDs either way).
+            context = (focused_formatter.format_focused_context(item["query"], chunks)
+                       if needs_focused_context(item["query"]) and focused_formatter.rerank_model
+                       else experiment_context(frozen, group_by_paper, selection_order))
             prompt = template.format(context=context, question=item["query"])
             response = ask_ollama(prompt, args.model, args.host)
             draft = response["response"].strip()
@@ -128,30 +225,44 @@ def main(args):
             "answer": answer, "response_kind": kind,
             "draft": draft,
             "draft_issues": draft_issues,
+            "generation_context": context,
             "remaining_issues": answer_issues(answer, chunks),
-            "source_list": retriever.format_sources(chunks),
-            "passages": [{"paper_id": chunk.paper_id, "section": chunk.section,
-                          "chunk_id": chunk.chunk_id,
-                          "text": chunk.text} for chunk in chunks],
+            "claim_support_status": "not_evaluated",
+            "source_list": frozen["source_list"],
+            "passages": frozen["retrieved_chunks"],
             "seconds": round(time.monotonic() - start, 1),
             "prompt_tokens": response.get("prompt_eval_count"),
             "answer_tokens": response.get("eval_count"),
         }
-        save_answers(args.output, args.model, model_digest, template, args.retrieval, completed)
+        save_answers(args.output, config, args.retrieval, benchmark, completed)
         print(f"{item['id']}: {completed[item['id']]['seconds']}s, "
               f"{completed[item['id']]['answer_tokens']} output tokens", flush=True)
-    save_answers(args.output, args.model, model_digest, template, args.retrieval, completed)
+    save_answers(args.output, config, args.retrieval, benchmark, completed)
     print(f"Saved {len(completed)} answers to {args.output}")
 
 
-def save_answers(path, model, model_digest, prompt, retrieval_path, completed):
+def save_answers(path, config, retrieval_path, benchmark, completed):
+    """Replace the checkpoint atomically so interruption cannot truncate it."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps({
-        "model": model, "model_digest": model_digest,
-        "notebook_prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest(),
-        "retrieval_result": str(retrieval_path.resolve().relative_to(ROOT)),
+    result = {
+        "schema_version": 2, "run_config": config,
+        "run_fingerprint": json_digest(config),
+        "model": config["model"], "model_digest": config["model_digest"],
+        "notebook_prompt_sha256": config["notebook_prompt_sha256"],
+        "retrieval_result": str(retrieval_path.resolve()),
+        "benchmark": benchmark,
         "answers": list(completed.values()),
-    }, indent=2) + "\n")
+    }
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent,
+                                         prefix=f".{path.name}.", suffix=".tmp", delete=False) as file:
+            temporary = Path(file.name)
+            file.write(json.dumps(result, indent=2) + "\n")
+        temporary.replace(path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":
@@ -164,4 +275,7 @@ if __name__ == "__main__":
                         default=ROOT / "evaluation/results/retrieval.json")
     parser.add_argument("--limit", type=int, default=0,
                         help="Run only the first N questions (0 = all)")
+    parser.add_argument('--ids', nargs='+', help='Generate only these benchmark question IDs, in this order')
+    parser.add_argument('--group-by-paper', action='store_true', help='Group frozen passages under paper headings')
+    parser.add_argument('--selection-order', action='store_true', help='Use saved reranker scores and reserved paper slots instead of vector order')
     main(parser.parse_args())

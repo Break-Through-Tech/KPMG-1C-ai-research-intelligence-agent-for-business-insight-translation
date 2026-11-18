@@ -1,5 +1,25 @@
 # Trials we did not keep in the notebook
 
+## Judge pilot — October 28, 2026
+
+`answer_judge_qwen25_pilot.json` and its `.md` report preserve an interrupted
+two-question trial of the new LLM reviewer using the locally installed
+`qwen2.5:latest` model. q01 failed response validation (first omitted a passage,
+then marked abstention not applicable under a stricter initial rubric). q02
+received a full/pass assessment even though the assistant review identified a
+missing centralized/decentralized distinction and an overgeneralization. The
+trial was stopped before q03 completed. It does not establish judge accuracy.
+
+The evaluator now permits a not-applicable abstention rating for an answerable
+question receiving a non-refusal, while still requiring abstention assessment
+for unanswerable questions and explicit refusals. The rubric also explicitly
+asks judges to consider defining comparison dimensions. Further trials use
+separate output files; this pilot remains unchanged for inspection. A valid
+JSON review and matching evidence quotes are not sufficient to establish that
+a model's judgment is correct.
+
+## Earlier retrieval and answer trials
+
 These files are here so the comparison stays inspectable without crowding the
 current results folder. They use the same five arXiv PDFs or the same 20-claim,
 500-article SciFact subset as the baseline.

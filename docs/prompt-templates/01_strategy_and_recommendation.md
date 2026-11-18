@@ -4,7 +4,7 @@ Revised November 1, 2026 for the product owner.
 
 ## Purpose and recommendation
 
-Help a professional-services user understand research and decide what to investigate next. The reader should not need AI knowledge. Use Template B version 3 as a provisional candidate, not a proven winner. It separates findings, potential business implications, uncertainty, and proposed actions while supporting the requested format. The [A31 pilot](pilot_review.md) found citation gaps that still need review.
+Help a professional-services user understand research and decide what to investigate next. The reader should not need AI knowledge. Use Template B version 5 (merged from two version 3 variants) as a provisional candidate, not a proven winner. It separates findings, potential business implications, uncertainty, and proposed actions while supporting the requested format. The [A31 pilot](pilot_review.md) found citation gaps that still need review.
 
 ## Basis for this revision
 

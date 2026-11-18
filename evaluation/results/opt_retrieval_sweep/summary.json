@@ -1,0 +1,16 @@
+{
+  "baseline": {
+    "macro_recall": 1.0,
+    "evidence_coverage": 0.8214285714285714,
+    "evidence_hits": 23,
+    "evidence_total": 28,
+    "average_chunks": 4.16
+  },
+  "hybrid": {
+    "macro_recall": 1.0,
+    "evidence_coverage": 0.8928571428571429,
+    "evidence_hits": 25,
+    "evidence_total": 28,
+    "average_chunks": 4.2
+  }
+}
