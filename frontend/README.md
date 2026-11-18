@@ -13,7 +13,7 @@ python frontend_server.py --port 8765
 
 Open `http://127.0.0.1:8765`. This starts with the 25 recorded example answers and does not need Ollama.
 
-For a shareable, saved-results preview, build the [GitHub Pages files](../docs/demo/) with `python scripts/build_pages_demo.py` from the repository root. Pages cannot run the live chat backend.
+For the GitHub Pages version, build the [static files](../docs/demo/) with `python scripts/build_pages_demo.py` from the repository root. To enable live Ask arXiv on that site, deploy and connect the separate API described in the [hosting guide](../docs/hosting.md).
 
 ## Ask arXiv with the local model
 
@@ -30,7 +30,7 @@ Start the browser server in another terminal:
 python frontend_server.py --port 8765 --arxiv
 ```
 
-The chat starts in **Ask arXiv** mode. Each question searches arXiv's catalog, reads up to three top matching PDFs when available, ranks short passages, and asks local Qwen to answer from those passages. PDFs are cached locally. The UI links back to the original paper and shows verbatim excerpts and source checks. This path has been tried with individual live questions, but the five-paper and BEIR evaluation numbers do **not** measure its accuracy or recall across arXiv.
+The chat starts in **Ask arXiv** mode. Each question searches arXiv's catalog, reads up to three top matching PDFs when available, ranks short passages, and asks local Qwen to answer from those passages. PDFs are cached locally. The UI links back to the original paper and shows verbatim excerpts and source checks. The hosted path uses the server-selected Gemini model and a lighter retrieval fallback; its answers need separate evaluation. The five-paper and BEIR numbers do **not** measure either live path's accuracy or recall across arXiv.
 
 To rerun the fixed five-paper evaluation path instead, use `python frontend_server.py --port 8765 --live-root .`. The local server listens only on `127.0.0.1`; it has no account system and is meant for local review, not public hosting. The Gemini option remains in the Streamlit app and notebook, not this browser UI.
 
