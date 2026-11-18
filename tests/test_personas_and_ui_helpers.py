@@ -260,10 +260,10 @@ def test_gemini_model_selection_uses_optional_provider(monkeypatch):
     monkeypatch.setitem(sys.modules, "dotenv", types.SimpleNamespace(load_dotenv=lambda *a, **k: None))
     monkeypatch.setitem(sys.modules, "google", types.SimpleNamespace(genai=types.SimpleNamespace(Client=Client)))
     monkeypatch.setenv("GEMINI_API_KEY", "test-key")
-    answer, _ = app.live_answer(FakeRetriever([chunk]), "Question?", "Reviewer", model="gemini-1.5-flash")
-    assert captured["model"] == "gemini-1.5-flash"
+    answer, _ = app.live_answer(FakeRetriever([chunk]), "Question?", "Reviewer", model=app.GEMINI_MODEL)
+    assert captured["model"] == app.GEMINI_MODEL
     assert captured["http_options"]["timeout"] == 45_000
     assert "Evidence:" in answer
     monkeypatch.delenv("GEMINI_API_KEY")
-    result, error = app.try_live_answer(FakeRetriever([chunk]), "Question?", "Reviewer", model="gemini-1.5-flash")
+    result, error = app.try_live_answer(FakeRetriever([chunk]), "Question?", "Reviewer", model=app.GEMINI_MODEL)
     assert result is None and "saved benchmark" in error

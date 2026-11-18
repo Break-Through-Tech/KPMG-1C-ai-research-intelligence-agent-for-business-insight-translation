@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: kpmg-1c-arxiv-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r hosted_requirements.txt
+    startCommand: python frontend_server.py --host 0.0.0.0 --arxiv --public-origin https://break-through-tech.github.io --model $GEMINI_MODEL
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.12
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash-lite
+      - key: GEMINI_API_KEY
+        sync: false
