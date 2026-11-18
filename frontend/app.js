@@ -57,6 +57,7 @@ const runLabel = (name) => ({
 })[name] || name;
 const state = {
   data: null,
+  apiBase: "",
   persona: "allison",
   run: null,
   mode: "saved",
@@ -248,12 +249,14 @@ async function requestInsight(payload) {
   const token = ++state.request;
   main.innerHTML = `<a class="back-link" href="#workspace">${icon("back")}Back to workspace</a><div class="loading-state" role="status">${payload.mode === "live" ? "Retrieving sources and checking the evidence…" : "Preparing the research brief…"}</div>`;
   try {
-    if (STATIC_DEMO && (payload.mode !== "saved" || !state.data.questions.some((q) => q.id === payload.id)
+    if (STATIC_DEMO && payload.mode === "saved" && (!state.data.questions.some((q) => q.id === payload.id)
         || !state.data.personas.some((p) => p.id === payload.persona)))
-      throw new Error("This public demo only includes the saved research questions.");
-    const response = STATIC_DEMO
+      throw new Error("This example is unavailable.");
+    if (STATIC_DEMO && payload.mode === "live" && !state.apiBase)
+      throw new Error("Live arXiv research is not connected yet.");
+    const response = STATIC_DEMO && payload.mode === "saved"
       ? await fetch(`data/insights/${payload.persona}/${payload.id}.json`)
-      : await fetch("/api/insight", {
+      : await fetch(`${state.apiBase}/api/insight`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -483,6 +486,22 @@ async function boot() {
     const response = await fetch(STATIC_DEMO ? "data/bootstrap.json" : "/api/bootstrap");
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Could not load research.");
+    if (STATIC_DEMO) {
+      try {
+        const configResponse = await fetch("data/runtime-config.json", { cache: "no-store" });
+        if (configResponse.ok) {
+          const config = await configResponse.json();
+          const url = new URL(config.api_base_url);
+          if (url.origin === config.api_base_url && (url.protocol === "https:" ||
+              (url.protocol === "http:" && ["localhost", "127.0.0.1"].includes(url.hostname)))) {
+            state.apiBase = url.origin;
+            data.live_configured = true;
+            data.live_scope = "arxiv";
+            data.models = [config.model || "gemini-3.5-flash-lite"];
+          }
+        }
+      } catch { /* Keep the saved examples usable if no live API is configured. */ }
+    }
     state.data = data;
     state.run = data.default_run;
     state.mode = data.live_configured ? "live" : "saved";
