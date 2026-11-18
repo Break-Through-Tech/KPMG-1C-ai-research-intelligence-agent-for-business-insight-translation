@@ -1,0 +1,185 @@
+{
+  "assessment_type": "assistant source review",
+  "counts": {
+    "Partial": 6,
+    "Complete": 17,
+    "Correct abstention": 2
+  },
+  "assessments": [
+    {
+      "id": "q01",
+      "query": "How does Pandora's Router decide when an expensive specialist estimate is worth paying for?",
+      "result": "Partial",
+      "explanation": "Correct reservation-price/value-of-information principle and final selection, with citations after every sentence. Still omits reservation-price inspection order and now omits the explicit stopping rule.",
+      "answer": "Pandora's Router decides when an expensive specialist estimate is worth paying for by computing reservation prices that quantify the expected value-of-information for querying a more costly and accurate value estimate 𝑔𝑚(𝑥) [1]. This is done by running the specialist for a few reasoning tokens and checking if it is on the right track [1]. The system then chooses the maximizer of the observed 𝑔𝑚 [1]."
+    },
+    {
+      "id": "q02",
+      "query": "What is the difference between Pandora's Router and Pandora's Bidder?",
+      "result": "Partial",
+      "explanation": "Now includes the global-welfare objective and local-surplus tension, but adds an imprecise performance comparison: Router’s source describes regret plus inspection cost, not just regret. The comparison also cites [3] for Router evidence found in [2]. Much longer than requested.",
+      "answer": "Pandora's Router and Pandora's Bidder differ in their approach to value estimation and decision-making. \n\n* Pandora's Router is a centralized policy that inspects specialists' value estimates in reservation price order, stopping when no remaining query is worth its cost, and chooses the maximizer of the observed value estimate. [1]\n* Pandora's Bidder, on the other hand, is a decentralized policy that selects the high bidder in an auction, with each specialist refining its own value estimate only when the market price makes inspection worthwhile. [3]\n\nIn terms of performance, Pandora's Router closely tracks the lower envelope of the regret of the two baselines across the full estimation cost range, while Pandora's Bidder closely tracks the lower envelope of the regret of the two baselines as well, but with a tension between maximizing local surplus and overall allocative efficiency. [3]\n\nThe centralized setting of Pandora's Router internalizes all costs and optimizes global welfare directly, whereas the decentralized setting of Pandora's Bidder may lead to efficiency loss due to the strategic bidder capturing higher surplus at the cost of overall allocative efficiency. [3]"
+    },
+    {
+      "id": "q03",
+      "query": "In which three domains was the costly-value-estimation routing policy evaluated?",
+      "result": "Complete",
+      "explanation": "Correct three domains, now with one citation per list item.",
+      "answer": "The three domains where the costly-value-estimation routing policy was evaluated are:\n• A multi-LLM routing benchmark (EmbedLLM) [3]\n• Retrieval-augmented specialists for factoid QA [3]\n• Inference-time computation for mathematical reasoning [3]"
+    },
+    {
+      "id": "q04",
+      "query": "What limitation appears when competing specialists' estimates are noisy?",
+      "result": "Partial",
+      "explanation": "Correctly explains the noisy-estimate limitation, but repeats it and adds an unqualified claim that expected reward is not maximized. Source [1] supports a possible harm (“can”), not this categorical conclusion.",
+      "answer": "In the decentralized setting, value-of-information reasoning can increase the strategic specialist's utility at the expense of others when competing estimates are noisy. [1]\n\nThe strategic specialist's utility is increased at the expense of others when competing estimates are noisy. [1]\n\nThe expected reward of the selected specialist is not maximized when competing estimates are noisy. [1]"
+    },
+    {
+      "id": "q05",
+      "query": "How many frozen repositories and training algorithm families are in AI4AI-Bench?",
+      "result": "Complete",
+      "explanation": "Correct ten repositories and ten algorithm families. Extra family list and normalization details are supported but unrequested and make the answer much longer.",
+      "answer": "The AI4AI-Bench suite consists of 10 frozen research repositories, covering 10 distinct families of training algorithm. [2]\n\nEach of the 10 training algorithm families is listed in Table 1, which includes: supervised fine-tuning, multi-turn agentic RL, on-policy distillation, Bradley–Terry reward modeling, preference optimization, diffusion RL, machine unlearning, discrete graph diffusion, weight averaging, and one-shot pruning. [2]\n\nThe 10 metrics are incommensurable, but each task is mapped onto one scale on which 0 is an uninformative model, 0.1 is the algorithm the repository ships, and 1.0 is the task optimum. [4]"
+    },
+    {
+      "id": "q06",
+      "query": "What is the AI4AI-Bench time budget for an agent and for the replay?",
+      "result": "Complete",
+      "explanation": "Correct four-hour agent budget and up-to-twelve-hour replay budget, with a citation for each sentence.",
+      "answer": "An agent has 4 hours on one B300 GPU [2]. The replay runs for up to 12 hours [3]."
+    },
+    {
+      "id": "q07",
+      "query": "How are the incommensurable AI4AI-Bench task metrics normalized?",
+      "result": "Complete",
+      "explanation": "Correct normalization anchors and supporting citation.",
+      "answer": "The AI4AI-Bench task metrics are normalized to a scale where 0 is an uninformative model, 0.1 is the algorithm the repository ships, and 1.0 is the task optimum. [2]"
+    },
+    {
+      "id": "q08",
+      "query": "How do submissions that change the learning algorithm compare with those that do not?",
+      "result": "Partial",
+      "explanation": "Now reports 0.226 versus 0.126, but calls the difference significant without statistical support. Adds unrequested reasoning-effort discussion and repetitive claims; several cite [3] for counts whose full denominator is in [1]/[2]. Longer than the target.",
+      "answer": "Submissions that change the learning algorithm average 0.226 against 0.126 for those that do not, indicating a significant difference in performance. [2]\n\nThe share of submissions that touch the learning algorithm rises from 8.0% to 64.0% when reasoning effort is increased, suggesting that changing the learning algorithm is a rare occurrence at low effort. [4]\n\nSubmissions that change the learning algorithm are more likely to reach the objective, supervision signal, learning rule, and data, with 122 submissions doing so, compared to 141 that only change the run. [3]\n\nThe algorithmic layer is where the distance to a better algorithm is closed, and most submissions never go there, with only 122 submissions reaching it, out of 263 that change anything. [3]\n\nSubmissions that change the learning algorithm are more likely to be stronger, with the systems that reach the learning procedure more often being the stronger ones to begin with. [3]"
+    },
+    {
+      "id": "q09",
+      "query": "What two kinds of task structure does TMI recover from computer-use traces?",
+      "result": "Complete",
+      "explanation": "Correct objective and procedure structures with citations on both explanatory bullets; introductory factual sentence remains uncited.",
+      "answer": "TMI recovers two kinds of task structure: objective models and procedure models. \n• Objective models are hierarchical decompositions of the objective of a task into subobjectives [3].\n• Procedure models are trace-grounded compositions of control-flow operators specifying how the execution of a task is organized [3]."
+    },
+    {
+      "id": "q10",
+      "query": "How well does task model induction group interleaved tasks?",
+      "result": "Complete",
+      "explanation": "Correctly separates 0.974 grouping agreement from 74.9% versus 30.3% execution reconstruction. Extra reconstruction discussion is unrequested; first-person wording remains.",
+      "answer": "Our method recovers interleaved tasks with 0.974 agreement against ground-truth task groupings [2]. On trajectories built from a dataset of recorded real human work sessions, our method matches 74.9% of observed execution steps against 30.3% for the strongest workflow induction baseline [2]."
+    },
+    {
+      "id": "q11",
+      "query": "How much of observed execution does TMI reconstruct?",
+      "result": "Complete",
+      "explanation": "Correct 74.9% reconstruction and supported 30.3% baseline; both sentences cited.",
+      "answer": "TMI reconstructs 74.9% of the observed execution steps. [4]\n\nThis is compared to 30.3% for the strongest workflow induction baseline. [4]"
+    },
+    {
+      "id": "q12",
+      "query": "What was the held-out task accuracy gain from skills derived from TMI?",
+      "result": "Complete",
+      "explanation": "Correct relative gain from 14.29 to 18.57, but repeats the same figures across four sentences and uses first-person wording.",
+      "answer": "Our model improves held-out accuracy from 14.29 to 18.57, a 30% relative accuracy gain, over the strongest baseline. [1]\n\nThe strongest baseline is the workflow summary baseline, which achieves a held-out accuracy of 14.29. [3]\n\nOur model achieves a held-out accuracy of 18.57. [1]\n\nThe relative accuracy gain is calculated as (18.57 - 14.29) / 14.29 = 30%. [1]"
+    },
+    {
+      "id": "q13",
+      "query": "How many commuters and respondent-scenario observations did the weather travel survey collect?",
+      "result": "Complete",
+      "explanation": "Correct 92 commuters and 454 observations with citations per sentence, but repeats both counts.",
+      "answer": "The survey collected mode choices from 92 McGill student commuters. [2]\nThe chatbot-administered, image-augmented stated-preference survey collected mode choices from 92 student commuters across five predefined weather scenarios, yielding 454 respondent–scenario observations. [4]\nThe final processed dataset contained 454 valid respondent–scenario observations. [3]"
+    },
+    {
+      "id": "q14",
+      "query": "Which travel modes responded most clearly to adverse weather and snow?",
+      "result": "Complete",
+      "explanation": "Correct cycling and transit findings, with separate citations.",
+      "answer": "Cycling was particularly sensitive to adverse weather [4]. Public transit use increased substantially under the Snowy scenario [4]."
+    },
+    {
+      "id": "q15",
+      "query": "How did random forest and the best text-only zero-shot LLM compare on five-class travel prediction?",
+      "result": "Complete",
+      "explanation": "Concise, correctly matched 69.6% versus 69.9% five-class accuracies, with a citation per sentence.",
+      "answer": "Random forest achieved a five-class accuracy of 69.6% [4]. The best text-only zero-shot LLM reached a five-class accuracy of 69.9% [4]."
+    },
+    {
+      "id": "q16",
+      "query": "What was the best vision-based travel mode prediction accuracy?",
+      "result": "Complete",
+      "explanation": "Correct 71.5% result with metric label; extra image-context detail is supported.",
+      "answer": "The best vision-based travel mode prediction accuracy was 71.5% [2]. This was achieved by the best vision-based configuration, which used the same generated weather images shown to respondents [3]."
+    },
+    {
+      "id": "q17",
+      "query": "What is the patient-oriented medical report interpretation task introduced with G-CARL?",
+      "result": "Complete",
+      "explanation": "Supported PMRI explanation and distinction from VQA/report generation, with citations after each sentence.",
+      "answer": "The patient-oriented medical report interpretation task is a novel open-ended multimodal generation task that requires models to explain medical reports in accurate and accessible language based on a user's query and dialogue history. [3]\n\nThis task involves aligning professional medical knowledge with patient-centered communication by transforming report evidence into accessible explanations, addressing user-specific concerns, and offering clinically cautious guidance. [4]\n\nThe task is distinct from medical VQA (Task A) and conventional report generation (Task B) in that it produces long-form, patient-facing explanations grounded in multimodal reports and extended patient-doctor dialogue. [4]"
+    },
+    {
+      "id": "q18",
+      "query": "How does G-CARL supervise factuality and response coverage?",
+      "result": "Partial",
+      "explanation": "Correct retrieval-grounded claim verification and weighted checklist guidance; explicit multi-source datastore support is still omitted.",
+      "answer": "G-CARL supervises factuality through retrieval-grounded claim verification, producing the factuality reward Rfact [4]. It supervises response coverage through case-specific checklist guidance, constructing a weighted checklist through MLLM generation followed by clinician-guided refinement, and evaluating the checklist coverage of the generated response to produce the checklist reward Rcheck [4]."
+    },
+    {
+      "id": "q19",
+      "query": "What benchmark and evaluation dimensions accompany G-CARL?",
+      "result": "Complete",
+      "explanation": "Correct benchmark and evaluation dimensions, now with citations on every sentence. The CMB sentence cites [2], although its benchmark description is in [1]; citation presence does not ensure citation alignment.",
+      "answer": "G-CARL is primarily evaluated on the MMedReport benchmark, which contains 2,450 instances with dialogue history, user query, medical report images, and clinician-verified reference annotations [1]. To assess broader medical capability, G-CARL is also evaluated on the CMB benchmark, which evaluates medical QA accuracy and professionalism of open-ended clinical interpretation [2]. The evaluation of PMRI responses uses both subjective and objective metrics, including Medical Accuracy, Demand Satisfaction, and Expression Quality [1]. Additionally, G-CARL reports claim-level Precision and checklist-level Recall on the MMedReport benchmark [2]."
+    },
+    {
+      "id": "q20",
+      "query": "What did clinician pairwise preferences find about G-CARL?",
+      "result": "Complete",
+      "explanation": "Correct clinician preference findings and supported margins, but adds unrequested non-expert comprehensibility results and repeats the preference conclusion.",
+      "answer": "G-CARL was consistently preferred over both SFT and MLLM-as-a-Judge, particularly in medical accuracy and demand satisfaction, with preference margins of 136:85 and 106:64, respectively. [1]\n\nIt also achieved substantially higher comprehensibility ratings from non-expert participants, suggesting that its responses are easier for patients to understand. [1]\n\nPairwise preference evaluation by clinicians further confirms that G-CARL produces interpretations that are more accurate and better aligned with patient needs. [3]"
+    },
+    {
+      "id": "q21",
+      "query": "Which papers address auditable AI workflows derived from user activity or survey responses?",
+      "result": "Complete",
+      "explanation": "Correctly covers both relevant papers, but repeats the long survey paper title and adds unrequested agent details. Citation alignment is imperfect: auditable outputs are explicit in [2], while the final sentence cites [4].",
+      "answer": "Inducing Task Models from Computer-Use Traces introduces TASKMODELINDUCTION(TMI), which induces task models from unconstrained computer-use traces, pairing a hierarchical objective model of recursive goal decomposition with a procedure model of the control flow. [1]\n\nAn Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction proposes a multi-agent framework that integrates data collection, data processing, and behavioral modeling, with a focus on active data collection through stateful conversational survey administration. [2][3]\n\nThe proposed framework in An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction includes a Data Collection Agent that collects survey responses, a Data Processing Agent that processes the data, and a Data Modeling Agent that models the behavior. [3]\n\nThe multi-agent framework in An Agentic Approach for Active Data Collection, Travel Behavior Modeling, and Weather-Sensitive Demand Prediction is designed to provide a structured and auditable output, with a focus on individual mode-choice prediction across predefined weather scenarios. [4]"
+    },
+    {
+      "id": "q22",
+      "query": "Which papers evaluate AI agents or model specialists using benchmark tasks and costs?",
+      "result": "Complete",
+      "explanation": "Both relevant papers and their benchmark roles are correct. Citations return, but the first factual sentence in each paragraph remains uncited.",
+      "answer": "Pandora's AI Model Routing Box: Efficient Allocation with Costly Value Estimation evaluates AI model specialists using benchmark tasks and costs. The paper presents experiments across three domains—a standard multi-LLM benchmark, retrieval-augmented specialists, and LLMs with variable inference-time reasoning—showing that Pandora's Router matches the routing quality of exhaustive estimation, while querying the expensive estimator far less often [4].\n\nAI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement evaluates AI agents using benchmark tasks and costs. The paper presents AI4AI-Bench, a benchmark that isolates the ability of an agent to design training algorithms, and evaluates 6 systems across 29 configurations [3]."
+    },
+    {
+      "id": "q23",
+      "query": "Which papers discuss evidence-grounded explanations and auditable task models?",
+      "result": "Partial",
+      "explanation": "Names both relevant papers, but falsely attributes auditable task models to G-CARL. Source [4] discusses patient-facing report interpretation, not auditable task models. Repeats each paper in separate bullets.",
+      "answer": "* Inducing Task Models from Computer-Use Traces discusses evidence-grounded explanations in the context of task models, specifically objective models that explain why observed activities were performed [1].\n* Inducing Task Models from Computer-Use Traces also discusses auditable task models, which are induced from computer-use traces and can be reused and audited [2].\n* G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation discusses evidence-grounded explanations in the context of patient-oriented medical report interpretation, where explanations must be grounded in multimodal reports and reliable clinical knowledge [4].\n* G-CARL: Grounded Checklist-Aligned Reward Learning for Patient-Oriented Medical Report Interpretation also mentions auditable task models in the context of patient-facing communication, where explanations must be grounded in reliable clinical knowledge and medically coherent diagnostic reasoning [4]."
+    },
+    {
+      "id": "q24",
+      "query": "What is KPMG's 2026 revenue forecast?",
+      "result": "Correct abstention",
+      "explanation": "Correctly declines the unsupported KPMG forecast, but does not use the required exact refusal sentence.",
+      "answer": "There is no information about KPMG's 2026 revenue forecast in the provided passages."
+    },
+    {
+      "id": "q25",
+      "query": "Which of these papers reports the stock price of NVIDIA on October 14, 2026?",
+      "result": "Correct abstention",
+      "explanation": "Correctly declines the unsupported NVIDIA stock price.",
+      "answer": "The provided papers do not address this question."
+    }
+  ]
+}

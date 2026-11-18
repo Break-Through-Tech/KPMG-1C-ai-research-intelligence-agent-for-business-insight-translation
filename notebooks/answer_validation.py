@@ -5,6 +5,7 @@ the prose accurately interprets the research; that still needs review.
 """
 
 import re
+from decimal import Decimal, InvalidOperation
 
 ABSTENTION = "The provided papers do not address this question."
 NONANSWER = re.compile(
@@ -13,8 +14,18 @@ NONANSWER = re.compile(
 )
 CITATION = re.compile(r"\[(\d+)\]")
 QUOTE_CITATION = re.compile(r'["“]([^"”]{20,})["”]\s*\[(\d+)\]')
-NUMBER = re.compile(r"(?<![\w.])\d+(?:[.,]\d+)*%?(?!\w)")
-SOURCE_NUMBER = re.compile(r"\d+(?:\s*[.,]\s*\d+)*%?")
+# Numbers claimed in an answer: whole tokens only, so 92 never matches 192.
+NUMBER = re.compile(
+    r"(?<![\w.])[-+−]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?|\.\d+)"
+    r"(?:[eE][-+]?\d+)?"
+    r"(?:[ \t]*(?:%|percent\b))?(?!\w|\.\d|,\d)", re.I,
+)
+# Numbers in extracted PDF text, which may touch letters ("average0.226") or
+# carry stray spaces around a decimal point ("0 .126"). Used only as support.
+SOURCE_NUMBER = re.compile(
+    r"(?<![\d.,])[-+−]?(?:\d+(?:,\d{3})*(?:[ \t]*\.[ \t]*\d+)?|\.\d+)"
+    r"(?:[eE][-+]?\d+)?(?:[ \t]*(?:%|percent\b))?(?!\d)", re.I,
+)
 WORDS = re.compile(r"[a-z0-9]+")
 STOPWORDS = {"the", "and", "for", "with", "from", "that", "this", "when", "what",
              "which", "how", "does", "into", "their", "them", "they", "was", "were",
@@ -35,9 +46,38 @@ def compact(text):
     return re.sub(r"[^a-z0-9]", "", text.lower())
 
 
-def number_key(value):
-    """Treat PDF spacing in decimals as equivalent without joining neighbors."""
-    return re.sub(r"\s+", "", value).rstrip("%").replace(",", "")
+def numeric_key(token):
+    """Compare whole values, preserving signs and percentage units.
+
+    English thousands separators and trailing decimal zeros are equivalent;
+    92 vs 192, 9.2 vs 92, and 30 vs 30% are not.
+    """
+    token = token.lower().replace("−", "-").replace(",", "")
+    percent = token.endswith(("%", "percent"))
+    value = re.sub(r"(?:%|percent)$", "", token).strip()
+    return Decimal(value), percent
+
+
+def quote_matches(quote, text):
+    """Allow PDF whitespace differences without erasing numeric punctuation."""
+    quote = " ".join(quote.split())
+    if not quote:
+        return False
+    left = r"(?<![\w.+−-])" if quote[0].isdigit() else r"(?<!\w)" if quote[0].isalnum() else ""
+    right = r"(?![\w%]|\.\d|,\d)" if quote[-1].isdigit() else r"(?!\w)" if quote[-1].isalnum() else ""
+    return re.search(left + re.escape(quote) + right, " ".join(text.split())) is not None
+
+
+def source_number_keys(text):
+    """Numeric values a passage supports, tolerant of PDF spacing artifacts."""
+    keys = set()
+    for pattern in (NUMBER, SOURCE_NUMBER):
+        for token in pattern.findall(text):
+            try:
+                keys.add(numeric_key(re.sub(r"\s+", "", token)))
+            except InvalidOperation:
+                pass
+    return keys
 
 
 def _best_quote(text, focus):
@@ -47,7 +87,7 @@ def _best_quote(text, focus):
         return text.strip()
     wanted = {word for word in WORDS.findall(focus.lower())
               if word not in STOPWORDS and len(word) > 2}
-    wanted_numbers = {number_key(value) for value in SOURCE_NUMBER.findall(focus)
+    wanted_numbers = {numeric_key(value) for value in NUMBER.findall(focus)
                       if len(compact(value)) > 1}
     best = (-1, "")
     for start in range(0, len(matches), 5):
@@ -57,9 +97,7 @@ def _best_quote(text, focus):
         quote = text[matches[start].start():matches[end - 1].end()]
         words = WORDS.findall(quote.lower())
         overlap = len(set(words) & wanted)
-        numbers = len(wanted_numbers & {
-            number_key(value) for value in SOURCE_NUMBER.findall(quote)
-        })
+        numbers = len(wanted_numbers & source_number_keys(quote))
         artifacts = sum(len(word) > 22 for word in words)
         math_symbols = len(re.findall(r"[𝑎-𝑧𝛼-𝜔]", quote))
         score = overlap + 8 * numbers - 2 * artifacts - math_symbols
@@ -145,7 +183,7 @@ def answer_issues(answer, chunks):
         index = int(number) - 1
         if index not in range(len(chunks)):
             continue
-        if len(quote.split()) < 5 or compact(quote) not in compact(chunks[index].text):
+        if len(quote.split()) < 5 or not quote_matches(quote, chunks[index].text):
             issues.append(f"Quoted text for [{number}] is not verbatim in that passage.")
         else:
             verified_passages.add(index + 1)
@@ -154,15 +192,14 @@ def answer_issues(answer, chunks):
 
     # This is a review signal. A number can be supported by a different chunk
     # or be calculated from evidence, so it should not automatically reject text.
+    # `body` already excludes the Evidence block, so quotes cannot widen support.
     body = CITATION.sub("", body)
-    source_numbers = {
-        number_key(value)
-        for n in cited & allowed
-        for value in SOURCE_NUMBER.findall(chunks[n - 1].text)
-    }
+    body = re.sub(r"(?m)^\s*\d+\.[ \t]+", "", body)  # numbered list markers
+    source_numbers = set()
+    for n in cited & allowed:
+        source_numbers |= source_number_keys(chunks[n - 1].text)
     unsupported = sorted({number for number in NUMBER.findall(body)
-                          if len(compact(number)) > 1
-                          and number_key(number) not in source_numbers})
+                          if numeric_key(number) not in source_numbers})
     if unsupported:
         issues.append(f"Check numbers absent from cited passages: {unsupported}")
     return issues

@@ -1,0 +1,128 @@
+{
+  "status": "stopped at user-requested time limit; no new full-benchmark winner",
+  "acceptance_threshold": "at least two additional complete answers on 25 development questions with no new major error or unsupported answer",
+  "production_default": "unchanged: Llama 3.1 8B, grouping only, shorter prompt",
+  "best_full_benchmark": {
+    "complete": 19,
+    "partial": 4,
+    "major_issue": 0,
+    "correct_abstention": 2,
+    "source": "grouped_concise_assessment.json"
+  },
+  "experiments": [
+    {
+      "file": "opt_structured_basic_pilot.json",
+      "completed_questions": [
+        "q01",
+        "q02",
+        "q08",
+        "q18",
+        "q19",
+        "q21",
+        "q23",
+        "q24"
+      ],
+      "mechanical_failures": [
+        "q08",
+        "q18",
+        "q23"
+      ],
+      "generation_seconds": 143.6,
+      "model": "llama3.1:8b",
+      "policy": "basic",
+      "evidence_mode": "quote",
+      "repair": false,
+      "sha256": "504bbbf7933cf8a532b64ef693b7ba9e1a513af1b56880c87e40407d0440db4e"
+    },
+    {
+      "file": "opt_coverage_quote_repair_pilot.json",
+      "completed_questions": [
+        "q01",
+        "q02",
+        "q08",
+        "q18"
+      ],
+      "mechanical_failures": [
+        "q02",
+        "q08",
+        "q18"
+      ],
+      "generation_seconds": 238.8,
+      "model": "llama3.1:8b",
+      "policy": "coverage",
+      "evidence_mode": "quote",
+      "repair": true,
+      "sha256": "14d2a86ccef22b3ff7198e7dd907024d61de5d32f91fda50d0b0d11b89675f41"
+    },
+    {
+      "file": "opt_coverage_citation_pilot.json",
+      "completed_questions": [
+        "q01",
+        "q02",
+        "q08",
+        "q18",
+        "q19",
+        "q21",
+        "q23",
+        "q24"
+      ],
+      "mechanical_failures": [],
+      "generation_seconds": 149.4,
+      "model": "llama3.1:8b",
+      "policy": "coverage",
+      "evidence_mode": "citation",
+      "repair": false,
+      "sha256": "5ccfebaa9cdb3fbce8bf6b549c53a6014382fe4a73cf0605ce90799c7b8c7791"
+    },
+    {
+      "file": "opt_qwen_coverage_pilot.json",
+      "completed_questions": [
+        "q01",
+        "q02",
+        "q08",
+        "q18",
+        "q19"
+      ],
+      "mechanical_failures": [],
+      "generation_seconds": 196.2,
+      "model": "qwen3.5:9b",
+      "policy": "coverage",
+      "evidence_mode": "citation",
+      "repair": false,
+      "sha256": "f671f599db1cb15dedb25bf89da81e72f3a0130e7c40474770e4d44eb510ea3b"
+    }
+  ],
+  "not_completed": [
+    "full-benchmark structured-generator validation",
+    "answer evaluation of 15 new questions",
+    "retrieval/ranking configuration sweep and answer-based gain assessment"
+  ],
+  "qwen_pilot_assessment": [
+    {
+      "id": "q01",
+      "result": "Partial",
+      "reason": "Includes all procedure components, but adds an imprecise account of computing reservation prices by running a specialist; verbose and repetitive."
+    },
+    {
+      "id": "q02",
+      "result": "Complete",
+      "reason": "Covers centralized/decentralized decisions, global welfare versus local surplus, and efficiency trade-offs; some citations are broad."
+    },
+    {
+      "id": "q08",
+      "result": "Complete",
+      "reason": "Correct 0.226/0.126 performance comparison and non-causal caveat referring to stronger systems; secondary share percentages cite the wrong passage."
+    },
+    {
+      "id": "q18",
+      "result": "Complete",
+      "reason": "Covers multi-source retrieval, atomic verification, weighted checklist construction and coverage; repetitive."
+    },
+    {
+      "id": "q19",
+      "result": "Complete",
+      "reason": "Correct benchmark and evaluation dimensions; 2450 instances is supported in source 1, but model cites 2/3."
+    }
+  ],
+  "assessment_scope": "Assistant source review of core factual content; not an independent human evaluation. Complete does not mean citation alignment is flawless."
+}

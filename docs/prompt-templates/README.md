@@ -5,7 +5,7 @@
 | File | Purpose |
 |---|---|
 | 01_strategy_and_recommendation.md | Audience, design strategy, scope, preliminary recommendation, and next actions. |
-| template_a.txt and template_b.txt | Baseline A and provisional B version 3 instructions for business translation. |
+| template_a.txt and template_b.txt | Baseline A and provisional B version 5 instructions for business translation. |
 | 04_persona_and_user_stories.md | One optional draft persona, four user stories, and observable success checks. |
 | 05_allison_test_mapping.md | Exact selected questions, links to stories, expected behavior, and evidence preparation. |
 | test_cases.json | Sixteen primary cases: eight questions with original and paraphrased wording. |

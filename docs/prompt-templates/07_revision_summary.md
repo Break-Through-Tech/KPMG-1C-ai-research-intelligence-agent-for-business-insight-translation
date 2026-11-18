@@ -27,6 +27,24 @@ All eight original questions match the supplied Word document exactly. Ten old s
 
 Actual retrieval, provider runs, independent scoring, robustness findings, product owner validation, and final selection are pending. No model-performance results have been invented. The Word documents were read without being edited or added to this branch.
 
+## Guardrail variant of Template B version 3 (November 11, 2026)
+
+First real model runs: qwen3.5:9b (temperature 0, seed 42, thinking off) on the repository's frozen hybrid retrieval snapshots. Version 2 findings and version 3 changes:
+
+| Version 2 problem | Version 3 change | Re-test result |
+|---|---|---|
+| Unanswerable question (q24, KPMG revenue forecast) answered "not covered", then added unrelated business suggestions | Reply only with the exact sentence "The provided papers do not address this question." | Fixed in two runs. The app's refusal detection now recognises it. |
+| Called 0.226 vs 0.126 "significantly higher" with no significance test; "driven by" causal wording (q08) | Do not say significant, caused, drove, or led to unless a passage says so | Statistical "significantly higher" gone; "significant" still appears loosely in business sections |
+| Model added 136 + 85 to invent a "221 comparisons" total (q20) | Report numbers exactly; do not calculate new totals, percentages, or ratios | Fixed in re-test |
+
+Not fixed: factual questions still receive all four business headings, even with an explicit question-type rule (tried and removed). Choose the template in application code instead: use the structured factual prompt for research questions and Template B for business questions. Business question A29 kept a grounded four-section brief in every run. This was a 4-question targeted check, not a full evaluation.
+
 ## November 13 local pilot
 
 After the revision above, fixed excerpts from the five-paper corpus became available for A31. A local `qwen2.5:7b` run compared the two phrasings and both templates. Template B was shortened to version 3 after the first run used inconsistent source notation; a further version 4 attempt regressed on sentence-level citations and was archived. See [pilot review](pilot_review.md) for outputs and limits. The statement above that no real model was called describes the November 1 revision only. The full business suite and independent scoring are still pending.
+
+## Version 5 of Template B (merge of both version 3 branches)
+
+Two version 3 files were developed in parallel: the guardrail variant above (qwen3.5:9b, targeted 4-question check) and the shortened variant from the November 13 pilot (qwen2.5:7b, case A31). Version 5 keeps the shortened variant as its base, because the pilot found that longer wording weakened sentence-level citations (the archived version 4). It adds only the guardrail rules that fixed observed failures: the exact refusal sentence (q24), no causal wording without a passage saying so (q08; "significant" was already covered under *What we do not know*), and no derived totals, percentages, or ratios (q20).
+
+Version 5 has not been run yet. Re-run the q24, q08, q20, and A29 checks and the A31 pilot on it before treating it as an improvement on either version 3.

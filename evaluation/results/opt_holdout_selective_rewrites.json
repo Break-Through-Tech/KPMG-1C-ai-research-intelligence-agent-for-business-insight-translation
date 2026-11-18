@@ -1,0 +1,24 @@
+{
+  "config": {
+    "model": "qwen3.5:9b",
+    "model_digest": "6488c96fa5faab64bb65cbd30d4289e20e6130ef535a93ef9a49f42eda893ea7",
+    "prompt": "Rewrite this question as a concise academic search query. Preserve every requested part, named entity, comparison and constraint. Use descriptive research terminology only when it preserves the original meaning. Do not answer the question. Do not invent facts, numbers, paper names, mechanisms or conclusions. Return only the search query in the query field.\n\nQuestion: ",
+    "options": {
+      "temperature": 0,
+      "seed": 42,
+      "num_ctx": 4096,
+      "num_predict": 160
+    },
+    "benchmark_sha256": "fc49e33df16be13bef1eddfaabe13e7e04568bd5942ea75f4427012f06654724",
+    "runner_sha256": "4ceb8e39a04478a993ce197a9e1f8a3401b69fca157405e95acaaf6159b474e2"
+  },
+  "rewrites": [
+    {
+      "id": "q31",
+      "query": "Does TMI require the task set to be specified in advance, and how does it handle interleaved activity?",
+      "rewrite": "TMI task set specification requirement interleaved activity handling",
+      "seconds": 5.9,
+      "raw": "{\"query\": \"TMI task set specification requirement interleaved activity handling\"}"
+    }
+  ]
+}

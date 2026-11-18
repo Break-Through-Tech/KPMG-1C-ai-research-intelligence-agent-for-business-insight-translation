@@ -2,31 +2,31 @@
 
 import hashlib
 import json
-from pathlib import Path
 
 import pytest
 
-from evaluation.run_answers import completed_answers
+from evaluation.run_answers import json_digest, load_completed
 
-ROOT = Path(__file__).resolve().parents[1]
+
+def config(prompt):
+    return {"model": "qwen2.5:7b", "model_digest": "digest-1",
+            "notebook_prompt_sha256": hashlib.sha256(prompt.encode()).hexdigest()}
 
 
 def test_resume_requires_same_model_prompt_retrieval_and_question(tmp_path):
     output = tmp_path / "answers.json"
-    retrieval = ROOT / "evaluation/results/retrieval_after_parser_integrated.json"
-    benchmark = {"queries": [{"id": "q1", "query": "What happened?"}]}
-    row = {"id": "q1", "query": "What happened?", "answer": "Answer [1]."}
-    output.write_text(json.dumps({
-        "model": "qwen2.5:7b", "model_digest": "digest-1",
-        "notebook_prompt_sha256": hashlib.sha256(b"prompt-v1").hexdigest(),
-        "retrieval_result": "evaluation/results/retrieval_after_parser_integrated.json",
-        "answers": [row],
-    }))
-    assert completed_answers(output, "qwen2.5:7b", "digest-1", "prompt-v1",
-                             retrieval, benchmark) == {"q1": row}
-    with pytest.raises(ValueError, match="different settings"):
-        completed_answers(output, "qwen2.5:7b", "digest-1", "prompt-v2",
-                          retrieval, benchmark)
-    with pytest.raises(ValueError, match="mismatched questions"):
-        completed_answers(output, "qwen2.5:7b", "digest-1", "prompt-v1",
-                          retrieval, {"queries": [{"id": "q1", "query": "What changed?"}]})
+    passages = [{"rank": 1, "text": "Passage."}]
+    snapshots = {"q1": {"query": "What happened?", "retrieved_chunks": passages,
+                        "source_list": "[1] Paper"}}
+    row = {"id": "q1", "query": "What happened?", "answer": "Answer [1].",
+           "passages": passages, "source_list": "[1] Paper"}
+    saved = config("prompt-v1")
+    output.write_text(json.dumps({"schema_version": 2, "run_config": saved,
+                                  "run_fingerprint": json_digest(saved), "answers": [row]}))
+
+    assert load_completed(output, config("prompt-v1"), snapshots) == {"q1": row}
+    with pytest.raises(ValueError, match="configuration changed"):
+        load_completed(output, config("prompt-v2"), snapshots)
+    changed = {"q1": dict(snapshots["q1"], query="What changed?")}
+    with pytest.raises(ValueError, match="differ from the snapshot"):
+        load_completed(output, config("prompt-v1"), changed)
