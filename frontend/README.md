@@ -17,11 +17,12 @@ For a shareable, saved-results preview, build the [GitHub Pages files](../docs/d
 
 ## Ask arXiv with the local model
 
-Start Ollama in one terminal and make sure the evaluated model is installed:
+For a step-by-step guide you can send to a reviewer, see [Try the live chat locally](../docs/try-it-locally.md).
+
+Start the Ollama app, or run `ollama serve` in another terminal. Then install the evaluated model:
 
 ```bash
 ollama pull qwen2.5:7b
-ollama serve
 ```
 
 Start the browser server in another terminal:

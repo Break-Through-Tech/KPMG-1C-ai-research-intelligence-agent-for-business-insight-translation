@@ -47,6 +47,8 @@ The current assistant workflow is in [the EDA workbook](notebooks/eda_workbook.i
 
 ## Setup and use
 
+**Want to try the chatbot?** Follow the [local chat walkthrough](docs/try-it-locally.md). It covers downloading this repo, installing Ollama and Qwen, and asking a new arXiv question in the browser. The [GitHub Pages demo](docs/demo/) shows recorded answers; it cannot run the local model for visitors.
+
 Use Python 3.10 or newer. From the repository root:
 
 ```bash
@@ -67,7 +69,7 @@ jupyter lab eda_workbook.ipynb
 
 For a quick demo using the **five committed PDFs**, scroll to **“Run the research assistant on the five committed papers”** near the bottom. Run the next two setup cells, then edit and run the example question cell. The first setup cell builds the saved index if it is missing. You do not need to run the earlier EDA cells for this demo. The full EDA workflow uses local `arxiv_data/` files and requires its metadata, PDF extraction, parser, and embedding cells in order. Follow the notebook's cell-level instructions; **do not use “Run All,”** and run its optional PDF cleanup cell only if the integrity check identifies a problem.
 
-For local answers, [install Ollama](https://ollama.com/), then run `ollama pull qwen2.5:7b` and `ollama serve` in a separate terminal before calling `ask_llm(question)` in the notebook. The smaller `llama3.2` model can still be selected with `ask_llm(question, model="llama3.2")`, but it had more citation and content errors in this test. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
+For local answers, [install Ollama](https://ollama.com/) and start the Ollama app (or run `ollama serve` in a separate terminal). Then run `ollama pull qwen2.5:7b` before calling `ask_llm(question)` in the notebook. The smaller `llama3.2` model can still be selected with `ask_llm(question, model="llama3.2")`, but it had more citation and content errors in this test. To use the optional Gemini provider, run `python -m pip install -r notebooks/requirements-gemini.txt` from the repository root, set `GEMINI_API_KEY` in your environment or a local root `.env`, and call `ask_llm(question, provider="google")`. Keep API keys out of Git.
 
 To ask a new question across arXiv, keep Ollama running and start the browser chat with `python frontend_server.py --port 8765 --arxiv`, then open `http://127.0.0.1:8765`. Each question searches arXiv's catalog, reads passages from up to three top matching PDFs, and asks local Qwen for a cited answer. It searches on demand rather than indexing every arXiv paper. The separate five-paper evaluation path is still available with `--live-root .`; running without either flag shows example answers only. See the [frontend guide](frontend/README.md).
 
@@ -75,7 +77,7 @@ To ask a new question across arXiv, keep Ollama running and start the browser ch
 
 The [Pages-ready preview](docs/demo/) lets someone try 25 example questions, inspect sources, and export a brief through a link. It uses recorded Qwen answers from the five public test papers. It does **not** search arXiv or generate new answers: GitHub Pages serves static files and cannot run the Python retriever or Ollama. Live chat needs the local server above or a separately hosted backend.
 
-To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. To publish, a repository maintainer can set **Settings → Pages → Build and deployment → Deploy from a branch**, select this branch (or `main` after merging), and choose `/docs`. The intended URL is `https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/` once Pages is enabled and its deployment finishes. Treat the demo as public; do not add private papers, prompts, or client data to its generated files.
+To refresh the static files after changing the frontend or saved evaluation run, run `python scripts/build_pages_demo.py` from the repository root and commit the updated `docs/demo/` files. The [Pages demo](https://break-through-tech.github.io/KPMG-1C-ai-research-intelligence-agent-for-business-insight-translation/) is published from `/docs`. Treat it as public; do not add private papers, prompts, or client data to its generated files.
 
 ## Evaluation and findings
 
