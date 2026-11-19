@@ -84,7 +84,8 @@ def make_insight(payload, live_root=None, live_lock=None, arxiv_live=False):
             result, error = app.try_live_answer(retriever, question.strip(), persona.context, model=model)
             if error:
                 raise ConnectionError(
-                    "Could not search arXiv or reach local Ollama. Check your internet connection and Ollama."
+                    "Could not finish the live question. Check Ollama and your internet connection. "
+                    "If arXiv is busy or rate limiting, wait a few minutes before retrying."
                     if arxiv_live else "The local model is unavailable. Saved research remains available."
                 )
             answer, chunks = result
